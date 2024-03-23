@@ -57,7 +57,7 @@ class Schedule(models.Model):
         'Location', on_delete=models.CASCADE, related_name='destination_locations')
     wake_up_aids = models.ForeignKey(
         UserInfo, on_delete=models.CASCADE, related_name='wake_up_friends')
-    prep_activities = models.ManyToManyField('PrepActivityTime')
+    # prep_activities = models.ManyToManyField('PrepActivityTime')
 
     def __str__(self):
         return self.event_name
