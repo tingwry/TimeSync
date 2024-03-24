@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 
 transportation_mode_choices = [
     ('car', 'Car'),
@@ -39,7 +40,7 @@ class UserAuth(models.Model):
 
 
 class Schedule(models.Model):
-    event_id = models.AutoField(primary_key=True)
+    event_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     event_name = models.CharField(max_length=100)
     date = models.DateField()
     start_time = models.TimeField()
