@@ -6,7 +6,7 @@ export const theme = {
         yellow: '#ffbc10',
         orange: '#ed8e07',
         stroke: '#fefefe',
-        textPlaceholder: '#fefefe',
+        textPlaceholder: '#fefefe25',
         textPrimary: '#fefefe',
         textCaption: '#bfbfbf',
         bluePrimary: '#182640',
