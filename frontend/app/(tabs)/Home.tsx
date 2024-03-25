@@ -1,8 +1,18 @@
 import { View, Text, StyleSheet, Image, StatusBar } from "react-native";
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
 import CardNewSchedule from "@/components/CardNewSchedule";
+import CardScheduleDetail from "@/components/CardScheduleDetail";
+
+interface ScheduleItem {
+  event_id: number;
+  event_name: string;
+  date: string;
+  start_time: string;
+  transportation_mode: string;
+  // Add other properties as needed
+}
 
 export default function Home() {
   const [fontsLoaded] = useFonts({
@@ -16,6 +26,24 @@ export default function Home() {
     return <Text>Loading...</Text>;
   }
 
+  const [schedule, setSchedule] = useState<ScheduleItem[]>([])
+  const [scheduleNumber, setScheduleNumber] = useState(0)
+
+  useEffect(() => {
+    const fetchSchedule = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/app/schedule/view/");
+        const data = await response.json();
+        setScheduleNumber(data.length)
+        setSchedule(data);
+      } catch (error) {
+        console.error("Error fetching schedule:", error);
+      }
+    };
+
+    fetchSchedule();
+  }, []);
+
   return (
     <View style={styles.background}>
       <StatusBar barStyle="light-content" />
@@ -25,7 +53,17 @@ export default function Home() {
       </View>
       <View style={styles.container}>
         <Text style={styles.textHeader}>Upcoming Schedule</Text>
-        <CardNewSchedule />
+
+        {schedule.map((scheduleItem) => (
+        <CardScheduleDetail
+          key={scheduleItem.event_id}
+          event_name={scheduleItem.event_name}
+          date={scheduleItem.date}
+          start_time={scheduleItem.start_time}
+          transportation_mode={scheduleItem.transportation_mode}
+        />
+
+      ))}
       </View>
     </View>
   );

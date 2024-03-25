@@ -1,16 +1,16 @@
 import { theme } from "@/app/theme";
 import { StyleSheet, Text, View, Image } from "react-native";
 
-export default function CardNewSchedule() {
-  return (
+export default function CardNewSchedule() {  return (
     <View style={styles.addScheduleTab}>
       <Text style={styles.textCaption}>No Upcoming Schedule</Text>
       <Text style={styles.textTitle}>Add Schedule</Text>
-          <View style={styles.addButton}>
-              <Image
-                  source={require("@/assets/icons/plus.png")}
-                  style={{width: 32, height: 32}}
-              />
+
+      <View style={styles.addButton}>
+        <Image
+          source={require("@/assets/icons/plus.png")}
+          style={{width: 32, height: 32}}
+        />
       </View>
     </View>
   );
