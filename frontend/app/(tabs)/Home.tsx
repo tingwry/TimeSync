@@ -2,6 +2,8 @@ import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
+import AlarmClock from "../src/AlarmClock";
+import CountdownTimer from "../src/CountDownTimer";
 
 export default function Home() {
   const [fontsLoaded] = useFonts({
@@ -20,6 +22,9 @@ export default function Home() {
         <Text style={styles.text_title}>Hello, User</Text>
         <Text style={styles.text_caption}>Let's see what is up next!</Text>
       </View>
+
+      {/* <AlarmClock /> */}
+      <CountdownTimer />
     </View>
   );
 }

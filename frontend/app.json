@@ -34,6 +34,10 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "expo-notifications": {
+      "icon": "./assets/images/favicon.png",
+      "color": "#ffffff"
     }
   }
 }
