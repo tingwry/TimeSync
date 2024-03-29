@@ -1,18 +1,25 @@
 import { theme } from "@/app/theme";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { useNavigation } from "expo-router";
+import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 
 export default function CardNewSchedule() {
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    navigation.navigate("(newschedule)");
+  };
+
   return (
-    <View style={styles.addScheduleTab}>
+    <Pressable onPress={handlePress} style={styles.addScheduleTab}>
       <Text style={styles.textCaption}>No Upcoming Schedule</Text>
       <Text style={styles.textTitle}>Add Schedule</Text>
-          <View style={styles.addButton}>
-              <Image
-                  source={require("@/assets/icons/plus.png")}
-                  style={{width: 32, height: 32}}
-              />
+      <View style={styles.addButton}>
+        <Image
+          source={require("@/assets/icons/plus.png")}
+          style={{ width: 32, height: 32 }}
+        />
       </View>
-    </View>
+    </Pressable>
   );
 }
 
