@@ -1,9 +1,20 @@
 import { Redirect } from "expo-router";
-// import { AuthProvider } from "./context/authContext";
+import { AuthProvider, useAuth } from "./context/authContext";
 
 const StartPage = () => {
-  return 
-    <Redirect href="/Home" />;
+  const authData = useAuth();
+  return (
+    // <AuthProvider>
+    //   {authData ? (
+    //     <Redirect href="/Home" />
+    //   ) : (
+    //     <Redirect href="/signInScreen" />
+    //   )}
+    // </AuthProvider>
+    <Redirect href="/Home" />
+
+  );
+    
 };
 
 export default StartPage;
