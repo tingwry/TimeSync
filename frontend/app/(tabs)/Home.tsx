@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
 import React from "react";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
+import { useAuth } from "../context/authContext";
 
 export default function Home() {
   const [fontsLoaded] = useFonts({
@@ -14,11 +15,18 @@ export default function Home() {
     return <Text>Loading...</Text>;
   }
 
+  const auth = useAuth();
+  const signOut = () => {
+      console.log('Sign Out')
+      auth.signOut();
+  }
+
   return (
     <View style={styles.background}>
       <View style={styles.container}>
         <Text style={styles.text_title}>Hello, User</Text>
         <Text style={styles.text_caption}>Let's see what is up next!</Text>
+        <Button title="Sign Out" onPress={signOut} />
       </View>
     </View>
   );
