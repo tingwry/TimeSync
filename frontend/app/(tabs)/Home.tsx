@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image, StatusBar } from "react-native";
 import React from "react";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
+import CardNewSchedule from "@/components/CardNewSchedule";
 import AlarmClock from "../src/AlarmClock";
 import CountdownTimer from "../src/CountDownTimer";
 
@@ -11,6 +12,7 @@ export default function Home() {
     "dm-sans-extrabold": require("../../assets/fonts/DMSans-ExtraBold.ttf"),
     "dm-sans-semibold": require("../../assets/fonts/DMSans-SemiBold.ttf"),
     "dm-sans-regular": require("../../assets/fonts/DMSans-Regular.ttf"),
+    "dm-sans-bold":require("../../assets/fonts/DMSans-Bold.ttf")
   });
   if (!fontsLoaded) {
     return <Text>Loading...</Text>;
@@ -18,9 +20,14 @@ export default function Home() {
 
   return (
     <View style={styles.background}>
+      <StatusBar barStyle="light-content" />
+      <View style={styles.containerHome}>
+        <Text style={styles.textTitle}>Hello, User</Text>
+        <Text style={styles.textCaption}>Let's see what is up next!</Text>
+      </View>
       <View style={styles.container}>
-        <Text style={styles.text_title}>Hello, User</Text>
-        <Text style={styles.text_caption}>Let's see what is up next!</Text>
+        <Text style={styles.textHeader}>Upcoming Schedule</Text>
+        <CardNewSchedule />
       </View>
 
       {/* <AlarmClock /> */}
@@ -38,16 +45,30 @@ const styles = StyleSheet.create({
   container: {
     marginLeft: 24,
     marginRight: 24,
+    marginTop: 50,
+  },
+  containerHome: {
+    marginLeft: 24,
+    marginRight: 24,
     marginTop: 100,
   },
-  text_title: {
+  textTitle: {
     color: theme.colors.textPrimary,
     fontFamily: "dm-sans-extrabold",
     fontSize: 36,
+    paddingLeft: 8,
   },
-  text_caption: {
+  textCaption: {
     color: theme.colors.textCaption,
     fontFamily: "dm-sans-regular",
     fontSize: 16,
+    paddingLeft: 8,
+  },
+  textHeader: {
+    color: theme.colors.textPrimary,
+    fontFamily: "dm-sans-semibold",
+    fontSize: 20,
+    paddingLeft: 8,
+    paddingBottom: 24,
   },
 });
