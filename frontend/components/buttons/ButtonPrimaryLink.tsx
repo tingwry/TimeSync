@@ -6,23 +6,25 @@ import { StyleSheet, Text, Dimensions, View, Pressable } from "react-native";
 
 export interface ButtonPrimaryProps {
   text: string;
-  action: any;
+  linkName: any;
 }
 
-export default function ButtonPrimary(props: ButtonPrimaryProps) {
+export default function ButtonPrimaryLink(props: ButtonPrimaryProps) {
   const [fontsLoaded] = useFonts({
     "dm-sans-extrabold": require("@/assets/fonts/DMSans-ExtraBold.ttf"),
   });
 
   return (
-    <Pressable style={[styles.container, styles.shadowProp]}>
-      <LinearGradient
-        colors={["#CF7B04", "#EDA33C"]}
-        style={styles.buttonStyle}
-      >
-        <Text style={styles.buttonText}>{props.text}</Text>
-      </LinearGradient>
-    </Pressable>
+    <Link push href={props.linkName} asChild style={[styles.container, styles.shadowProp]}>
+      <Pressable>
+        <LinearGradient
+          colors={["#CF7B04", "#EDA33C"]}
+          style={styles.buttonStyle}
+        >
+          <Text style={styles.buttonText}>{props.text}</Text>
+        </LinearGradient>
+      </Pressable>
+    </Link>
   );
 }
 
@@ -30,8 +32,8 @@ const screenWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   container: {
-    // position: "absolute",
-    // bottom: 44,
+    position: "absolute",
+    bottom: 44,
     width: "100%",
     alignItems: "center",
   },

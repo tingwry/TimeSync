@@ -11,7 +11,7 @@ import { Portal } from "@gorhom/portal";
 import CardAddressSmall from "./CardAddressSmall";
 import ChooseLocation from "./ChooseLocationSheet";
 
-export default function CardAddress() {
+export default function StartPoint() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["38%"], []);
 
@@ -24,20 +24,16 @@ export default function CardAddress() {
   }, []);
 
   return (
-    <GestureHandlerRootView>
-      <Pressable style={cardStyles.cardStyle} onPress={handlePresentModalPress}>
-        <View style={cardStyles.label}>
+    <GestureHandlerRootView style={menuStyle.menu}>
+      <Text style={styles.textHeader}>Start Point</Text>
+      <Pressable style={menuStyle.startPoint} onPress={handlePresentModalPress}>
+        <View style={[styles.closeButton, { marginTop: 0, marginRight: 4 }]}>
           <Image
-            source={require("@/assets/icons/school.png")}
+            source={require("@/assets/icons/home.png")}
             style={{ width: 20, height: 20 }}
           />
         </View>
-        <View style={cardStyles.addressDetail}>
-          <Text style={cardStyles.addressName}>School</Text>
-          <Text style={cardStyles.addressLocation}>
-            Faculty of Engineering, Chulalongkorn University
-          </Text>
-        </View>
+        <Text style={[styles.textDisplay, { fontSize: 16 }]}>Home</Text>
         <Image
           source={require("@/assets/icons/chevron-right.png")}
           style={{ width: 24, height: 24 }}
@@ -66,17 +62,17 @@ export default function CardAddress() {
                 />
               </View>
             </Pressable>
-            <View style={cardStyles.header}>
+            <View style={menuStyle.header}>
               <View style={[styles.sheetItem, { marginLeft: 32 }]}>
                 <Image
                   source={require("@/assets/icons/location.png")}
                   style={{ width: 24, height: 24 }}
                 />
-                <Text style={styles.textHeader}>Destination Location</Text>
+                <Text style={styles.textHeader}>Starting Point</Text>
               </View>
               <ScrollView
                 horizontal={true}
-                style={cardStyles.horizontalCardScroll}
+                style={menuStyle.horizontalCardScroll}
                 showsHorizontalScrollIndicator={false}
                 contentInset={{ right: 64, left: 0, bottom: 0, top: 0 }}
               >
@@ -96,14 +92,16 @@ export default function CardAddress() {
                   labelIcon={require("@/assets/icons/school.png")}
                 />
               </ScrollView>
+
               <ChooseLocation />
+
               <View style={[styles.divLine, { marginHorizontal: 32 }]} />
-              <View style={cardStyles.caution}>
+              <View style={menuStyle.caution}>
                 <Image
                   source={require("@/assets/icons/alert-circle.png")}
                   style={{ width: 16, height: 16 }}
                 />
-                <Text style={cardStyles.cautionMessage}>
+                <Text style={menuStyle.cautionMessage}>
                   Choosing other locations may affect the ML Calculations.
                 </Text>
               </View>
@@ -115,7 +113,20 @@ export default function CardAddress() {
   );
 }
 
-const cardStyles = StyleSheet.create({
+const menuStyle = StyleSheet.create({
+  startPoint: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    right: 0,
+  },
+  menu: {
+    alignItems: "center",
+    paddingTop: 16,
+    // paddingBottom: 8,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   cardStyle: {
     width: "100%",
     height: 96,

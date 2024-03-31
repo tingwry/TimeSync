@@ -3,7 +3,7 @@ import React, { Children } from "react";
 import { Tabs } from "expo-router";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
-import ButtonNewSchedule from "@/components/ButtonNewSchedule";
+import ButtonNewSchedule from "@/components/buttons/ButtonNewSchedule";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import NewSchedule from "./NewSchedule";
 import { GestureHandlerRootView } from "react-native-gesture-handler";

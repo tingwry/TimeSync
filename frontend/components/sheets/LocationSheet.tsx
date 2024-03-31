@@ -1,4 +1,4 @@
-import { View, Text, Image, Pressable } from "react-native";
+import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import { useCallback, useMemo, useRef } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
@@ -6,10 +6,12 @@ import { Portal } from "@gorhom/portal";
 import { styles } from "./SheetStyles";
 import CardAddress from "../address/CardAddress";
 import { BottomSheetProvider } from "@gorhom/bottom-sheet/lib/typescript/contexts";
+import StartPoint from "../address/StartPoint";
+import { theme } from "@/app/theme";
 
 export default function LocationSheet() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["38%"], []);
+  const snapPoints = useMemo(() => ["40%"], []);
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -18,6 +20,8 @@ export default function LocationSheet() {
   const handleCloseModalPress = useCallback(() => {
     bottomSheetModalRef.current?.close();
   }, []);
+
+ 
 
   return (
     <GestureHandlerRootView style={styles.sheetStyle}>
@@ -69,10 +73,12 @@ export default function LocationSheet() {
                 <Text style={styles.textHeader}>Location</Text>
               </View>
               <CardAddress />
-              <View style={{paddingTop: 24, paddingBottom: 8}}>
-                <Text style={styles.textHeader}>Start Point</Text>
-              </View>
+              <StartPoint />
               <View style={styles.divLine} />
+              <View style={menuStyle.caution}>
+                <Image source={require("@/assets/icons/alert-circle.png")} style={{ width: 16, height: 16 }} />
+                <Text style={menuStyle.cautionMessage}>Choosing other locations may affect the ML Calculations.</Text>
+              </View>
             </View>
           </BottomSheetView>
         </BottomSheetModal>
@@ -80,3 +86,16 @@ export default function LocationSheet() {
     </GestureHandlerRootView>
   );
 }
+
+const menuStyle = StyleSheet.create({
+  caution: {
+    paddingVertical: 8,
+    flexDirection: "row",
+    gap: 12,
+  },
+  cautionMessage: {
+    fontFamily: "dm-sans-regular",
+    color: theme.colors.textCaption,
+
+  }
+});
