@@ -2,6 +2,7 @@ import { View, Text, Button, TextInput } from 'react-native'
 import React, { useState } from 'react'
 import { styles } from './styles';
 import { useAuth } from '../context/authContext';
+import { Link, router } from 'expo-router';
 
 export default function SignInScreen() {
     const [loading, isLoading] = useState(false);
@@ -14,6 +15,7 @@ export default function SignInScreen() {
             console.log(`Sign In Screen: email = ${email}, password = ${password}`)
             isLoading(true);
             await auth.signIn(email, password);
+            router.replace('/Home');
         } else {
             console.log('Email or Password is empty')
         }
@@ -48,7 +50,7 @@ export default function SignInScreen() {
                 />
             </View>
             <Text>Incorrect password will be shown here</Text>
-            <Text>Sign up for new account</Text>
+            <Text><Link href="/signUpScreen">Sign up for new account</Link></Text>
             <Text>Or</Text>
             <Button
                 title='Sign in with Google'

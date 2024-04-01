@@ -2,31 +2,32 @@ import { View, Text, StyleSheet, Button } from "react-native";
 import React from "react";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
-// import { useAuth } from "../context/authContext";
+import { useAuth } from "../context/authContext";
 
 export default function Home() {
+  const auth = useAuth();
+  const signOut = () => {
+      console.log('Sign Out')
+      auth.signOut();
+  }
+
   const [fontsLoaded] = useFonts({
     "dm-sans-medium": require("../../assets/fonts/DMSans-Medium.ttf"),
     "dm-sans-extrabold": require("../../assets/fonts/DMSans-ExtraBold.ttf"),
     "dm-sans-semibold": require("../../assets/fonts/DMSans-SemiBold.ttf"),
     "dm-sans-regular": require("../../assets/fonts/DMSans-Regular.ttf"),
   });
+
   if (!fontsLoaded) {
     return <Text>Loading...</Text>;
   }
-
-  // const auth = useAuth();
-  // const signOut = () => {
-  //     console.log('Sign Out')
-  //     auth.signOut();
-  // }
-
+  
   return (
     <View style={styles.background}>
       <View style={styles.container}>
         <Text style={styles.text_title}>Hello, User</Text>
         <Text style={styles.text_caption}>Let's see what is up next!</Text>
-        {/* <Button title="Sign Out" onPress={signOut} /> */}
+        <Button title="Sign Out" onPress={signOut} />
       </View>
     </View>
   );
