@@ -1,4 +1,5 @@
-import { View, Text, Image, Pressable, ScrollView } from "react-native";
+import { View, Text, Image, Pressable, ScrollView, Button } from "react-native";
+import React, { useState } from "react";
 import {
   GestureHandlerRootView,
   TextInput,
@@ -15,12 +16,50 @@ import ButtonPrimary from "@/components/buttons/ButtonPrimary";
 import TransportationSheet from "@/components/sheets/TransportationSheet";
 import PreparationSheet from "@/components/sheets/PreparationSheet";
 import AlarmNotiSheet from "@/components/sheets/AlarmNotiSheet";
+import axios from "axios";
 
 export default function NewSchedule() {
   const navigation = useNavigation();
 
-  const handlePress = () => {
-    navigation.goBack();
+  const [eventName, setEventName] = useState("");
+  const [date, setDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [transportationMode, setTransportationMode] = useState("");
+  const [extraPrepTime, setExtraPrepTime] = useState(0);
+  const [note, setNote] = useState("");
+
+  const handleClickPress = async () => {
+    // console.warn(eventName, note);
+
+    const url = "http://127.0.0.1:8000/app/schedule/create/"
+    let response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        event_name: eventName,
+        date: "2022-12-12",
+        start_time: "09:00:00",
+        end_time: "10:00:00",
+        transportation_mode: "walk",
+        extra_prep_time: 0,
+        note: note,
+        user_id: 1,
+        sched_start: 2,
+        sched_destination: 2,
+        wake_up_aids: 1
+      })
+    });
+    let result = await response.json();
+
+    if (result) {
+      console.warn("Success");
+      // console.log(result);
+    }
+
+    // navigation.goBack();
   };
 
   return (
@@ -43,6 +82,8 @@ export default function NewSchedule() {
                   placeholder="Title"
                   placeholderTextColor={theme.colors.textPlaceholder}
                   keyboardType="default"
+                  value={eventName}
+                  onChangeText={setEventName}
                 />
                 <View style={styles.sheetItem}>
                   <Image
@@ -137,13 +178,20 @@ export default function NewSchedule() {
                   placeholder="Description"
                   placeholderTextColor={theme.colors.textPlaceholder}
                   keyboardType="default"
+                  value={note}
+                  onChangeText={setNote}
                 />
               </View>
             </ScrollView>
           </View>
           <View style={styles.footer}>
-            <ButtonPrimary text="Add Schedule" />
-            <Pressable onPress={handlePress}>
+            <Button 
+              title="Add Schedule"
+              onPress={handleClickPress}  
+              color="white"
+            />
+            {/* <ButtonPrimary text="Add Schedule" onPress={handleClickPress}/> */}
+            <Pressable>
               <Text style={styles.cancelButton}>Cancel</Text>
             </Pressable>
           </View>
