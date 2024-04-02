@@ -56,6 +56,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
     };
 
+    // const signUp = async (email: string, _password: string) => {
+    //     const _authData = await authService.signUp(email, _password);
+    // }
+
     const signOut = async () => {
         // Remove data from context, so the App can be notified
         // and send the user to the AuthStack

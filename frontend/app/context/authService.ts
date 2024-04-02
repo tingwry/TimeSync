@@ -28,6 +28,23 @@ const signIn = async (email: string, _password: string): Promise<AuthData> => {
     }
 }
 
+const signUp = async (email: string, password: string): Promise<AuthData> => {
+    const response = await fetch('http://127.0.0.1:8000/app/auth/register/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ "email": email, "password": password }),
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        return data.authData;
+    } else {
+        throw new Error("Invalid username or password");
+    }
+}
+
 export const authService = {
-    signIn,
+    signIn, signUp,
 };

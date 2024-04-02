@@ -5,10 +5,9 @@ import { theme } from "../theme";
 import { useAuth } from "../context/authContext";
 
 export default () => {
-  const authData = useAuth();
-  console.log("authData", authData);
+  const auth= useAuth();
 
-  if (!authData.authData) {
+  if (!auth.authData) {
     return <Redirect href="/signInScreen" />;
   }
 
