@@ -18,7 +18,7 @@ LogBox.ignoreAllLogs();
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
-    shouldPlaySound: false,
+    shouldPlaySound: true,
     shouldSetBadge: false,
   }),
 });
@@ -32,6 +32,16 @@ export default function AlarmClock() {
   const [minutee, setMinute] = useState("");
   const [ampm, setAmpm] = useState("");
   const [notificationId, setNotificationId] = useState("none");
+
+  useEffect(() => {
+    const requestPermission = async () => {
+      const { status } = await Notifications.getPermissionsAsync();
+      if (status !== "granted") {
+        await Notifications.requestPermissionsAsync();
+      }
+    };
+    requestPermission();
+  }, []);
 
   useEffect(() => {
     getData();
@@ -59,9 +69,10 @@ export default function AlarmClock() {
       }
       const identifier = await Notifications.scheduleNotificationAsync({
         content: {
-          title: "Alarm",
-          body: "It is time to wake up!",
+          title: "TimeSync",
+          body: "Alarm! It's time to wake up.",
           data: { data: "Your morning alarm data" },
+          sound: "alarm-sound.mp4",
         },
         trigger: {
           hour: newHour,

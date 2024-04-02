@@ -4,7 +4,8 @@ import { theme } from "../theme";
 import { useFonts } from "expo-font";
 import CardNewSchedule from "@/components/CardNewSchedule";
 import AlarmClock from "../src/AlarmClock";
-import CountdownTimer from "../src/CountDownTimer";
+// import CardCountDownTimer from "@/components/CardCountDownTimer";
+// import PopUpCountdownTimer from "../src/PopUpCountDownTimer";
 
 export default function Home() {
   const [fontsLoaded] = useFonts({
@@ -12,7 +13,7 @@ export default function Home() {
     "dm-sans-extrabold": require("../../assets/fonts/DMSans-ExtraBold.ttf"),
     "dm-sans-semibold": require("../../assets/fonts/DMSans-SemiBold.ttf"),
     "dm-sans-regular": require("../../assets/fonts/DMSans-Regular.ttf"),
-    "dm-sans-bold":require("../../assets/fonts/DMSans-Bold.ttf")
+    "dm-sans-bold": require("../../assets/fonts/DMSans-Bold.ttf"),
   });
   if (!fontsLoaded) {
     return <Text>Loading...</Text>;
@@ -27,11 +28,12 @@ export default function Home() {
       </View>
       <View style={styles.container}>
         <Text style={styles.textHeader}>Upcoming Schedule</Text>
+        {/* <CardCountDownTimer /> */}
         <CardNewSchedule />
       </View>
 
-      {/* <AlarmClock /> */}
-      <CountdownTimer />
+      <AlarmClock />
+      {/* <PopUpCountdownTimer /> */}
     </View>
   );
 }
