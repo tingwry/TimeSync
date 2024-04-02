@@ -14,49 +14,60 @@ interface ScheduleDetailProps {
 const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({ event_name, date, start_time, end_time, transportation_mode }) => {
     return (
         <View>
-            <View style={styles.scheduleTab}>
+            <View style={styles.background}>
+              <View>
                 <Text style={styles.textCaption}>Alarm for</Text>
                 <Text style={styles.textTitle}>Tomorrow</Text>
+              </View>
+
+              <View>
                 <Text style={styles.textTime}>07:00</Text>
+              </View>
             </View>
 
-            <View style={styles.scheduleTab}>
+            <View style={styles.background}>
+              <View>
                 <Text style={styles.textCaption}>Tomorrow's schedule</Text>
                 <Text style={styles.textTitle}>{event_name}</Text>
                 <Text style={styles.textCaption}>{start_time} - {end_time}</Text>
-                {/* <Text style={styles.textCaption}>Date: {date}</Text> */}
+              <View>
                 <Image
                   source={require("@/assets/icons/icon=location.png")}
-                  style={{width: 16, height: 16}}
+                  style={{width: 20, height: 20, marginTop: 10, marginBottom: 10}}
                 />
+              </View>
                 <Image
                   source={require("@/assets/icons/icon=clock.png")}
-                  style={{width: 16, height: 16}}
-                />
-                <Text style={styles.textCaption}>Transportation Mode: {transportation_mode}</Text>
+                  style={{width: 20, height: 20, marginBottom: 10, marginTop: 10}}
+                /></View>
             </View>
 
-            <View style={styles.scheduleTab}>
+            <View style={styles.background}>
+              <View>
                 <Text style={styles.textTitle}> View All Schedules</Text>
+              </View>
+              <View>
                 <Image
                   source={require("@/assets/icons/right-sign.png")}
                   style={{width: 32, height: 32}}
                 />
+              </View>
             </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    scheduleTab: {
+    background: {
         backgroundColor: theme.colors.blueSecondary,
         borderRadius: 24,
         padding: 10,
         marginTop: 5,
         marginBottom: 25,
         paddingLeft: 25, 
-        // justifyContent: "center",
-        // alignItems: "center",
+        flexDirection: 'row', // This ensures items are placed in a row
+        justifyContent: 'space-between', // This evenly distributes items along the row
+        paddingHorizontal: 15, // Add some horizontal padding for spacing
       },
     textCaption: {
       fontFamily: "dm-sans-regular",
