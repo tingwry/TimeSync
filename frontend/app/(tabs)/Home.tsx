@@ -10,7 +10,10 @@ interface ScheduleItem {
   event_name: string;
   date: string;
   start_time: string;
+  end_time: string;
   transportation_mode: string;
+  extra_prep_time: Int16Array;
+  note: string;
   // Add other properties as needed
 }
 
@@ -51,19 +54,27 @@ export default function Home() {
         <Text style={styles.textTitle}>Hello, User</Text>
         <Text style={styles.textCaption}>Let's see what is up next!</Text>
       </View>
-      <View style={styles.container}>
-        <Text style={styles.textHeader}>Upcoming Schedule</Text>
-
-        {schedule.map((scheduleItem) => (
-        <CardScheduleDetail
-          key={scheduleItem.event_id}
-          event_name={scheduleItem.event_name}
-          date={scheduleItem.date}
-          start_time={scheduleItem.start_time}
-          transportation_mode={scheduleItem.transportation_mode}
-        />
-
-      ))}
+     
+      <View>
+        { scheduleNumber === 0 ? (
+          <CardNewSchedule />
+        ) : (
+          <View style={styles.container}>
+            <Text style={styles.textHeader}>Upcoming Schedule</Text>
+              {schedule.map((scheduleItem) => (
+                <CardScheduleDetail
+                  key={scheduleItem.event_id}
+                  event_name={scheduleItem.event_name}
+                  date={scheduleItem.date}
+                  start_time={scheduleItem.start_time}
+                  end_time={scheduleItem.end_time}
+                  transportation_mode={scheduleItem.transportation_mode}
+                  extra_prep_time={scheduleItem.extra_prep_time}
+                  note={scheduleItem.note}
+                />
+              ))}
+          </View>
+        )}
       </View>
     </View>
   );
