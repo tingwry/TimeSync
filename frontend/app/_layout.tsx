@@ -1,9 +1,10 @@
-import { Stack } from "expo-router"
+import { Slot } from "expo-router"
+import { AuthProvider } from "./context/authContext"
 
 export default function StackLayout() {
     return (
-        <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false}}/>
-        </Stack>
+        <AuthProvider>
+            <Slot />
+        </AuthProvider>
     )
 }

@@ -1,9 +1,17 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import { theme } from "../theme";
+import { useAuth } from "../context/authContext";
 
 export default () => {
+  const authData = useAuth();
+  console.log("authData", authData);
+
+  if (!authData.authData) {
+    return <Redirect href="/signInScreen" />;
+  }
+
   return (
     <Tabs
       screenOptions={{
