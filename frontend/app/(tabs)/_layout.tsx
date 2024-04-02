@@ -3,9 +3,13 @@ import React, { Children } from "react";
 import { Tabs } from "expo-router";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
-import ButtonNewSchedule from "@/components/ButtonNewSchedule";
+import ButtonNewSchedule from "@/components/buttons/ButtonNewSchedule";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import NewSchedule from "./NewSchedule";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { PortalProvider } from "@gorhom/portal";
 
-export default () => {
+export default function RootLayoutNav() {
   const [fontsLoaded] = useFonts({
     "dm-sans-medium": require("@/assets/fonts/DMSans-Medium.ttf"),
     "dm-sans-extrabold": require("@/assets/fonts/DMSans-ExtraBold.ttf"),
@@ -70,6 +74,12 @@ export default () => {
             );
           },
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("(newschedule)");
+          },
+        })}
       />
       <Tabs.Screen
         name="list"
@@ -104,12 +114,13 @@ export default () => {
       />
     </Tabs>
   );
-};
+}
 
 const screenOptions = {
   tabBarStyle: {
     backgroundColor: theme.colors.backgroundNavbar,
     height: 100,
+    borderTopColor: theme.colors.blueSecondary,
   },
   tabBarShowLabel: false,
   headerShown: false,

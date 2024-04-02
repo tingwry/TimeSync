@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet, Image, StatusBar } from "react-native";
+import { View, Text, StyleSheet, Image, StatusBar, Button } from "react-native";
 import React, {useState, useEffect} from "react";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
 import CardNewSchedule from "@/components/CardNewSchedule";
 import CardScheduleDetail from "@/components/CardScheduleDetail";
+import { PortalProvider } from "@gorhom/portal";
 
 interface ScheduleItem {
   event_id: number;
@@ -19,11 +20,11 @@ interface ScheduleItem {
 
 export default function Home() {
   const [fontsLoaded] = useFonts({
-    "dm-sans-medium": require("../../assets/fonts/DMSans-Medium.ttf"),
-    "dm-sans-extrabold": require("../../assets/fonts/DMSans-ExtraBold.ttf"),
-    "dm-sans-semibold": require("../../assets/fonts/DMSans-SemiBold.ttf"),
-    "dm-sans-regular": require("../../assets/fonts/DMSans-Regular.ttf"),
-    "dm-sans-bold":require("../../assets/fonts/DMSans-Bold.ttf")
+    "dm-sans-medium": require("@/assets/fonts/DMSans-Medium.ttf"),
+    "dm-sans-extrabold": require("@/assets/fonts/DMSans-ExtraBold.ttf"),
+    "dm-sans-semibold": require("@/assets/fonts/DMSans-SemiBold.ttf"),
+    "dm-sans-regular": require("@/assets/fonts/DMSans-Regular.ttf"),
+    "dm-sans-bold": require("@/assets/fonts/DMSans-Bold.ttf"),
   });
   if (!fontsLoaded) {
     return <Text>Loading...</Text>;
