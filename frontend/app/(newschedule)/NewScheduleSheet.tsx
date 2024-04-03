@@ -16,7 +16,6 @@ import ButtonPrimary from "@/components/buttons/ButtonPrimary";
 import TransportationSheet from "@/components/sheets/TransportationSheet";
 import PreparationSheet from "@/components/sheets/PreparationSheet";
 import AlarmNotiSheet from "@/components/sheets/AlarmNotiSheet";
-import axios from "axios";
 
 export default function NewSchedule() {
   const navigation = useNavigation();

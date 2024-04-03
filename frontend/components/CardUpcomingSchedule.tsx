@@ -17,7 +17,7 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({ event_name, date, s
 
     const handlePress = () => {
       console.warn("View all schedules");
-      navigation.navigate('ViewAllSchedule');
+      navigation.navigate('(viewschedules)');
     }
     return (
         <View>
