@@ -28,10 +28,13 @@ class UserAuthManager(BaseUserManager):
 #         return self.username
     
 class UserAuth(AbstractUser):
-    username = None
-    user_id = models.AutoField(primary_key=True)
+    uid = models.AutoField(primary_key=True)
     email = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=100)
+
+    first_name = None
+    last_name = None
+    username = None
 
     # user_id = models.OneToOneField(
     #     UserInfo, on_delete=models.CASCADE, primary_key=True)

@@ -10,11 +10,13 @@ export default function SignInScreen() {
     const [password, setPassword] = useState<string>('');
     const auth = useAuth();
 
-    const submit = async () => {
+    const login = async () => {
+        console.log('Sign In Screen: login')
         if (email !== '' || password !== '') {
             console.log(`Sign In Screen: email = ${email}, password = ${password}`)
             isLoading(true);
             await auth.signIn(email, password);
+            console.log('Sign In Screen: router.replace(/Home)')
             router.replace('/Home');
         } else {
             console.log('Email or Password is empty')
@@ -45,7 +47,7 @@ export default function SignInScreen() {
             <View style={styles.buttonCustom}>
                 <Button
                     title='Sign In'
-                    onPress={submit}  
+                    onPress={login}  
                     color='white'
                 />
             </View>
