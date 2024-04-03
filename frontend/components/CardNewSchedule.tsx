@@ -1,6 +1,6 @@
 import { theme } from "@/app/theme";
 import { useNavigation } from "expo-router";
-import { StyleSheet, Text, View, Image, Pressable } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 
 export default function CardNewSchedule() {
   const navigation = useNavigation();
@@ -10,7 +10,11 @@ export default function CardNewSchedule() {
   };
 
   return (
-    <Pressable onPress={handlePress} style={styles.addScheduleTab}>
+    <TouchableOpacity
+      onPress={handlePress}
+      style={styles.addScheduleTab}
+      activeOpacity={0.8}
+    >
       <Text style={styles.textCaption}>No Upcoming Schedule</Text>
       <Text style={styles.textTitle}>Add Schedule</Text>
       <View style={styles.addButton}>
@@ -19,7 +23,7 @@ export default function CardNewSchedule() {
           style={{ width: 32, height: 32 }}
         />
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 }
 

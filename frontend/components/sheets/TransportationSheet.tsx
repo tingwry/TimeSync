@@ -1,4 +1,4 @@
-import { View, Text, Image, Pressable } from "react-native";
+import { View, Text, Image, Pressable, TouchableOpacity } from "react-native";
 import { useCallback, useMemo, useRef } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
@@ -19,7 +19,7 @@ export default function TransportationSheet() {
 
   return (
     <GestureHandlerRootView style={styles.sheetStyle}>
-      <Pressable
+      <TouchableOpacity
         onPress={handlePresentModalPress}
         style={[styles.pressableMenu, { marginTop: 4 }]}
       >
@@ -34,7 +34,7 @@ export default function TransportationSheet() {
           source={require("@/assets/icons/chevron-right.png")}
           style={styles.chevronStyle}
         />
-      </Pressable>
+      </TouchableOpacity>
       <View style={styles.divLine} />
       <Portal>
         <BottomSheetModal

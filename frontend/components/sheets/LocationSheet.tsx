@@ -1,5 +1,5 @@
-import { View, Text, Image, Pressable, StyleSheet } from "react-native";
-import { useCallback, useMemo, useRef } from "react";
+import { View, Text, Image, Pressable, StyleSheet, TouchableOpacity } from "react-native";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { Portal } from "@gorhom/portal";
@@ -21,11 +21,9 @@ export default function LocationSheet() {
     bottomSheetModalRef.current?.close();
   }, []);
 
- 
-
   return (
     <GestureHandlerRootView style={styles.sheetStyle}>
-      <Pressable
+      <TouchableOpacity
         onPress={handlePresentModalPress}
         style={[styles.pressableMenu, { marginTop: 4 }]}
       >
@@ -40,7 +38,7 @@ export default function LocationSheet() {
           source={require("@/assets/icons/chevron-right.png")}
           style={styles.chevronStyle}
         />
-      </Pressable>
+      </TouchableOpacity>
       <View style={styles.divLine} />
       <Portal>
         <BottomSheetModal
@@ -76,8 +74,13 @@ export default function LocationSheet() {
               <StartPoint />
               <View style={styles.divLine} />
               <View style={menuStyle.caution}>
-                <Image source={require("@/assets/icons/alert-circle.png")} style={{ width: 16, height: 16 }} />
-                <Text style={menuStyle.cautionMessage}>Choosing other locations may affect the ML Calculations.</Text>
+                <Image
+                  source={require("@/assets/icons/alert-circle.png")}
+                  style={{ width: 16, height: 16 }}
+                />
+                <Text style={menuStyle.cautionMessage}>
+                  Choosing other locations may affect the ML Calculations.
+                </Text>
               </View>
             </View>
           </BottomSheetView>
@@ -96,6 +99,5 @@ const menuStyle = StyleSheet.create({
   cautionMessage: {
     fontFamily: "dm-sans-regular",
     color: theme.colors.textCaption,
-
-  }
+  },
 });

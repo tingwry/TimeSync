@@ -1,4 +1,12 @@
-import { View, Text, Image, StyleSheet, Pressable, Button } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Pressable,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 import { theme } from "@/app/theme";
 import {
   GestureHandlerRootView,
@@ -49,7 +57,7 @@ export default function ChooseLocation() {
   const handleSearchCollapse = () => {
     handleCollapseSearchPress();
     setFocus(false);
-  }
+  };
 
   return (
     <GestureHandlerRootView>
@@ -78,17 +86,18 @@ export default function ChooseLocation() {
         >
           <BottomSheetView>
             <View style={[styles.handleModalIndicatorStyle, { flexGrow: 1 }]} />
-            <Pressable
+
+            <TouchableOpacity
+              style={[styles.modalCloseButton, {marginRight: 16}]}
               onPress={handleCloseSheet}
-              style={{ position: "absolute", right: 16, marginTop: 4 }}
+              hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }} // Adjust hitSlop as needed
             >
-              <View style={styles.modalCloseButton}>
-                <Image
-                  source={require("@/assets/icons/close.png")}
-                  style={{ width: 20, height: 20 }}
-                />
-              </View>
-            </Pressable>
+              <Image
+                source={require("@/assets/icons/close.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            </TouchableOpacity>
+            
             <View style={menuStyle.header}>
               <View style={[styles.sheetItem, { marginLeft: 32 }]}>
                 <Image

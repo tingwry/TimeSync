@@ -37,7 +37,9 @@ export const styles = StyleSheet.create({
     borderRadius: 16,
     justifyContent: "center",
     alignItems: "center",
-    // position: "absolute",
+    position: "absolute",
+    right: 0,
+    marginRight: 0,
   },
   backdrop: {
     flex: 1,
@@ -62,23 +64,23 @@ export const styles = StyleSheet.create({
     borderTopRightRadius: 24,
     marginTop: 0,
   },
-      modalBackgroundStyle: {
-        backgroundColor: "#1B2A47",
-        borderTopLeftRadius: 24,
-        borderTopRightRadius: 24,
-    },
-    modalLocationBackgroundStyle: {
-      backgroundColor: theme.colors.bluePrimary,
-      borderTopLeftRadius: 24,
-      borderTopRightRadius: 24,
-    },
-      sheetStyle: {
-        flex: 1,
-        backgroundColor: theme.colors.bluePrimary,
-        borderTopLeftRadius: 24,
-        borderTopRightRadius: 24,
-      },
-      sheetView: {
+  modalBackgroundStyle: {
+    backgroundColor: "#1B2A47",
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+  },
+  modalLocationBackgroundStyle: {
+    backgroundColor: theme.colors.bluePrimary,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+  },
+  sheetStyle: {
+    flex: 1,
+    backgroundColor: theme.colors.bluePrimary,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+  },
+  sheetView: {
         marginTop: 32,
         paddingLeft: 32,
         paddingRight: 32,
@@ -118,7 +120,7 @@ export const styles = StyleSheet.create({
         alignItems: "center",
         height: 40,
         paddingLeft: 36,
-      },
+  },
       chevronStyle: {
         width: 24,
         height: 24,
@@ -133,6 +135,14 @@ export const styles = StyleSheet.create({
   },
   footer: {
     backgroundColor: theme.colors.bluePrimary,
+    bottom: 0,
+    height: 124,
+    flexDirection: "column",
+    paddingTop: 8,
+    alignItems: "center",
+  },
+  modalFooter: {
+    backgroundColor: "#1B2A47",
     bottom: 0,
     height: 124,
     flexDirection: "column",
