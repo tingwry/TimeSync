@@ -4,8 +4,15 @@ import { theme } from "../theme";
 import { useFonts } from "expo-font";
 import CardNewSchedule from "@/components/CardNewSchedule";
 import { PortalProvider } from "@gorhom/portal";
+import { useAuth } from "../context/authContext";
 
 export default function Home() {
+  const auth = useAuth();
+  const signOut = () => {
+      console.log('Sign Out')
+      auth.signOut();
+  }
+
   const [fontsLoaded] = useFonts({
     "dm-sans-medium": require("@/assets/fonts/DMSans-Medium.ttf"),
     "dm-sans-extrabold": require("@/assets/fonts/DMSans-ExtraBold.ttf"),
@@ -13,10 +20,11 @@ export default function Home() {
     "dm-sans-regular": require("@/assets/fonts/DMSans-Regular.ttf"),
     "dm-sans-bold": require("@/assets/fonts/DMSans-Bold.ttf"),
   });
+
   if (!fontsLoaded) {
     return <Text>Loading...</Text>;
   }
-
+  
   return (
     <View style={styles.background}>
       <StatusBar barStyle="light-content" />
@@ -27,6 +35,7 @@ export default function Home() {
       <View style={styles.container}>
         <Text style={styles.textHeader}>Upcoming Schedule</Text>
         <CardNewSchedule />
+        <Button title="Sign Out" onPress={signOut} />
       </View>
     </View>
   );

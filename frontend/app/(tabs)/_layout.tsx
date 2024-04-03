@@ -1,6 +1,9 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import React, { Children } from "react";
 import { Tabs } from "expo-router";
+import { View, Text, StyleSheet } from "react-native";
+import React from "react";
+import { Redirect, Tabs } from "expo-router";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
 import ButtonNewSchedule from "@/components/buttons/ButtonNewSchedule";
@@ -8,8 +11,10 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import NewSchedule from "./NewSchedule";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PortalProvider } from "@gorhom/portal";
+import { useAuth } from "../context/authContext";
 
 export default function RootLayoutNav() {
+  const auth= useAuth();
   const [fontsLoaded] = useFonts({
     "dm-sans-medium": require("@/assets/fonts/DMSans-Medium.ttf"),
     "dm-sans-extrabold": require("@/assets/fonts/DMSans-ExtraBold.ttf"),
@@ -18,9 +23,14 @@ export default function RootLayoutNav() {
     "dm-sans-bold": require("@/assets/fonts/DMSans-Bold.ttf"),
   });
 
+  if (!auth.authData) {
+    return <Redirect href="/signInScreen" />;
+  }
+  
   if (!fontsLoaded) {
     return <Text>Loading...</Text>;
   }
+  
 
   return (
     <Tabs screenOptions={screenOptions}>
