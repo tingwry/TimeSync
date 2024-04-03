@@ -1,9 +1,10 @@
-import { View, Text, Image, Pressable } from "react-native";
+import { View, Text, Image, Pressable, TouchableOpacity } from "react-native";
 import { useCallback, useMemo, useRef } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { Portal } from "@gorhom/portal";
 import { styles } from "./SheetStyles";
+import ButtonPrimary from "../buttons/ButtonPrimary";
 
 export interface TimeSheetProps {
   time: any;
@@ -24,9 +25,9 @@ export default function TimeSheet(props: TimeSheetProps) {
 
   return (
     <GestureHandlerRootView style={styles.sheetStyle}>
-      <Pressable onPress={handlePresentModalPress} style={styles.pressableMenu}>
+      <TouchableOpacity onPress={handlePresentModalPress} style={styles.pressableMenu}>
         <Text style={[styles.textDisplay, { fontSize: 24 }]}>{props.time}</Text>
-      </Pressable>
+      </TouchableOpacity>
 
       <Portal>
         <BottomSheetModal
@@ -58,6 +59,9 @@ export default function TimeSheet(props: TimeSheetProps) {
                 />
                 <Text style={styles.textHeader}>{props.title}</Text>
               </View>
+              {/* <View style={styles.modalFooter}>
+                <ButtonPrimary text="Select Time" />
+              </View> */}
             </View>
           </BottomSheetView>
         </BottomSheetModal>

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable, TouchableOpacity } from "react-native";
 import { useCallback, useMemo, useRef } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
@@ -19,7 +19,7 @@ export default function AlarmNotiSheet() {
 
   return (
     <GestureHandlerRootView style={styles.sheetStyle}>
-      <Pressable onPress={handlePresentModalPress} style={styles.pressableMenu}>
+      <TouchableOpacity onPress={handlePresentModalPress} style={styles.pressableMenu}>
         <Text style={[styles.textDisplay, { fontSize: 16 }]}>
           Alarm & Notifications
         </Text>
@@ -27,7 +27,7 @@ export default function AlarmNotiSheet() {
           source={require("@/assets/icons/chevron-right.png")}
           style={styles.chevronStyle}
         />
-      </Pressable>
+      </TouchableOpacity>
       <Portal>
         <BottomSheetModal
           ref={bottomSheetModalRef}
