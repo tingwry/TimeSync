@@ -13,6 +13,16 @@ class ScheduleViewSingle(generics.RetrieveAPIView):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
 
+# view most recent schedule
+class ScheduleViewRecent(generics.RetrieveAPIView):
+    serializer_class = ScheduleSerializer
+
+    def get_object(self):
+        # Retrieve the most recent schedule based on the date
+        most_recent_schedule = Schedule.objects.order_by('-date').first()
+        
+        return most_recent_schedule
+
 # create schedule
 class ScheduleCreate(generics.CreateAPIView):
     queryset = Schedule.objects.all()

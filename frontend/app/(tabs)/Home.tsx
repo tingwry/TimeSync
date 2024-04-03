@@ -30,18 +30,24 @@ export default function Home() {
     return <Text>Loading...</Text>;
   }
 
-  const [schedule, setSchedule] = useState<ScheduleItem[]>([])
+  const [schedule, setSchedule] = useState<ScheduleItem| null>(null)
+  const [scheduleNumber, setScheduleNumber] = useState(0)
 
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/app/schedule/view/");
+        const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/");
+        if (!response.ok) {
+          throw new Error("Failed to fetch schedule");
+        }
         const data = await response.json();
+        setScheduleNumber(data.length);
+        setSchedule(data);
       } catch (error) {
         console.error("Error fetching schedule:", error);
       }
     };
-
+  
     fetchSchedule();
   }, []);
 
@@ -54,22 +60,24 @@ export default function Home() {
       </View>
      
       <View>
-        { schedule.length === 0 ? (
+        { scheduleNumber === 0 ? (
           <CardNoSchedule />
         ) : (
           <View style={styles.container}>
             <Text style={styles.textHeader}>Upcoming Schedule</Text>
-            <CardUpcomingSchedule
-                  event_name={schedule[0].event_name}
-                  date={schedule[0].date}
-                  start_time={schedule[0].start_time}
-                  end_time={schedule[0].end_time}
-                  transportation_mode={schedule[0].transportation_mode}
-                  extra_prep_time={schedule[0].extra_prep_time}
-                  note={schedule[0].note}
-                />
+            {schedule && (
+              <CardUpcomingSchedule
+                event_name={schedule.event_name}
+                date={schedule.date}
+                start_time={schedule.start_time}
+                end_time={schedule.end_time}
+                transportation_mode={schedule.transportation_mode}
+                extra_prep_time={schedule.extra_prep_time}
+                note={schedule.note}
+              />
+            )}
               {/* {schedule.map((scheduleItem) => (
-                <CardScheduleDetail
+                <CardUpcomingSchedule
                   key={scheduleItem.event_id}
                   event_name={scheduleItem.event_name}
                   date={scheduleItem.date}
