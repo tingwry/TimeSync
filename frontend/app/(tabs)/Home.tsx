@@ -15,7 +15,6 @@ interface ScheduleItem {
   transportation_mode: string;
   extra_prep_time: Int16Array;
   note: string;
-  // Add other properties as needed
 }
 
 export default function Home() {
