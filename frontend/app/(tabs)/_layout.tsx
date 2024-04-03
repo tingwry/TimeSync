@@ -1,8 +1,5 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import React, { Children } from "react";
-import { Tabs } from "expo-router";
-import { View, Text, StyleSheet } from "react-native";
-import React from "react";
 import { Redirect, Tabs } from "expo-router";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
@@ -26,7 +23,7 @@ export default function RootLayoutNav() {
   if (!auth.authData) {
     return <Redirect href="/signInScreen" />;
   }
-  
+
   if (!fontsLoaded) {
     return <Text>Loading...</Text>;
   }
