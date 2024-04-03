@@ -1,3 +1,3 @@
 export default function NewSchedule() {
-  return null;
-}
+    return null;
+  }

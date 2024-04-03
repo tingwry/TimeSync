@@ -2,8 +2,8 @@ import { View, Text, StyleSheet, Image, StatusBar, Button } from "react-native";
 import React, {useState, useEffect} from "react";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
-import CardNewSchedule from "@/components/CardNewSchedule";
-import CardScheduleDetail from "@/components/CardScheduleDetail";
+import CardNoSchedule from "@/components/CardNoSchedule";
+import CardUpcomingSchedule from "@/components/CardUpcomingSchedule";
 import { PortalProvider } from "@gorhom/portal";
 
 interface ScheduleItem {
@@ -31,15 +31,12 @@ export default function Home() {
   }
 
   const [schedule, setSchedule] = useState<ScheduleItem[]>([])
-  const [scheduleNumber, setScheduleNumber] = useState(0)
 
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
         const response = await fetch("http://127.0.0.1:8000/app/schedule/view/");
         const data = await response.json();
-        setScheduleNumber(data.length)
-        setSchedule(data);
       } catch (error) {
         console.error("Error fetching schedule:", error);
       }
@@ -57,12 +54,21 @@ export default function Home() {
       </View>
      
       <View>
-        { scheduleNumber === 0 ? (
-          <CardNewSchedule />
+        { schedule.length === 0 ? (
+          <CardNoSchedule />
         ) : (
           <View style={styles.container}>
             <Text style={styles.textHeader}>Upcoming Schedule</Text>
-              {schedule.map((scheduleItem) => (
+            <CardUpcomingSchedule
+                  event_name={schedule[0].event_name}
+                  date={schedule[0].date}
+                  start_time={schedule[0].start_time}
+                  end_time={schedule[0].end_time}
+                  transportation_mode={schedule[0].transportation_mode}
+                  extra_prep_time={schedule[0].extra_prep_time}
+                  note={schedule[0].note}
+                />
+              {/* {schedule.map((scheduleItem) => (
                 <CardScheduleDetail
                   key={scheduleItem.event_id}
                   event_name={scheduleItem.event_name}
@@ -73,7 +79,7 @@ export default function Home() {
                   extra_prep_time={scheduleItem.extra_prep_time}
                   note={scheduleItem.note}
                 />
-              ))}
+              ))} */}
           </View>
         )}
       </View>

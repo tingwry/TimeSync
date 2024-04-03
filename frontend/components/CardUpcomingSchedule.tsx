@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import { theme } from "@/app/theme";
+import { useNavigation } from "@react-navigation/native";
 
 interface ScheduleDetailProps {
     event_name: string;
@@ -12,6 +13,12 @@ interface ScheduleDetailProps {
   }
 
 const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({ event_name, date, start_time, end_time, transportation_mode }) => {
+    const navigation = useNavigation();
+
+    const handlePress = () => {
+      console.log("View all schedules");
+      navigation.navigate('AllSchedule');
+    }
     return (
         <View>
             <View style={styles.background}>
@@ -42,17 +49,19 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({ event_name, date, s
                 /></View>
             </View>
 
-            <View style={styles.background}>
-              <View>
-                <Text style={styles.textTitle}> View All Schedules</Text>
+            <Pressable onPress={handlePress}>
+              <View style={styles.background}>
+                <View>
+                  <Text style={styles.textTitle}> View All Schedules</Text>
+                </View>
+                <View>
+                  <Image
+                    source={require("@/assets/icons/right-sign.png")}
+                    style={{width: 32, height: 32}}
+                  />
+                </View>
               </View>
-              <View>
-                <Image
-                  source={require("@/assets/icons/right-sign.png")}
-                  style={{width: 32, height: 32}}
-                />
-              </View>
-            </View>
+            </Pressable>
         </View>
     );
 }
