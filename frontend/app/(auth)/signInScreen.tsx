@@ -6,6 +6,8 @@ import ButtonPrimary from '@/components/buttons/ButtonPrimary';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import TextInputPrimary from '@/components/textinputs/TextInputPrimary';
 import { styles } from "@/components/sheets/SheetStyles";
+import SetTime from './SetTime';
+import Questionaires from './Questionaires';
 
 export default function SignInScreen() {
     const [loading, isLoading] = useState(false);
@@ -28,7 +30,10 @@ export default function SignInScreen() {
 
     return (
         <GestureHandlerRootView>
-            <Text>SignInScreen</Text>
+            {/* <SetTime /> */}
+            <Questionaires />
+            {/* <Text>SignInScreen</Text>
+            
             <TextInputPrimary 
                 // label="Email"
                 placeholder='example@email.com'
@@ -44,7 +49,7 @@ export default function SignInScreen() {
                 autoComplete='off'
             />
             <Text>Forget password</Text>
-            <ButtonPrimary text="Add Schedule" onPress={login}/>
+            <ButtonPrimary text="Sign in" onPress={login}/>
             <Text>Incorrect password will be shown here</Text>
             <Text><Link href="/signUpScreen">Sign up for new account</Link></Text>
             <Text>Or</Text>
@@ -52,7 +57,9 @@ export default function SignInScreen() {
             <Button
                 title='Sign in with Google'
                 disabled={true}
-            />
+            /> */}
+
+            
             
         </GestureHandlerRootView>
     )
