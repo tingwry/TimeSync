@@ -1,8 +1,11 @@
 import { View, Text, Button, TextInput } from 'react-native'
 import React, { useState } from 'react'
-import { styles } from './styles';
 import { useAuth } from '../context/authContext';
 import { Link, router } from 'expo-router';
+import ButtonPrimary from '@/components/buttons/ButtonPrimary';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import TextInputPrimary from '@/components/textinputs/TextInputPrimary';
+import { styles } from "@/components/sheets/SheetStyles";
 
 export default function SignInScreen() {
     const [loading, isLoading] = useState(false);
@@ -24,41 +27,33 @@ export default function SignInScreen() {
     }
 
     return (
-        <View>
+        <GestureHandlerRootView>
             <Text>SignInScreen</Text>
-            <TextInput 
+            <TextInputPrimary 
                 // label="Email"
                 placeholder='example@email.com'
-                placeholderTextColor='#FEFEFE40'
                 value={email}
                 onChangeText={setEmail}
-                style={styles.textField}
             />
-            <TextInput 
+            <TextInputPrimary 
                 // label="Password"
                 placeholder='Password'
-                placeholderTextColor='#FEFEFE40'
                 value={password}
                 onChangeText={setPassword}
                 // secureTextEntry={true}
-                style={styles.textField}
+                autoComplete='off'
             />
             <Text>Forget password</Text>
-            <View style={styles.buttonCustom}>
-                <Button
-                    title='Sign In'
-                    onPress={login}  
-                    color='white'
-                />
-            </View>
+            <ButtonPrimary text="Add Schedule" onPress={login}/>
             <Text>Incorrect password will be shown here</Text>
             <Text><Link href="/signUpScreen">Sign up for new account</Link></Text>
             <Text>Or</Text>
+            
             <Button
                 title='Sign in with Google'
                 disabled={true}
             />
             
-        </View>
+        </GestureHandlerRootView>
     )
 }

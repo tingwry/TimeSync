@@ -6,6 +6,7 @@ import { StyleSheet, Text, Dimensions, View, Pressable } from "react-native";
 
 export interface ButtonPrimaryProps {
   text: string;
+  onPress: () => void;
 }
 
 export default function ButtonPrimary(props: ButtonPrimaryProps) {

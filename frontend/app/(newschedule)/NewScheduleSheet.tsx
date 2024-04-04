@@ -142,7 +142,7 @@ export default function NewSchedule() {
             </ScrollView>
           </View>
           <View style={styles.footer}>
-            <ButtonPrimary text="Add Schedule" />
+            <ButtonPrimary text="Add Schedule" onPress={() => {}}/>
             <Pressable onPress={handlePress}>
               <Text style={styles.cancelButton}>Cancel</Text>
             </Pressable>
