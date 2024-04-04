@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native'
+import { View, Text, StyleSheet, SafeAreaView, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import { theme } from '../theme'
 
@@ -49,6 +49,9 @@ export default function Questionaires() {
                     <Text style={styles.textLink}>I'm not sure</Text>
                 </> ) : (step === 3) ? ( <>
                     <Text style={styles.textHeader}>Set Default Destination</Text>
+                    <Pressable onPress={() => {}}>
+                        <Text>Set location</Text>
+                    </Pressable>
                 </> ) : (
                     <Text>Some thing went wrong</Text>
                 )}
@@ -73,9 +76,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     icontab: {
-        flex: 5,
+        flex: 6,
         justifyContent: 'flex-end',
-        backgroundColor: theme.colors.stroke,
         width: '100%',
         alignItems: 'center',
     },
@@ -87,13 +89,15 @@ const styles = StyleSheet.create({
         marginBottom: 24,
     },
     content: {
-        flex: 11,
+        flex: 14,
         width: '100%',
         alignItems: 'center',
     },
     bottom: {
         flex: 3,
         backgroundColor: theme.colors.green,
+        alignItems: 'center',
+        justifyContent: 'flex-end',
     },
 
     // content

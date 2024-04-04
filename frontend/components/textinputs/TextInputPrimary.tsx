@@ -1,3 +1,4 @@
+import { theme } from '@/app/theme';
 import React from 'react';
 import { Dimensions, StyleSheet, Text, TextInput, TextInputProps, View } from 'react-native';
 
@@ -15,7 +16,7 @@ export default function TextInputPrimary({ label, helperText, ...props }: TextIn
             </Text>}
             <TextInput 
                 {...props} 
-                placeholderTextColor='#FEFEFE40'
+                placeholderTextColor={theme.colors.textPlaceholder}
                 style={styles.textInputStyle}
             />
             {helperText && <Text style={styles.helperText}>
@@ -33,7 +34,8 @@ const styles = StyleSheet.create({
         paddingLeft: 32,
         paddingRight: 32,
         marginTop: 16,
-        marginBottom: 16,
+        marginBottom: 12,
+        width: '100%',
     },
 
     textInputStyle: {
@@ -46,8 +48,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
 
-        backgroundColor: '#283752',
-        color: 'white',
+        backgroundColor: theme.colors.blueSecondary,
+        color: theme.colors.textPrimary, 
+        fontSize: 16,
 
         paddingTop: 10,
         paddingBottom: 10,
@@ -57,16 +60,22 @@ const styles = StyleSheet.create({
     },
 
     label: {
-        color: 'white',
+        color: theme.colors.textPrimary,
         fontSize: 16,
-        fontFamily: 'dm-sans-medium',
-        marginBottom: 10,
+        fontFamily: "dm-sans-semibold",
+        marginBottom: 8,
+        paddingLeft: 8,
     },
 
     helperText: {
-        color: '#BFBFBF',
+        color: theme.colors.textCaption,
         fontSize: 14,
         // fontFamily: 'dm-sans',
-        marginTop: 10,
+        
+        paddingLeft: 8,
+        paddingRight: 8,
+
+        marginTop: 8,
+        marginBottom: 12,
     }
 })

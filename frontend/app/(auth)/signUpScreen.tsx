@@ -1,12 +1,12 @@
-import { View, Text, TextInput, Button } from 'react-native'
+import { View, Text, TextInput, Button, SafeAreaView, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
 import { useAuth } from '../context/authContext';
 import { Link, router } from 'expo-router';
 import { authService } from '../context/authService';
 import ButtonPrimary from '@/components/buttons/ButtonPrimary';
 import TextInputPrimary from '@/components/textinputs/TextInputPrimary';
-import { styles } from "@/components/sheets/SheetStyles";
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { theme } from '../theme';
+import ButtonGoogle from '@/components/buttons/ButtonGoogle';
 
 export default function SignUpScreen() {
   const [loading, isLoading] = useState(false);
@@ -20,15 +20,15 @@ export default function SignUpScreen() {
         console.log(`Sign Up Screen: email = ${email}, password = ${password}`)
         isLoading(true);
         await authService.signUp(email, password);
-        router.replace('/signInScreen');
+        router.replace('/CreateProfile');
     } else {
         console.log('Email or Password is empty')
     }
   }
 
   return (
-    <GestureHandlerRootView style={styles.backdrop}>
-        <Text>SignUpScreen</Text>
+    <SafeAreaView style={styles.container}>
+        <Text style={styles.textHeader}>Sign up</Text>
         <TextInputPrimary 
             label="Email"
             placeholder='example@email.com'
@@ -41,7 +41,7 @@ export default function SignUpScreen() {
             value={password}
             onChangeText={setPassword}
             // secureTextEntry={true}
-            helperText="Your password must contain at least 10 characters and at least 1 uppercase letter."
+            // helperText="Your password must contain at least 10 characters and at least 1 uppercase letter."
         />
         <TextInputPrimary 
             label="Confirm your password"
@@ -49,11 +49,44 @@ export default function SignUpScreen() {
             value={confirmPassword}
             onChangeText={setConfirmPassword}
             // secureTextEntry={true}
+            helperText="Your password must contain at least 10 characters and at least 1 uppercase letter."
         />
-        <Text>Your password must contain at least 10 characters and at least 1 uppercase letter.</Text>
         <ButtonPrimary text="Continue" onPress={submit}/>
-        <Text>Messages will be shown here</Text>
-        <Text><Link href="/signInScreen">Sign in</Link></Text>
-    </GestureHandlerRootView>
+        <Text style={styles.signInLink}><Link href="/signInScreen">Sign in with existing account</Link></Text>
+        <Text style={styles.or}>Or</Text>
+        <ButtonGoogle onPress={() => {console.log('google pressed')}}/>
+        <Text style={styles.signInLink}><Link href="/CreateProfile">Create a profile</Link></Text>
+    </SafeAreaView>
   )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        alignItems: 'center',
+        backgroundColor: theme.colors.bluePrimary,
+        height: '100%',
+        width: '100%',
+    },
+    
+    textHeader: {
+        color: theme.colors.textPrimary,
+        fontFamily: "dm-sans-bold",
+        fontSize: 32,
+        marginTop: 70,
+        marginBottom: 48,
+    },
+    signInLink: {
+        color: theme.colors.textPrimary,
+        fontFamily: "dm-sans-semibold",
+        fontSize: 16,
+        marginTop: 16,
+        marginBottom: 16,
+    },
+    or: {
+        color: theme.colors.textPrimary,
+        fontFamily: "dm-sans-bold",
+        fontSize: 20,
+        marginTop: 4,
+        marginBottom: 20,
+    },
+})
