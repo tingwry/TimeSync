@@ -33,6 +33,7 @@ export default function NewSchedule() {
     // console.warn(eventName, note);
 
     const url = `http://172.20.10.12:8000/app/schedule/create/`;
+
     let response = await fetch(url, {
       method: 'POST',
       headers: {

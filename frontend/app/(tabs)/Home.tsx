@@ -17,6 +17,10 @@ interface ScheduleItem {
   extra_prep_time: Int16Array;
   note: string;
 }
+import AlarmClock from "../src/AlarmClock";
+import CardCountDownTimer from "@/components/CardCountDownTimer";
+import PopUpCountdownTimer from "../src/PopUpCountDownTimer";
+// import PopUpCountdownTimer from "../src/PopUpCountDownTimer";
 
 export default function Home() {
   const [fontsLoaded] = useFonts({
@@ -24,19 +28,21 @@ export default function Home() {
     "dm-sans-extrabold": require("@/assets/fonts/DMSans-ExtraBold.ttf"),
     "dm-sans-semibold": require("@/assets/fonts/DMSans-SemiBold.ttf"),
     "dm-sans-regular": require("@/assets/fonts/DMSans-Regular.ttf"),
-    "dm-sans-bold": require("@/assets/fonts/DMSans-Bold.ttf"),
+    "dm-sans-bold":  require("@/assets/fonts/DMSans-Bold.ttf"),
   });
   if (!fontsLoaded) {
     return <Text>Loading...</Text>;
   }
 
-  const [schedule, setSchedule] = useState<ScheduleItem| null>(null)
+  const [schedule, setSchedule] = useState<ScheduleItem | null>(null)
   const [scheduleNumber, setScheduleNumber] = useState(0)
 
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
+
         const response = await fetch(`http://172.20.10.12:8000/app/schedule/recent/`);
+
         if (!response.ok) {
           throw new Error("Failed to fetch schedule");
         }
@@ -58,7 +64,7 @@ export default function Home() {
         <Text style={styles.textTitle}>Hello, User</Text>
         <Text style={styles.textCaption}>Let's see what is up next!</Text>
       </View>
-     
+      <PopUpCountdownTimer />
       <View>
         { scheduleNumber === 0 ? (
           <CardNoSchedule />
@@ -66,7 +72,8 @@ export default function Home() {
           <View style={styles.container}>
             <Text style={styles.textHeader}>Upcoming Schedule</Text>
             {schedule && (
-              <CardUpcomingSchedule
+             
+        <CardUpcomingSchedule
                 event_name={schedule.event_name}
                 date={schedule.date}
                 start_time={schedule.start_time}
@@ -91,6 +98,7 @@ export default function Home() {
           </View>
         )}
       </View>
+      <AlarmClock />
     </View>
   );
 }
