@@ -7,6 +7,7 @@ export default function StackLayout() {
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="onboarding" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(more)" options={{ headerShown: false }} />
       <Stack.Screen name="(viewschedules)" options={{ headerShown: true }} />
       <Stack.Screen
         name="(newschedule)"

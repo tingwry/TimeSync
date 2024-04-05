@@ -7,195 +7,141 @@ import {
   StatusBar,
 } from "react-native";
 import React from "react";
-import { router, useNavigation } from "expo-router";
+import { router, useNavigation, useRouter } from "expo-router";
 import { Link } from "expo-router";
 import { theme } from "../theme";
 
 export default function ListPage() {
+  const router = useRouter();
+
   return (
-    // <View style={styles.background}>
-    // <StatusBar barStyle="light-content" />
-    // <View style={styles.containerHome}>
-    //   <Text style={styles.textTitle}>Hello, User</Text>
-    //   <Text style={styles.textCaption}>Let's see what is up next!</Text>
-    // </View>
     <View style={styles.background}>
-      <Text style={styles.more}>More</Text>
-      <Text style={styles.profile}>Profile</Text>
-      {/* //for prfile section */}
-      <View>
-        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-        <TouchableOpacity
-          onPress={() => router.push("/(more)/Account")}
-          style={styles.btnOutline}
-        >
-          <Image
-            source={require("@/assets/icons/user-nav.png")}
-            style={styles.btnIcon}
-          />
-          <Text style={styles.btnText}>Account</Text>
-          <Image
-            source={require("@/assets/icons/chevron-right.png")}
-            style={styles.btnIconArrow}
-          />
-        </TouchableOpacity>
-        {/* <View style={{flex:1, borderBottomColor: '#fff'}} /> */}
-        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-        <TouchableOpacity
-          // onPress={() => router.push("/Location")}
-          style={styles.btnOutline}
-        >
-          <Image
-            source={require("@/assets/icons/location.png")}
-            style={styles.btnIcon}
-          />
-          <Text style={styles.btnText}>Locations</Text>
-          <Image
-            source={require("@/assets/icons/chevron-right.png")}
-            style={styles.btnIconArrow}
-          />
-        </TouchableOpacity>
-        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-        <TouchableOpacity style={styles.btnOutline}>
-          <Image
-            source={require("@/assets/icons/preparation.png")}
-            style={styles.btnIcon}
-          />
-          <Text style={styles.btnText}>Preparation Time</Text>
-          <Image
-            source={require("@/assets/icons/chevron-right.png")}
-            style={styles.btnIconArrow}
-          />
-        </TouchableOpacity>
-        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-      </View>
-      {/* //Alarm */}
-      <View>
-        <View
-          style={{ height: 6, backgroundColor: theme.colors.bluePrimary }}
+      <Text style={styles.textTitle}>More</Text>
+      <Text style={styles.sectionTitle}>Profile</Text>
+
+      <View style={styles.divLine} />
+      <TouchableOpacity style={styles.menuButton} onPress={() => router.navigate("Account")}>
+        <Image
+          source={require("@/assets/icons/user-nav.png")}
+          style={{width: 20, height: 20}}
         />
-        <Text style={styles.profile}>Alarm</Text>
-        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-        <TouchableOpacity
-          onPress={() => router.push("/(more)/Alarm")}
-          style={styles.btnOutline}
-        >
-          <Image
-            source={require("@/assets/icons/alarm-clock.png")}
-            style={styles.btnIcon}
-          />
-          <Text style={styles.btnText}>Alarm Setting</Text>
-          <Image
-            source={require("@/assets/icons/chevron-right.png")}
-            style={styles.btnIconArrow}
-          />
-        </TouchableOpacity>
-        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-      </View>
-      {/* Setting */}
-      <View>
-        <View
-          style={{ height: 6, backgroundColor: theme.colors.bluePrimary }}
+        <Text style={styles.menuText}>Account</Text>
+        <Image
+          source={require("@/assets/icons/chevron-right.png")}
+          style={styles.chevronStyle}
         />
-        <Text style={styles.profile}>Setting</Text>
-        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-        <TouchableOpacity
-          onPress={() => router.push("/(more)/General")}
-          style={styles.btnOutline}
-        >
-          <Image
-            source={require("@/assets/icons/general.png")}
-            style={styles.btnIcon}
-          />
-          <Text style={styles.btnText}>General</Text>
-          <Image
-            source={require("@/assets/icons/chevron-right.png")}
-            style={styles.btnIconArrow}
-          />
-        </TouchableOpacity>
-        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-        <TouchableOpacity
-          onPress={() => router.push("/(more)/Notification")}
-          style={styles.btnOutline}
-        >
-          <Image
-            source={require("@/assets/icons/notifications.png")}
-            style={styles.btnIcon}
-          />
-          <Text style={styles.btnText}>Notifications</Text>
-          <Image
-            source={require("@/assets/icons/chevron-right.png")}
-            style={styles.btnIconArrow}
-          />
-        </TouchableOpacity>
-        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-      </View>
+      </TouchableOpacity>
+      <View style={styles.divLine} />
+      <TouchableOpacity style={styles.menuButton} onPress={() => router.navigate("Location")}>
+        <Image
+          source={require("@/assets/icons/location.png")}
+          style={{width: 20, height: 20}}
+        />
+        <Text style={styles.menuText}>Locations</Text>
+        <Image
+          source={require("@/assets/icons/chevron-right.png")}
+          style={styles.chevronStyle}
+        />
+      </TouchableOpacity>
+      <View style={styles.divLine} />
+      <TouchableOpacity style={styles.menuButton} onPress={() => router.navigate("Account")}>
+        <Image
+          source={require("@/assets/icons/preparation.png")}
+          style={{width: 20, height: 20}}
+        />
+        <Text style={styles.menuText}>Preparation Time</Text>
+        <Image
+          source={require("@/assets/icons/chevron-right.png")}
+          style={styles.chevronStyle}
+        />
+      </TouchableOpacity>
+      <View style={styles.divLine} />
+
+      <Text style={styles.sectionTitle}>Alarm</Text>
+      <View style={styles.divLine} />
+      <TouchableOpacity style={styles.menuButton} onPress={() => router.navigate("Alarm")}>
+        <Image
+          source={require("@/assets/icons/alarm-clock.png")}
+          style={{width: 20, height: 20}}
+        />
+        <Text style={styles.menuText}>Alarm Settings</Text>
+        <Image
+          source={require("@/assets/icons/chevron-right.png")}
+          style={styles.chevronStyle}
+        />
+      </TouchableOpacity>
+      <View style={styles.divLine} />
+
+      <Text style={styles.sectionTitle}>Settings</Text>
+      <View style={styles.divLine} />
+      <TouchableOpacity style={styles.menuButton} onPress={() => router.navigate("General")}>
+        <Image
+          source={require("@/assets/icons/setting.png")}
+          style={{width: 20, height: 20}}
+        />
+        <Text style={styles.menuText}>General</Text>
+        <Image
+          source={require("@/assets/icons/chevron-right.png")}
+          style={styles.chevronStyle}
+        />
+      </TouchableOpacity>
+      <View style={styles.divLine} />
+      <TouchableOpacity style={styles.menuButton} onPress={() => router.navigate("Notification")}>
+        <Image
+          source={require("@/assets/icons/notifications.png")}
+          style={{width: 20, height: 20}}
+        />
+        <Text style={styles.menuText}>Notifications</Text>
+        <Image
+          source={require("@/assets/icons/chevron-right.png")}
+          style={styles.chevronStyle}
+        />
+      </TouchableOpacity>
+      <View style={styles.divLine} />
+
     </View>
   );
 }
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    paddingTop: 90,
-    paddingLeft: 32,
-    paddingRight: 32,
     backgroundColor: theme.colors.bluePrimary,
-    gap: 16,
-  },
-  btnOutline: {
-    backgroundColor: theme.colors.bluePrimary,
-    height: 48,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    flexDirection: "row",
-    paddingHorizontal: 90,
-    fontFamily: "dm-sans-regular",
-  },
-  btn: {
-    backgroundColor: theme.colors.red,
-    height: 48,
-    width: 326,
-    borderRadius: 6,
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-  },
-  btnText: {
     color: theme.colors.textPrimary,
-    fontSize: 16,
-    fontFamily: "dm-sans-medium",
-    right: 50,
+    paddingHorizontal: 32,
+    paddingTop: 100,
   },
-  btnIcon: {
-    position: "absolute",
-    left: 1,
-    height: 20,
-    width: 20,
-  },
-  btnIconArrow: {
-    position: "absolute",
-    right: 1,
-    height: 20,
-    width: 20,
-  },
-  more: {
+  textTitle: {
     color: theme.colors.textPrimary,
-    fontSize: 32,
     fontFamily: "dm-sans-extrabold",
+    fontSize: 36,
   },
-  profile: {
+  sectionTitle: {
     color: theme.colors.textPrimary,
     fontSize: 20,
     fontFamily: "dm-sans-bold",
-    paddingTop: 4,
-    paddingBottom: 7,
+    marginTop: 32,
+    marginBottom: 16,
   },
-  alarm: {
-    position: "relative",
+  divLine: {
+    height: 1,
+    backgroundColor: theme.colors.divLine,
+    justifyContent: "flex-end",
+  },
+  menuButton: {
+    height: 48,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
+  },
+  menuText: {
     color: theme.colors.textPrimary,
-    fontSize: 19,
-    fontFamily: "dm-sans-semibold",
-    top: 40,
-    paddingBottom: 7,
+    fontSize: 16,
+    fontFamily: "dm-sans-medium",
+  },
+  chevronStyle: {
+    width: 24,
+    height: 24,
+    right: 0,
+    position: "absolute",
   },
 });

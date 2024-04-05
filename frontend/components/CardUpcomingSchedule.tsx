@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import { theme } from "@/app/theme";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
+import { useRouter } from "expo-router";
 
 interface ScheduleDetailProps {
   event_name: string;
@@ -21,10 +22,12 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
   transportation_mode,
 }) => {
   const navigation = useNavigation();
+  const router = useRouter();
 
   const handlePress = () => {
     console.warn("View all schedules");
-    navigation.navigate("(viewschedules)");
+    // navigation.navigate("(viewschedules)");
+    router.navigate("(viewschedules)")
   };
   return (
     <View>

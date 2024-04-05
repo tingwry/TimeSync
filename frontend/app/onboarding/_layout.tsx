@@ -4,16 +4,28 @@ import { Stack, Tabs } from "expo-router";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
 
-// export default function StackLayout() {
-//   return (
-//     <Stack screenOptions={screenOptions}>
-//           <Stack.Screen name="Onboarding1" options={{ headerShown: false }} />
-//           <Stack.Screen name="Onboarding2" options={{ headerShown: false }} />
-//           <Stack.Screen name="Onboarding3" options={{ headerShown: false }} />
-//           <Stack.Screen name="Loading" options={{ headerShown: false }} />
-//     </Stack>
-//   );
-// }
+export default function StackLayout() {
+  return (
+    <Stack screenOptions={screenOptions}>
+      <Stack.Screen
+        name="Onboarding1"
+        options={{ headerShown: false, animation: "fade" }}
+      />
+      <Stack.Screen
+        name="Onboarding2"
+        options={{ headerShown: false, animation: "fade" }}
+      />
+      <Stack.Screen
+        name="Onboarding3"
+        options={{ headerShown: false, animation: "fade" }}
+      />
+      <Stack.Screen
+        name="Loading"
+        options={{ headerShown: false, animation: "fade" }}
+      />
+    </Stack>
+  );
+}
 
 const screenOptions = {
   tabBarStyle: {

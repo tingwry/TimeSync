@@ -33,7 +33,6 @@ export default function Onboard1() {
         source={require("@/assets/images/loadpic.png")}
         style={{ width: 260, height: 260, bottom:45}}
       />
-      {/* {"\n"}  */}
       </View>
       <Text style={styles.text_wakeup}>You are all set!</Text>
       <Text style={styles.text_slogan}>We are preparing for your best experience. {"\n"}Your journey is about to begin!</Text>

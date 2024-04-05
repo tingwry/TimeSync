@@ -111,7 +111,15 @@ export default function RootLayoutNav() {
             );
           },
         }}
+        // listeners={({ navigation }) => ({
+        //   tabPress: (e) => {
+        //     e.preventDefault();
+        //     navigation.navigate("(more)");
+        //   },
+          
+        // })}
       />
+      
     </Tabs>
     
   );

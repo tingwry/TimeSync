@@ -99,7 +99,7 @@ export default function Home() {
           </View>
         )}
       </View>
-      <AlarmClock />
+      {/* <AlarmClock /> */}
     </View>
   );
 }
