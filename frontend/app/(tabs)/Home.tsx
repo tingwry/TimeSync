@@ -39,7 +39,7 @@ export default function Home() {
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/");
+        const response = await fetch("http://192.168.43.117:8000/app/schedule/recent/");
         if (!response.ok) {
           throw new Error("Failed to fetch schedule");
         }
