@@ -91,7 +91,7 @@ export default function CalendarSheet() {
                 <CalendarView />
               </View>
               <View style={styles.modalFooter}>
-                <ButtonPrimary text="Select Date" />
+                <ButtonPrimary text="Select Date" press={}/>
               </View>
             </View>
           </BottomSheetView>
