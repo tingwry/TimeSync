@@ -11,6 +11,7 @@ import { theme } from "../theme";
 import { useFonts } from "expo-font";
 import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 
 LogBox.ignoreLogs(["new NativeEventEmitter"]);
 LogBox.ignoreAllLogs();
@@ -71,13 +72,12 @@ export default function AlarmClock() {
         content: {
           title: "TimeSync",
           body: "Alarm! It's time to wake up.",
-          data: { data: "Your morning alarm data" },
+          data: { url: "/src/AlarmPage" },
           sound: "alarm-sound.mp4",
         },
         trigger: {
           hour: newHour,
           minute: parseInt(minutee),
-          // seconds: 10,
           repeats: true,
         },
       });
@@ -106,7 +106,7 @@ export default function AlarmClock() {
       await setNotificationId(resetValue);
       storeData(resetValue);
     } else {
-      alert("Alarm already turned off");
+      // alert("Alarm already turned off");
       console.log(notificationId);
     }
   }
@@ -137,6 +137,37 @@ export default function AlarmClock() {
       alert(e);
     }
   }
+
+  useEffect(() => {
+    let isMounted = true;
+
+    function redirect(notification: Notifications.Notification) {
+      const url = notification.request.content.data?.url;
+      if (url) {
+        router.push(url);
+        console.log(url);
+        turnOffAlarm();
+      }
+    }
+
+    Notifications.getLastNotificationResponseAsync().then((response) => {
+      if (!isMounted || !response?.notification) {
+        return;
+      }
+      redirect(response?.notification);
+    });
+
+    const subscription = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        redirect(response.notification);
+      }
+    );
+
+    return () => {
+      isMounted = false;
+      subscription.remove();
+    };
+  }, []);
 
   return (
     <View>

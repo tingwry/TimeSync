@@ -4,7 +4,8 @@ import { theme } from "../theme";
 import { useFonts } from "expo-font";
 import CardNewSchedule from "@/components/CardNewSchedule";
 import AlarmClock from "../src/AlarmClock";
-// import CardCountDownTimer from "@/components/CardCountDownTimer";
+import CardCountDownTimer from "@/components/CardCountDownTimer";
+import PopUpCountdownTimer from "../src/PopUpCountDownTimer";
 // import PopUpCountdownTimer from "../src/PopUpCountDownTimer";
 
 export default function Home() {
@@ -28,12 +29,10 @@ export default function Home() {
       </View>
       <View style={styles.container}>
         <Text style={styles.textHeader}>Upcoming Schedule</Text>
-        {/* <CardCountDownTimer /> */}
+        <PopUpCountdownTimer />
         <CardNewSchedule />
       </View>
-
       <AlarmClock />
-      {/* <PopUpCountdownTimer /> */}
     </View>
   );
 }
