@@ -47,17 +47,16 @@ export default function TransportationSheet() {
         >
           <BottomSheetView>
             <View style={styles.handleModalIndicatorStyle} />
-            <Pressable
+            <TouchableOpacity
+              style={[styles.modalCloseButton, { marginRight: 16 }]}
               onPress={handleCloseModalPress}
-              style={{ position: "absolute", right: 16, marginTop: 4 }}
+              hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }} // Adjust hitSlop as needed
             >
-              <View style={styles.modalCloseButton}>
-                <Image
-                  source={require("@/assets/icons/close.png")}
-                  style={{ width: 20, height: 20 }}
-                />
-              </View>
-            </Pressable>
+              <Image
+                source={require("@/assets/icons/close.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            </TouchableOpacity>
             <View style={styles.modalSheetView}>
               <View style={styles.sheetItem}>
                 <Image

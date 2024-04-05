@@ -6,6 +6,7 @@ import { StyleSheet, Text, Dimensions, View, Pressable } from "react-native";
 
 export interface ButtonPrimaryProps {
   text: string;
+  press: any
 }
 
 export default function ButtonPrimary(props: ButtonPrimaryProps) {
@@ -14,7 +15,7 @@ export default function ButtonPrimary(props: ButtonPrimaryProps) {
   });
 
   return (
-    <Pressable style={[styles.container, styles.shadowProp]}>
+    <Pressable style={[styles.container, styles.shadowProp]} onPress={props.press}>
       <LinearGradient
         colors={["#CF7B04", "#EDA33C"]}
         style={styles.buttonStyle}

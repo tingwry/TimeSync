@@ -89,6 +89,7 @@ export const styles = StyleSheet.create({
         marginTop: 8,
         paddingLeft: 32,
         paddingRight: 32,
+        flexGrow: 1
       },
       sheetItem: {
         flexDirection: "row",
@@ -142,7 +143,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalFooter: {
-    backgroundColor: "#1B2A47",
+    backgroundColor: theme.colors.modalBackground,
     bottom: 0,
     height: 124,
     flexDirection: "column",

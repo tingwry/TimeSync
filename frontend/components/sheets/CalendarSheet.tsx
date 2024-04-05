@@ -33,15 +33,22 @@ export default function CalendarSheet() {
   }, []);
 
   const currentDate = new Date();
+  const [selectedDay, setSelectedDay] = useState<string>(`${currentDate}`);
 
-  const dateDisplay = new Date(currentDate).toLocaleDateString(
-    "en-GB",
-    {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    }
-  );
+  const handleDaySelect = (day: string) => {
+    setSelectedDay(day);
+  };
+
+  const handleSelectDate = () => {
+    console.log(selectedDay);
+    handleCloseModalPress();
+  };
+
+  const dateDisplay = new Date(selectedDay).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
 
   return (
     <GestureHandlerRootView style={styles.sheetStyle}>
@@ -88,10 +95,10 @@ export default function CalendarSheet() {
                 <Text style={styles.textHeader}>Date</Text>
               </View>
               <View style={{ marginTop: 16 }}>
-                <CalendarView />
+                <CalendarView onDaySelect={handleDaySelect} />
               </View>
               <View style={styles.modalFooter}>
-                <ButtonPrimary text="Select Date" />
+                <ButtonPrimary text="Select Date" press={handleSelectDate}/>
               </View>
             </View>
           </BottomSheetView>
@@ -101,8 +108,12 @@ export default function CalendarSheet() {
   );
 }
 
-const CalendarView = () => {
-  const initialDate = "2024-04-03";
+interface CalendarViewProps {
+  onDaySelect: (day: string) => void;
+}
+
+const CalendarView: React.FC<CalendarViewProps> = ({ onDaySelect }) => {
+  const initialDate = "2024-04-04";
 
   const formattedInitialMonth = new Date(initialDate).toLocaleDateString(
     "en-US",
@@ -121,9 +132,15 @@ const CalendarView = () => {
     return CalendarUtils.getCalendarDateString(newDate);
   };
 
-  const onDayPress = useCallback((day: any) => {
-    setSelected(day.dateString);
-  }, []);
+  const onDayPress = useCallback(
+    (day: any) => {
+      setSelected(day.dateString);
+      onDaySelect(day.dateString);
+      console.log(day);
+      return getDate;
+    },
+    [onDaySelect]
+  );
 
   const customHeaderProps: any = useRef();
 
@@ -248,7 +265,7 @@ const calendarStyles = StyleSheet.create({
     fontFamily: "dm-sans-medium",
     color: theme.colors.textCaption,
     width: 36,
-    fontSize: 14
+    fontSize: 14,
   },
   headerWeekDays: {
     flexDirection: "row",

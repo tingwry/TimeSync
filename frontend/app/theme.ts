@@ -17,5 +17,6 @@ export const theme = {
       labelOrange: '#ff971c',
       labelGreen: '#54a424',
       divLine: "#fefefe10",
+      modalBackground: "#1B2A47",
       },
 }

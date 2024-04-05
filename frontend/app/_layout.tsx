@@ -13,6 +13,7 @@ export default function StackLayout() {
           animationDuration: 250,
         }}
       />
+      
     </Stack>
   );
 }
