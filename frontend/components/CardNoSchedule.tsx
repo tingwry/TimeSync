@@ -18,7 +18,6 @@ export default function CardNewSchedule() {
 
   return (
     <View>
-      <Text style={styles.textUpcoming}>Upcoming Schedule</Text>
       <Pressable onPress={handlePress}>
         <View style={styles.addScheduleTab}>
           <Text style={styles.textCaption}>No Upcoming Schedule</Text>

@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     height: 112,
+    margin: 24,
   },
   textCaption: {
     fontFamily: "dm-sans-regular",

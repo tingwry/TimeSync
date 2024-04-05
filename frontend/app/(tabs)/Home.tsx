@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, StatusBar, Button } from "react-native";
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
 import CardNoSchedule from "@/components/CardNoSchedule";
@@ -28,20 +28,21 @@ export default function Home() {
     "dm-sans-extrabold": require("@/assets/fonts/DMSans-ExtraBold.ttf"),
     "dm-sans-semibold": require("@/assets/fonts/DMSans-SemiBold.ttf"),
     "dm-sans-regular": require("@/assets/fonts/DMSans-Regular.ttf"),
-    "dm-sans-bold":  require("@/assets/fonts/DMSans-Bold.ttf"),
+    "dm-sans-bold": require("@/assets/fonts/DMSans-Bold.ttf"),
   });
   if (!fontsLoaded) {
     return <Text>Loading...</Text>;
   }
 
-  const [schedule, setSchedule] = useState<ScheduleItem | null>(null)
-  const [scheduleNumber, setScheduleNumber] = useState(0)
+  const [schedule, setSchedule] = useState<ScheduleItem | null>(null);
+  const [scheduleNumber, setScheduleNumber] = useState(0);
 
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
-
-        const response = await fetch(`http://172.20.10.12:8000/app/schedule/recent/`);
+        const response = await fetch(
+          `http://172.20.10.12:8000/app/schedule/recent/`
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch schedule");
@@ -53,7 +54,7 @@ export default function Home() {
         console.error("Error fetching schedule:", error);
       }
     };
-  
+
     fetchSchedule();
   }, []);
 
@@ -63,17 +64,17 @@ export default function Home() {
       <View style={styles.containerHome}>
         <Text style={styles.textTitle}>Hello, User</Text>
         <Text style={styles.textCaption}>Let's see what is up next!</Text>
+        <Text style={styles.textUpcoming}>Upcoming Schedule</Text>
       </View>
       <PopUpCountdownTimer />
       <View>
-        { scheduleNumber === 0 ? (
+        
+        {scheduleNumber === 0 ? (
           <CardNoSchedule />
         ) : (
           <View style={styles.container}>
-            <Text style={styles.textHeader}>Upcoming Schedule</Text>
             {schedule && (
-             
-        <CardUpcomingSchedule
+              <CardUpcomingSchedule
                 event_name={schedule.event_name}
                 date={schedule.date}
                 start_time={schedule.start_time}
@@ -83,7 +84,7 @@ export default function Home() {
                 note={schedule.note}
               />
             )}
-              {/* {schedule.map((scheduleItem) => (
+            {/* {schedule.map((scheduleItem) => (
                 <CardUpcomingSchedule
                   key={scheduleItem.event_id}
                   event_name={scheduleItem.event_name}
@@ -137,5 +138,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingLeft: 8,
     paddingBottom: 24,
+  },
+  textUpcoming: {
+    color: theme.colors.textPrimary,
+    fontFamily: "dm-sans-semibold",
+    fontSize: 20,
+    paddingLeft: 8,
+    marginTop: 48
   },
 });
