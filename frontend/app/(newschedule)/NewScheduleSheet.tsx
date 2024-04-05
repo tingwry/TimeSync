@@ -16,6 +16,7 @@ import ButtonPrimary from "@/components/buttons/ButtonPrimary";
 import TransportationSheet from "@/components/sheets/TransportationSheet";
 import PreparationSheet from "@/components/sheets/PreparationSheet";
 import AlarmNotiSheet from "@/components/sheets/AlarmNotiSheet";
+// import { API_URL } from "@env";
 
 export default function NewSchedule() {
   const navigation = useNavigation();
@@ -31,7 +32,7 @@ export default function NewSchedule() {
   const handleClickPress = async () => {
     // console.warn(eventName, note);
 
-    const url = "http://127.0.0.1:8000/app/schedule/create/"
+    const url = `http://172.20.10.12:8000/app/schedule/create/`;
     let response = await fetch(url, {
       method: 'POST',
       headers: {

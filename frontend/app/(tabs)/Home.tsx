@@ -5,6 +5,7 @@ import { useFonts } from "expo-font";
 import CardNoSchedule from "@/components/CardNoSchedule";
 import CardUpcomingSchedule from "@/components/CardUpcomingSchedule";
 import { PortalProvider } from "@gorhom/portal";
+// import API_URL from "@env";
 
 interface ScheduleItem {
   event_id: number;
@@ -35,7 +36,7 @@ export default function Home() {
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/");
+        const response = await fetch(`http://172.20.10.12:8000/app/schedule/recent/`);
         if (!response.ok) {
           throw new Error("Failed to fetch schedule");
         }
