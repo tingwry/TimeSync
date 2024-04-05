@@ -1,9 +1,18 @@
-import { View, Text, StyleSheet, Image, StatusBar, Button, ScrollView } from "react-native";
-import React, {useState, useEffect} from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  StatusBar,
+  Button,
+  ScrollView,
+} from "react-native";
+import React, { useState, useEffect } from "react";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
 import CardSchedule from "@/components/CardSchedule";
 import { PortalProvider } from "@gorhom/portal";
+// import API_URL from "@env";
 
 interface ScheduleItem {
   event_id: number;
@@ -25,13 +34,14 @@ export default function Home() {
     return <Text>Loading...</Text>;
   }
 
-  const [schedule, setSchedule] = useState<ScheduleItem[]>([])
-  const [scheduleNumber, setScheduleNumber] = useState(0)
+  const [schedule, setSchedule] = useState<ScheduleItem[]>([]);
+  const [scheduleNumber, setScheduleNumber] = useState(0);
 
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/app/schedule/view/");
+        const response = await fetch(`http://172.20.10.12:8000/app/schedule/view/`);
+
         if (!response.ok) {
           throw new Error("Failed to fetch schedule");
         }
@@ -42,7 +52,7 @@ export default function Home() {
         console.error("Error fetching schedule:", error);
       }
     };
-  
+
     fetchSchedule();
   }, []);
 
@@ -59,28 +69,28 @@ export default function Home() {
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <Text style={styles.textHeader}>March, 2024</Text>
-          <Image 
+          <Image
             source={require("@/assets/icons/icon=down.png")}
-            style={{width: 20, height: 20}} 
+            style={{ width: 20, height: 20 }}
           />
         </View>
-          <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-            {schedule.map((item) => (
-              <View style={styles.scheduleRow}>
-                <View style={styles.circle}>
-                  <Text style={styles.textCircle}>{item.date.slice(-2)}</Text>
-                </View> 
-                <View style={styles.containerSchedule}>
-                  <CardSchedule 
-                    event_name={item.event_name}
-                    date={item.date} 
-                    start_time={item.start_time}
-                    end_time={item.end_time}
-                  />
-                </View>
+        <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+          {schedule.map((item) => (
+            <View style={styles.scheduleRow}>
+              <View style={styles.circle}>
+                <Text style={styles.textCircle}>{item.date.slice(-2)}</Text>
               </View>
-            ))}
-          </ScrollView>
+              <View style={styles.containerSchedule}>
+                <CardSchedule
+                  event_name={item.event_name}
+                  date={item.date}
+                  start_time={item.start_time}
+                  end_time={item.end_time}
+                />
+              </View>
+            </View>
+          ))}
+        </ScrollView>
       </View>
     </View>
   );
@@ -103,8 +113,8 @@ const styles = StyleSheet.create({
     marginLeft: 24,
     marginRight: 24,
     marginTop: 100,
-    justifyContent: "center", 
-    alignItems: "center", 
+    justifyContent: "center",
+    alignItems: "center",
   },
   textTitle: {
     color: theme.colors.textPrimary,
@@ -117,7 +127,6 @@ const styles = StyleSheet.create({
     fontFamily: "dm-sans-regular",
     fontSize: 16,
     paddingLeft: 8,
-    
   },
   textTop: {
     color: theme.colors.textPrimary,
@@ -135,7 +144,7 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   circle: {
-    backgroundColor: theme.colors.blueSecondary, 
+    backgroundColor: theme.colors.blueSecondary,
     width: 50,
     height: 50,
     borderRadius: 52,
@@ -158,6 +167,5 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    
   },
 });
