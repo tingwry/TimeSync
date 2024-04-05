@@ -11,9 +11,15 @@ import { useFonts } from 'expo-font';
 
 export default function SignInScreen() {
     const [loading, isLoading] = useState(false);
+    const auth = useAuth();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const auth = useAuth();
+    
+
+    const [errors, setErrors] = useState({
+        username: '',
+        password: '',
+      });
 
     const [fontsLoaded] = useFonts({
         "dm-sans-medium": require("@/assets/fonts/DMSans-Medium.ttf"),
@@ -21,11 +27,28 @@ export default function SignInScreen() {
         "dm-sans-semibold": require("@/assets/fonts/DMSans-SemiBold.ttf"),
         "dm-sans-regular": require("@/assets/fonts/DMSans-Regular.ttf"),
         "dm-sans-bold": require("@/assets/fonts/DMSans-Bold.ttf"),
-      });
+    });
+
+    const validateForm = () => {
+        let e = {
+            username: '',
+            password: '',
+            confirmPassword: '',
+        };
+        if (email === '') {
+            e.username = 'Email is required';;
+        }
+        if (password === '') {
+            e.password = 'Password is required';
+        } 
+    
+        setErrors(e);
+        return Object.values(e).every(x => x === '')
+      }
 
     const login = async () => {
         console.log('Sign In Screen: login')
-        if (email !== '' || password !== '') {
+        if (validateForm()) {
             console.log(`Sign In Screen: email = ${email}, password = ${password}`)
             isLoading(true);
             await auth.signIn(email, password);
@@ -46,14 +69,16 @@ export default function SignInScreen() {
                 placeholder='example@email.com'
                 value={email}
                 onChangeText={setEmail}
+                errorText={errors.username}
             />
             <TextInputPrimary 
                 label="Password"
                 placeholder='Password'
                 value={password}
                 onChangeText={setPassword}
-                // secureTextEntry={true}
-                autoComplete='off'
+
+                errorText={errors.password}
+                password
             />
             <Text style={styles.forgetPasswordLink}>Forget password</Text>
             <ButtonPrimary text="Sign in" press={login}/>

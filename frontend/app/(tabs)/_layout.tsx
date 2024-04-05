@@ -21,7 +21,7 @@ export default function RootLayoutNav() {
   });
 
   if (!auth.authData) {
-    // return <Redirect href="/StartScreen" />;
+    return <Redirect href="/StartScreen" />;
   }
 
   if (!fontsLoaded) {

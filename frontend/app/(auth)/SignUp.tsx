@@ -10,19 +10,48 @@ import ButtonGoogle from '@/components/buttons/ButtonGoogle';
 
 export default function SignUpScreen() {
   const [loading, isLoading] = useState(false);
+  const auth = useAuth();
+
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const auth = useAuth();
+  
+  const [errors, setErrors] = useState({
+    username: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  const validateForm = () => {
+    let e = {
+        username: '',
+        password: '',
+        confirmPassword: '',
+    };
+    if (email === '') {
+        e.username = 'Email is required';;
+    }
+    if (password === '') {
+        e.password = 'Password is required';
+    } 
+    if (confirmPassword === '') {
+        e.confirmPassword = 'Confirm Password is required';
+    } else if (password !== confirmPassword && password !== '' && confirmPassword !== '') {
+        e.confirmPassword = 'Passwords do not match';
+    }
+
+    setErrors(e);
+    return Object.values(e).every(x => x === '')
+  }
 
   const submit = async () => {
-    if (email !== '' || password !== '') {
+    if (validateForm()) {
         console.log(`Sign Up Screen: email = ${email}, password = ${password}`)
         isLoading(true);
         await authService.signUp(email, password);
         router.replace('/CreateProfile');
     } else {
-        console.log('Email or Password is empty')
+        console.log(errors)
     }
   }
 
@@ -34,13 +63,15 @@ export default function SignUpScreen() {
             placeholder='example@email.com'
             value={email}
             onChangeText={setEmail}
+            errorText={errors.username}
         />
         <TextInputPrimary 
             label="Create a Password"
             placeholder='Password'
             value={password}
             onChangeText={setPassword}
-            // secureTextEntry={true}
+            errorText={errors.password}
+            password
             // helperText="Your password must contain at least 10 characters and at least 1 uppercase letter."
         />
         <TextInputPrimary 
@@ -48,8 +79,9 @@ export default function SignUpScreen() {
             placeholder='Password'
             value={confirmPassword}
             onChangeText={setConfirmPassword}
-            // secureTextEntry={true}
-            helperText="Your password must contain at least 10 characters and at least 1 uppercase letter."
+            errorText={errors.confirmPassword}
+            password
+            // helperText="Your password must contain at least 10 characters and at least 1 uppercase letter."
         />
         <ButtonPrimary text="Continue" press={submit}/>
         <Text style={styles.signInLink}><Link href="/SignIn">Sign in with existing account</Link></Text>
