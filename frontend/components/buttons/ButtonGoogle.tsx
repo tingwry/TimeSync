@@ -5,24 +5,22 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import { StyleSheet, Text, Dimensions, View, Pressable } from "react-native";
 
-export interface ButtonPrimaryProps {
-  text: string;
-  press: any
+export interface ButtonGoogleProps {
+  onPress: () => void;
 }
 
-export default function ButtonPrimary(props: ButtonPrimaryProps) {
+export default function ButtonGoogle(props: ButtonGoogleProps) {
   const [fontsLoaded] = useFonts({
     "dm-sans-extrabold": require("@/assets/fonts/DMSans-ExtraBold.ttf"),
   });
 
   return (
-    <Pressable style={[styles.container, styles.shadowProp]} onPress={props.press}>
-      <LinearGradient
-        colors={["#CF7B04", "#EDA33C"]}
+    <Pressable style={[styles.container, styles.shadowProp]}>
+      <View
         style={styles.buttonStyle}
       >
-        <Text style={styles.buttonText}>{props.text}</Text>
-      </LinearGradient>
+        <Text style={styles.buttonText}>Continue with Google</Text>
+      </View>
     </Pressable>
   );
 }
@@ -35,6 +33,7 @@ const styles = StyleSheet.create({
     // bottom: 44,
     width: "100%",
     alignItems: "center",
+    // backgroundColor: theme.colors.yellow,
   },
   buttonStyle: {
     width: screenWidth - 64, // Adjusting width considering left and right margin of 32
@@ -42,10 +41,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: theme.colors.textPrimary,
   },
   buttonText: {
-    fontFamily: "dm-sans-extrabold",
-    color: theme.colors.textPrimary,
+    fontFamily: "dm-sans-semibold",
+    color: theme.colors.black,
     fontSize: 16,
   },
   shadowProp: {

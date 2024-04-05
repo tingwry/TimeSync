@@ -5,6 +5,7 @@ import { useFonts } from "expo-font";
 import CardNoSchedule from "@/components/CardNoSchedule";
 import CardUpcomingSchedule from "@/components/CardUpcomingSchedule";
 import { PortalProvider } from "@gorhom/portal";
+
 // import API_URL from "@env";
 
 interface ScheduleItem {
