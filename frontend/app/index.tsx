@@ -3,7 +3,8 @@ import { StyleSheet, Text, View, Image, StatusBar } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useFonts } from "expo-font";
 import { theme } from "./theme";
-import ButtonPrimaryLink from "@/components/buttons/ButtonPrimaryLink";
+import ButtonPrimary from "@/components/buttons/ButtonPrimaryLink";
+import React from "react";
 
 export default function StartPage() {
   const [fontsLoaded] = useFonts({
@@ -26,7 +27,7 @@ export default function StartPage() {
       <Text style={styles.text_logo}>TimeSync</Text>
       <Text style={styles.text_slogan}>Your time management assistant</Text>
 
-      <ButtonPrimaryLink text={"Get Started"} linkName={"/Home"} />
+      <ButtonPrimary text={"Get Started"} linkName={"onboarding/Onboarding1"} />
     </LinearGradient>
   );
 }
@@ -54,3 +55,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
