@@ -32,8 +32,8 @@ DEBUG = True
 
 GOOGLE_API_KEY=str(os.getenv("GOOGLE_API_KEY"))
 
-IP_ADDRESS = os.getenv('IP_ADDRESS')
-ALLOWED_HOSTS = ['172.20.10.12']
+# IP_ADDRESS = os.getenv('IP_ADDRESS')
+ALLOWED_HOSTS = ['*', '172.20.10.12']
 
 # Application definition
 
@@ -90,7 +90,7 @@ load_dotenv()
 
 # SECRET_KEY = env("SECRET_KEY")
 
-ALLOWED_HOSTS=['192.168.43.117']
+# ALLOWED_HOSTS=['192.168.43.117']
 
 DATABASES = {
   'default': {
