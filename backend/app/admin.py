@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import UserInfo
-from .models import Schedule
+from .models import UserInfo, Schedule
 
 # Register your models here.
 admin.site.register(UserInfo)
