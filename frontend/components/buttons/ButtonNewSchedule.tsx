@@ -12,16 +12,15 @@ export default function ButtonNewSchedule() {
         borderRadius: 36,
         justifyContent: "center",
         alignItems: "center",
+        marginLeft: 4,
       }}
     >
       <Image
         source={require("@/assets/icons/new-schedule-plus.png")}
-        style={{width: 48, height: 48}}
+        style={{ width: 48, height: 48 }}
       />
     </LinearGradient>
   );
 }
 
-const styles = StyleSheet.create({
-  buttonIcon: {},
-});
+const styles = StyleSheet.create({});

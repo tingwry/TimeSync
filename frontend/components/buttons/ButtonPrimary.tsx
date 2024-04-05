@@ -2,12 +2,11 @@ import { theme } from "@/app/theme";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
-import React from "react";
 import { StyleSheet, Text, Dimensions, View, Pressable } from "react-native";
 
 export interface ButtonPrimaryProps {
   text: string;
-  linkName: string;
+  press: any
 }
 
 export default function ButtonPrimary(props: ButtonPrimaryProps) {
@@ -16,16 +15,14 @@ export default function ButtonPrimary(props: ButtonPrimaryProps) {
   });
 
   return (
-    <Link push href={`/${props.linkName}`} asChild style={[styles.container, styles.shadowProp]}>
-      <Pressable>
-        <LinearGradient
-          colors={["#CF7B04", "#EDA33C"]}
-          style={styles.buttonStyle}
-        >
-          <Text style={styles.buttonText}>{props.text}</Text>
-        </LinearGradient>
-      </Pressable>
-    </Link>
+    <Pressable style={[styles.container, styles.shadowProp]} onPress={props.press}>
+      <LinearGradient
+        colors={["#CF7B04", "#EDA33C"]}
+        style={styles.buttonStyle}
+      >
+        <Text style={styles.buttonText}>{props.text}</Text>
+      </LinearGradient>
+    </Pressable>
   );
 }
 
@@ -33,8 +30,8 @@ const screenWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
-    bottom: 0,
+    // position: "absolute",
+    // bottom: 44,
     width: "100%",
     alignItems: "center",
   },
@@ -44,7 +41,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 44,
   },
   buttonText: {
     fontFamily: "dm-sans-extrabold",

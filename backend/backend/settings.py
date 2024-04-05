@@ -12,9 +12,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 # import environ
 from dotenv import load_dotenv
-from os import getenv
+import os
 from pathlib import Path
 
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,13 +25,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = getenv("SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+GOOGLE_API_KEY=str(os.getenv("GOOGLE_API_KEY"))
 
+IP_ADDRESS = os.getenv('IP_ADDRESS')
+ALLOWED_HOSTS = [IP_ADDRESS]
 
 # Application definition
 
@@ -87,18 +90,20 @@ load_dotenv()
 
 # SECRET_KEY = env("SECRET_KEY")
 
+ALLOWED_HOSTS=['192.168.43.117']
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': getenv('PGDATABASE'),
-        'USER': getenv('PGUSER'),
-        'PASSWORD': getenv('PGPASSWORD'),
-        'HOST': getenv('PGHOST'),
-        'PORT': getenv('PGPORT', 5432),
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
-    }
+  'default': {
+    'ENGINE': 'django.db.backends.postgresql',
+    'NAME': os.getenv('PGDATABASE'),
+    'USER': os.getenv('PGUSER'),
+    'PASSWORD': os.getenv('PGPASSWORD'),
+    'HOST': os.getenv('PGHOST'),
+    'PORT': os.getenv('PGPORT', 5432),
+    'OPTIONS': {
+      'sslmode': 'require',
+    },
+  }
 }
 
 # Password validation
