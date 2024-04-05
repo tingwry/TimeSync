@@ -4,103 +4,77 @@ import { Link } from 'expo-router'
 import { theme } from '../theme';
 import { router } from 'expo-router';
 
-// const alarm = require("@/assets/sounds/Sound1.mp3");
+export default function AccountPage() {
+    const [isLocationSharingEnabled, setLocationSharingEnabled] = useState(false);
+    const [isDepartEnabled, setDepartEnabled] = useState(false);
+    const [isNewFriendEnabled, setNewFriendEnabled] = useState(false);
 
-export default function AlarmSetPage() {
-    const [isSound1Enabled, setSound1Enabled] = useState(false);
-    const [isSound2Enabled, setSound2Enabled] = useState(false);
-    const [isSound3Enabled, setSound3Enabled] = useState(false);
-    const [isSound4Enabled, setSound4Enabled] = useState(false);
-    
-    const toggleSound1 = () => {
-        setSound1Enabled(prevState => !prevState);
+    const toggleLocationSharing = () => {
+        setLocationSharingEnabled(prevState => !prevState);
     };
-    const toggleSound2 = () => {
-        setSound2Enabled(prevState => !prevState);
+    const toggleDepart = () => {
+        setDepartEnabled(prevState => !prevState);
     };
-    const toggleSound3 = () => {
-        setSound3Enabled(prevState => !prevState);
-    };
-    const toggleSound4 = () => {
-      setSound4Enabled(prevState => !prevState);
+    const toggleNewFriend = () => {
+        setNewFriendEnabled(prevState => !prevState);
     };
 
     return (  
         <View style={styles.background}>
-           <TouchableOpacity onPress={() => router.push("list")} style={styles.btnOutline}>
+           <TouchableOpacity onPress={() => router.push("(more)")} style={styles.btnOutline}>
           <Image source={require('@/assets/icons/chevron-left.png')} style={styles.btnIconArrowLeft} />
           <Text style={styles.smallmore}>More</Text>
         </TouchableOpacity>
-            <Text style={styles.general}>Alarms</Text>
+            <Text style={styles.general}>Notifications</Text>
             {/* //for prfile section */}
             <View>
         {/* <Text style={styles.btnText}>Account</Text> */}
         <View style={{ bottom: 25, right: 7 }}>
                 <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
                 <View style={styles.btnOutline}>
-                    <TouchableOpacity onPress={toggleSound1}>
+                    <Text style={styles.btnText}>Schedule Reminder</Text>
+                    <TouchableOpacity onPress={toggleLocationSharing}>
                         <Image
                             source={
-                                isSound1Enabled
-                                    ? require('@/assets/icons/checked.png')
-                                    : require('@/assets/icons/notcheck.png')
+                                isLocationSharingEnabled
+                                    ? require('@/assets/icons/butt-on.png')
+                                    : require('@/assets/icons/butt-off.png')
                             }
                             style={styles.btntoggle}
                         />
                     </TouchableOpacity>
                     <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-                    <Text style={styles.btnText}>Sound 1</Text>
                 </View>
                 <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
                 <View style={styles.btnOutline}>
-                    <TouchableOpacity onPress={toggleSound2}>
+                    <Text style={styles.btnText}>Departure Times</Text>
+                    <TouchableOpacity onPress={toggleDepart}>
                         <Image
                             source={
-                                isSound2Enabled
-                                ? require('@/assets/icons/checked.png')
-                                : require('@/assets/icons/notcheck.png')
+                                isDepartEnabled
+                                    ? require('@/assets/icons/butt-on.png')
+                                    : require('@/assets/icons/butt-off.png')
                             }
-                            style={styles.btntoggle}
+                            style={styles.btntoggle2}
                         />
                     </TouchableOpacity>
                     <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-                    <Text style={styles.btnText}>Sound 2</Text>
                 </View>
                 <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
                 <View style={styles.btnOutline}>
-                    <TouchableOpacity onPress={toggleSound3}>
+                    <Text style={styles.btnText}>New Friends</Text>
+                    <TouchableOpacity onPress={toggleNewFriend}>
                         <Image
                             source={
-                                isSound3Enabled
-                                ? require('@/assets/icons/checked.png')
-                                : require('@/assets/icons/notcheck.png')
+                                isNewFriendEnabled
+                                    ? require('@/assets/icons/butt-on.png')
+                                    : require('@/assets/icons/butt-off.png')
                             }
-                            style={styles.btntoggle}
+                            style={styles.btntoggle3}
                         />
                     </TouchableOpacity>
-                    <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-                    <Text style={styles.btnText}>Sound 3</Text>
                 </View>
                 <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-                <View style={styles.btnOutline}>
-                  
-                    <TouchableOpacity onPress={toggleSound4}>
-                        <Image
-                            source={
-                                isSound4Enabled
-                                ? require('@/assets/icons/checked.png')
-                                : require('@/assets/icons/notcheck.png')
-                            }
-                            style={styles.btntoggle}
-                        />
-                    </TouchableOpacity>
-                    <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-                <Text style={styles.btnText}>Sound 4</Text>
-                
-                </View>
-                
-          
-                
         </View>
         </View>
       
@@ -143,7 +117,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start'
     },
     btntoggle: {
-        right:80
+        left:40
 
     },
     btntoggle2: {
@@ -158,7 +132,7 @@ const styles = StyleSheet.create({
         color: theme.colors.textPrimary,
         fontSize:16,
         fontFamily:'dm-sans-regular',
-        right:60,
+        right:80,
     },
     smallmore: {
       color: theme.colors.textPrimary,
@@ -195,7 +169,7 @@ const styles = StyleSheet.create({
       color: theme.colors.textPrimary,
       fontSize: 20,
       fontFamily: "dm-sans-extrabold",
-      left:130,
+      left:100,
       bottom:50,
       alignItems: 'center',
       justifyContent: 'center',

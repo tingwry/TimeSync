@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import { theme } from "@/app/theme";
 import { useNavigation } from "@react-navigation/native";
+import React from "react";
 
 interface ScheduleDetailProps {
   event_name: string;
@@ -47,7 +48,7 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
           </Text>
           <View>
             <Image
-              source={require("@/assets/icons/icon=location.png")}
+              source={require("@/assets/icons/location.png")}
               style={{ width: 20, height: 20, marginTop: 10, marginBottom: 10 }}
             />
           </View>

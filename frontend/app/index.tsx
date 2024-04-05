@@ -27,7 +27,7 @@ export default function StartPage() {
       <Text style={styles.text_logo}>TimeSync</Text>
       <Text style={styles.text_slogan}>Your time management assistant</Text>
 
-      <ButtonPrimary text={"Get Started"} linkName={"onboarding/Onboarding1"} />
+      <ButtonPrimary text={"Get Started"} linkName={"Home"} />
     </LinearGradient>
   );
 }

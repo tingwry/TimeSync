@@ -1,5 +1,6 @@
 import { theme } from "@/app/theme";
 import { useNavigation } from "expo-router";
+import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 
 export default function CardNewSchedule() {

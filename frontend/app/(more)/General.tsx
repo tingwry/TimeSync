@@ -6,33 +6,26 @@ import { router } from 'expo-router';
 
 export default function AccountPage() {
     const [isLocationSharingEnabled, setLocationSharingEnabled] = useState(false);
-    const [isDepartEnabled, setDepartEnabled] = useState(false);
-    const [isNewFriendEnabled, setNewFriendEnabled] = useState(false);
 
     const toggleLocationSharing = () => {
         setLocationSharingEnabled(prevState => !prevState);
     };
-    const toggleDepart = () => {
-        setDepartEnabled(prevState => !prevState);
-    };
-    const toggleNewFriend = () => {
-        setNewFriendEnabled(prevState => !prevState);
-    };
 
     return (  
         <View style={styles.background}>
-           <TouchableOpacity onPress={() => router.push("list")} style={styles.btnOutline}>
+           <TouchableOpacity onPress={() => router.push("(more)")} style={styles.btnOutline}>
           <Image source={require('@/assets/icons/chevron-left.png')} style={styles.btnIconArrowLeft} />
           <Text style={styles.smallmore}>More</Text>
         </TouchableOpacity>
-            <Text style={styles.general}>Notifications</Text>
+            <Text style={styles.general}>General</Text>
+            <Text style={styles.privacy}>Privacy</Text>
             {/* //for prfile section */}
             <View>
         {/* <Text style={styles.btnText}>Account</Text> */}
-        <View style={{ bottom: 25, right: 7 }}>
+        <View style={{ bottom: 55, right: 7 }}>
                 <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
                 <View style={styles.btnOutline}>
-                    <Text style={styles.btnText}>Schedule Reminder</Text>
+                    <Text style={styles.btnText}>Location Sharing</Text>
                     <TouchableOpacity onPress={toggleLocationSharing}>
                         <Image
                             source={
@@ -43,38 +36,19 @@ export default function AccountPage() {
                             style={styles.btntoggle}
                         />
                     </TouchableOpacity>
-                    <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
                 </View>
                 <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-                <View style={styles.btnOutline}>
-                    <Text style={styles.btnText}>Departure Times</Text>
-                    <TouchableOpacity onPress={toggleDepart}>
-                        <Image
-                            source={
-                                isDepartEnabled
-                                    ? require('@/assets/icons/butt-on.png')
-                                    : require('@/assets/icons/butt-off.png')
-                            }
-                            style={styles.btntoggle2}
-                        />
-                    </TouchableOpacity>
-                    <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-                </View>
-                <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-                <View style={styles.btnOutline}>
-                    <Text style={styles.btnText}>New Friends</Text>
-                    <TouchableOpacity onPress={toggleNewFriend}>
-                        <Image
-                            source={
-                                isNewFriendEnabled
-                                    ? require('@/assets/icons/butt-on.png')
-                                    : require('@/assets/icons/butt-off.png')
-                            }
-                            style={styles.btntoggle3}
-                        />
-                    </TouchableOpacity>
-                </View>
-                <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
+        <Text style={styles.acc}>Account Management</Text>
+        {/* <View style={{ height: 1.5, backgroundColor: theme.colors.divLine}} /> */}
+        <View style={{bottom:40,}}>
+        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine}} />
+        <TouchableOpacity style={styles.btnOutline}>
+          <Text style={styles.btnSignout}>Delete Account</Text>
+          <Image source={require('@/assets/icons/chevron-right.png')} style={styles.btnIconArrow} />
+        </TouchableOpacity>
+        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine}} />
+        </View>
+
         </View>
         </View>
       
@@ -117,15 +91,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start'
     },
     btntoggle: {
-        left:40
-
-    },
-    btntoggle2: {
-        left:60
-
-    },
-    btntoggle3: {
-        left:90
+        left:55,
 
     },
     btnText: {
@@ -169,7 +135,7 @@ const styles = StyleSheet.create({
       color: theme.colors.textPrimary,
       fontSize: 20,
       fontFamily: "dm-sans-extrabold",
-      left:100,
+      left:130,
       bottom:50,
       alignItems: 'center',
       justifyContent: 'center',

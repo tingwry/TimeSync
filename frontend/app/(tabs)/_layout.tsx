@@ -82,9 +82,9 @@ export default function RootLayoutNav() {
         })}
       />
       <Tabs.Screen
-        name="list"
+        name="More"
         options={{
-          title: "list",
+          title: "More",
           tabBarIcon: ({ focused }) => {
             return (
               <View

@@ -1,56 +1,63 @@
 import { View, Text, StyleSheet,Image, TouchableOpacity, StatusBar, Button  } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'expo-router'
 import { theme } from '../theme';
 import { router } from 'expo-router';
 
 export default function AccountPage() {
-    const [isLocationSharingEnabled, setLocationSharingEnabled] = useState(false);
-
-    const toggleLocationSharing = () => {
-        setLocationSharingEnabled(prevState => !prevState);
-    };
-
     return (  
+        // <View style={styles.background}>
+        // <StatusBar barStyle="light-content" />
+        // <View style={styles.containerHome}>
+        //   <Text style={styles.textTitle}>Hello, User</Text>
+        //   <Text style={styles.textCaption}>Let's see what is up next!</Text>
+        // </View>
         <View style={styles.background}>
-           {/* <TouchableOpacity onPress={() => router.push("list")} style={styles.btnOutline}>
+           <TouchableOpacity onPress={() => router.push("(more)")} style={styles.btnOutline}>
           <Image source={require('@/assets/icons/chevron-left.png')} style={styles.btnIconArrowLeft} />
           <Text style={styles.smallmore}>More</Text>
-        </TouchableOpacity> */}
-            <Text style={styles.general}>General</Text>
-            <Text style={styles.privacy}>Privacy</Text>
+        </TouchableOpacity>
+            <Text style={styles.more}>Account</Text>
             {/* //for prfile section */}
             <View>
         {/* <Text style={styles.btnText}>Account</Text> */}
-        <View style={{ bottom: 55, right: 7 }}>
-                <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-                <View style={styles.btnOutline}>
-                    <Text style={styles.btnText}>Location Sharing</Text>
-                    <TouchableOpacity onPress={toggleLocationSharing}>
-                        <Image
-                            source={
-                                isLocationSharingEnabled
-                                    ? require('@/assets/icons/butt-on.png')
-                                    : require('@/assets/icons/butt-off.png')
-                            }
-                            style={styles.btntoggle}
-                        />
-                    </TouchableOpacity>
-                </View>
-                <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-        <Text style={styles.acc}>Account Management</Text>
-        {/* <View style={{ height: 1.5, backgroundColor: theme.colors.divLine}} /> */}
-        <View style={{bottom:40,}}>
+
+        <View style={styles.btnOutline}>
+          <Text style={styles.btnText}>Name</Text>
+        </View>
+        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine}} />
+        <View style={styles.btnOutline}>
+          <Text style={styles.btnText}>Username</Text>
+        </View>
+        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine}} />
+        <View style={styles.btnOutline}>
+          <Text style={styles.btnText}>Phone</Text>
+        </View>
+        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine}} />
+        <View style={styles.btnOutline}>
+          <Text style={styles.btnText}>View</Text>
+        </View>
         <View style={{ height: 1.5, backgroundColor: theme.colors.divLine}} />
         <TouchableOpacity style={styles.btnOutline}>
-          <Text style={styles.btnSignout}>Delete Account</Text>
+          <Text style={styles.btnText}>Reset Password</Text>
           <Image source={require('@/assets/icons/chevron-right.png')} style={styles.btnIconArrow} />
         </TouchableOpacity>
         <View style={{ height: 1.5, backgroundColor: theme.colors.divLine}} />
-        </View>
+        <TouchableOpacity style={styles.btnOutline}>
+          <Text style={styles.btnSignout}>Sign Out</Text>
+          <Image source={require('@/assets/icons/chevron-right.png')} style={styles.btnIconArrow} />
+        </TouchableOpacity>
+        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine}} />
 
+            {/* <Link style={styles.menu}
+            href="/list/1">Account</Link>
+            <Link href="/list/2">Locations</Link>
+            <Link href="/list/3">Preparation Time</Link>
+            <Link href="/list/1">Alarm</Link>
+            <Link href="/list/2">Locations</Link>
+            <Link href="/list/3">Preparation Time</Link> */}
         </View>
-        </View>
+        
       
         </View>
         
@@ -90,10 +97,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'flex-start'
     },
-    btntoggle: {
-        left:55,
-
-    },
     btnText: {
         color: theme.colors.textPrimary,
         fontSize:16,
@@ -131,7 +134,7 @@ const styles = StyleSheet.create({
       width:20,
 
     },
-    general: {
+    more: {
       color: theme.colors.textPrimary,
       fontSize: 20,
       fontFamily: "dm-sans-extrabold",
@@ -156,25 +159,5 @@ const styles = StyleSheet.create({
         top:40,
         paddingBottom:7,
 
-    },
-    privacy: {
-        marginTop:20,
-        color: theme.colors.textPrimary,
-        fontSize: 20,
-        fontFamily: "dm-sans-extrabold",
-        left:4,
-        bottom:50,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    acc: {
-        marginTop:80,
-        color: theme.colors.textPrimary,
-        fontSize: 20,
-        fontFamily: "dm-sans-extrabold",
-        left:4,
-        bottom:50,
-        alignItems: 'center',
-        justifyContent: 'center',
     },
 });
