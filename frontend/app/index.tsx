@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, StatusBar } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useFonts } from "expo-font";
 import { theme } from "./theme";
-import ButtonPrimary from "@/components/ButtonPrimary";
+import ButtonPrimary from "@/components/buttons/ButtonPrimaryLink";
 import React from "react";
 
 export default function StartPage() {
