@@ -5,11 +5,11 @@ import { theme } from '../theme'
 import ButtonPrimary from '@/components/buttons/ButtonPrimary'
 import { Link } from 'expo-router';
 
-// import DateTimePicker from '@react-native-community/datetimepicker';
-
+import { TimerPicker } from "react-native-timer-picker";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Questionaires() {
-    const [step, setStep] = useState<number>(3);
+    const [step, setStep] = useState<number>(1);
 
     // set home
     const [home, setHome] = useState<string>('');
@@ -38,15 +38,8 @@ export default function Questionaires() {
                     <Text style={styles.textHeader}>Set Morning</Text>
                     <Text style={styles.textHeader}>Preparation Time</Text>
                     <Text style={styles.textCaption}>Measure the time since you wake up until the time you have left your home.</Text>
-                    {/* <DateTimePicker
-                        // testID={'dateTimePicker'}
-                        value={duration}
-                        mode="countdown"
-                        display="spinner"
-                        onChange={handleTimeChange}
-                        textColor={theme.colors.textPrimary}
-                        // style={styles.duration}
-                    /> */}
+                    
+                    <TimePickerView />
                     <Text style={styles.textLink}>I'm not sure</Text>
                 </> ) : (step === 3) ? ( <>
                     <Text style={styles.textHeader}>Set Default Destination</Text>
@@ -120,5 +113,56 @@ const styles = StyleSheet.create({
         color: theme.colors.textPrimary,
         fontFamily: "dm-sans-semibold",
         fontSize: 16,
-    }
+    },    
 })
+
+const TimePickerView = () => {
+    const [duration, setDuration] = useState({hours: 0, minutes: 0, seconds: 0});
+    return (
+        <View
+            style={{
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 32,
+            marginBottom: 24,
+            }}
+        >
+            <TimerPicker
+                onDurationChange={(pickedDuration) => (console.log(pickedDuration), setDuration(pickedDuration))}
+                hourLabel="hours"
+                minuteLabel="mins"
+                // hideHours
+                hideSeconds={true}
+                LinearGradient={LinearGradient}
+                styles={{
+                    backgroundColor: theme.colors.bluePrimary,
+                    pickerItem: {
+                        fontSize: 40,
+                        color: theme.colors.textPrimary,
+                        fontFamily: "dm-sans-medium",
+                    },
+                    pickerLabel: {
+                        fontSize: 24,
+                        // marginTop: 0,
+                        color: theme.colors.textPrimary,
+                        fontFamily: "dm-sans-medium",
+                    },
+                    // pickerContainer: {
+                    //     marginRight: 0,
+                    // },
+                    pickerItemContainer: {
+                        // marginHorizontal: -16,
+                    },
+                    pickerLabelContainer: {
+                        right: -44,
+                        top: 0,
+                        bottom: 6,
+                        width: 80,
+                        // alignItems: "center",
+                    },
+                }}
+            />
+        </View>
+    );
+};
+  
