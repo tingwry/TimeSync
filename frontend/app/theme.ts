@@ -16,5 +16,6 @@ export const theme = {
         backgroundNavbar: '#0e1726',
         labelOrange: '#ff971c',
         labelGreen: '#54a424',
+        divLine: "#FEFEFE10",
       },
 }
