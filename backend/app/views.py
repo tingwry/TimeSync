@@ -8,7 +8,7 @@ from django.shortcuts import render
 from .models import UserInfo
 from rest_framework import permissions
 from rest_framework import viewsets
-from .serializers import UserInfoSerializer
+from .serializers import UserInfoSerializer, ScheduleSerializer
 
 class UserInfoViewSet(viewsets.ModelViewSet):
     queryset = UserInfo.objects.all()
