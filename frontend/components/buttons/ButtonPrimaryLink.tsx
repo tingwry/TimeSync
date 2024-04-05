@@ -2,6 +2,7 @@ import { theme } from "@/app/theme";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
+import React from "react";
 import { StyleSheet, Text, Dimensions, View, Pressable } from "react-native";
 
 export interface ButtonPrimaryProps {
