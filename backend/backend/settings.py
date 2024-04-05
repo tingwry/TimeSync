@@ -33,7 +33,7 @@ DEBUG = True
 GOOGLE_API_KEY=str(os.getenv("GOOGLE_API_KEY"))
 
 IP_ADDRESS = os.getenv('IP_ADDRESS')
-ALLOWED_HOSTS = [IP_ADDRESS]
+ALLOWED_HOSTS = ['172.20.10.12']
 
 # Application definition
 
