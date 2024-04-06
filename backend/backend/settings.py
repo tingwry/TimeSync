@@ -90,7 +90,6 @@ load_dotenv()
 
 # SECRET_KEY = env("SECRET_KEY")
 
-ALLOWED_HOSTS=['192.168.43.117']
 
 DATABASES = {
   'default': {
