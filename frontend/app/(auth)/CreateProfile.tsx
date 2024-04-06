@@ -9,8 +9,8 @@ import { authService } from '../context/authService';
 export default function CreateProfile() {
     const [loading, isLoading] = useState(false);
 
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+    const [email, setEmail] = useState<string>('hi3@gmail.com');
+    const [password, setPassword] = useState<string>('hi3');
     const [username, setUsername] = useState<string>('');
     const [name, setName] = useState<string>('');
     const [phoneNumber, setPhoneNumber] = useState<string>('');
@@ -59,18 +59,21 @@ export default function CreateProfile() {
                     placeholder='Your name or nickname'
                     value={name}
                     onChangeText={setName}
+                    errorText={errors.name}
                 />
                 <TextInputPrimary 
                     label="Username"
                     placeholder='@yourusername'
                     value={username}
                     onChangeText={setUsername}
+                    errorText={errors.username}
                 />
                 <TextInputPrimary 
                     label="Phone number"
                     placeholder='Your phone number'
                     value={phoneNumber}
                     onChangeText={setPhoneNumber}
+                    errorText={errors.phoneNumber}
                 />
                 <Text><Link href="/SignIn">Sign in</Link></Text>
             </View>

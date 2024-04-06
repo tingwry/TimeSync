@@ -163,11 +163,11 @@ class UserAuth(AbstractUser):
 
 class UserInfo(models.Model):
     uid = models.OneToOneField(
-        UserAuth, on_delete=models.CASCADE, primary_key=True)
+        UserAuth, on_delete=models.CASCADE, primary_key=True, related_name='userinfo')
 
     username = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=100)
-    alarm_sound = models.CharField(max_length=100)
+    alarm_sound = models.CharField(max_length=100, default='default')
     sched_reminder = models.BooleanField(default=True)
     departure_time = models.BooleanField(default=True)
     new_friends = models.BooleanField(default=True)
