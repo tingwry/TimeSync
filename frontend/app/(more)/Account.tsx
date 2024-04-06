@@ -6,157 +6,173 @@ import {
   TouchableOpacity,
   StatusBar,
   Button,
+  TextInput,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigation, useRouter } from "expo-router";
 import { theme } from "../theme";
 import { router } from "expo-router";
 
 export default function AccountPage() {
-  const router = useRouter();
   const navigation = useNavigation();
+
+  const [name, setName] = useState("Amy");
+  const [username, setUsername] = useState("@amychampagne");
+  const [phone, setPhone] = useState("+ 66 89 888 9999");
+  const [email, setEmail] = useState("amy.champagne@gmail.com");
+
   return (
     <View style={styles.background}>
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={styles.btnOutline}
-      >
-        <Image
-          source={require("@/assets/icons/chevron-left.png")}
-          style={styles.btnIconArrowLeft}
-        />
-        <Text style={styles.smallmore}>More</Text>
-      </TouchableOpacity>
-      <Text style={styles.more}>Account</Text>
+      <View style={styles.header}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+        >
+          <Image
+            source={require("@/assets/icons/chevron-left.png")}
+            style={{ width: 24, height: 24 }}
+          />
+          <Text style={styles.textButton}>More</Text>
+        </TouchableOpacity>
+        <Text style={styles.textHeader}>Account</Text>
+      </View>
 
-      <View>
-        <View style={styles.btnOutline}>
-          <Text style={styles.btnText}>Name</Text>
+      <View style={styles.container}>
+        <View style={styles.sectionInfo}>
+          <Text style={styles.textTitle}>Name</Text>
+          <TextInput
+            style={styles.textInfo}
+            onChangeText={(name) => setName(name)}
+            value={name}
+          />
         </View>
-        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-        <View style={styles.btnOutline}>
-          <Text style={styles.btnText}>Username</Text>
+        <View style={styles.divLine} />
+
+        <View style={styles.sectionInfo}>
+          <Text style={styles.textTitle}>Username</Text>
+          <TextInput
+            style={styles.textInfo}
+            onChangeText={(username) => setUsername(username)}
+            value={username}
+          />
         </View>
-        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-        <View style={styles.btnOutline}>
-          <Text style={styles.btnText}>Phone</Text>
+        <View style={styles.divLine} />
+
+        <View style={styles.sectionInfo}>
+          <Text style={styles.textTitle}>Phone</Text>
+          <TextInput
+            style={styles.textInfo}
+            onChangeText={(phone) => setPhone(phone)}
+            value={phone}
+          />
         </View>
-        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-        <View style={styles.btnOutline}>
-          <Text style={styles.btnText}>View</Text>
+        <View style={styles.divLine} />
+
+        <View style={styles.sectionInfo}>
+          <Text style={styles.textTitle}>Email</Text>
+          <TextInput
+            style={styles.textInfo}
+            onChangeText={(email) => setEmail(email)}
+            value={email}
+          />
         </View>
-        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-        <TouchableOpacity style={styles.btnOutline}>
-          <Text style={styles.btnText}>Reset Password</Text>
+        <View style={styles.divLine} />
+
+        <TouchableOpacity style={styles.menu}>
+          <Text style={styles.textMenu}>Reset Password</Text>
           <Image
             source={require("@/assets/icons/chevron-right.png")}
-            style={styles.btnIconArrow}
+            style={{ width: 24, height: 24 }}
           />
         </TouchableOpacity>
-        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
-        <TouchableOpacity style={styles.btnOutline}>
-          <Text style={styles.btnSignout}>Sign Out</Text>
+        <View style={styles.divLine} />
+
+        <TouchableOpacity style={styles.menu}>
+          <Text style={styles.textMenuRed}>Sign out</Text>
           <Image
             source={require("@/assets/icons/chevron-right.png")}
-            style={styles.btnIconArrow}
+            style={{ width: 24, height: 24 }}
           />
         </TouchableOpacity>
-        <View style={{ height: 1.5, backgroundColor: theme.colors.divLine }} />
+        <View style={styles.divLine} />
       </View>
     </View>
   );
 }
 const styles = StyleSheet.create({
   background: {
-    flex: 1,
-    paddingTop: 90,
-    paddingLeft: 32,
-    paddingRight: 32,
+    flexGrow: 1,
     backgroundColor: theme.colors.bluePrimary,
     gap: 16,
+    paddingTop: 68,
+    paddingHorizontal: 24,
   },
-  btnOutline: {
-    backgroundColor: theme.colors.bluePrimary,
-    height: 48,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "flex-start",
+  header: {
     flexDirection: "row",
-    paddingHorizontal: 90,
-    fontFamily: "dm-sans-regular",
-  },
-  normalText: {
-    color: theme.colors.textPrimary,
-    fontSize: 16,
-    fontFamily: "dm-sans-regular",
-    right: 80,
-  },
-  btn: {
-    backgroundColor: theme.colors.red,
-    height: 48,
-    width: 326,
-    borderRadius: 6,
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-  },
-  btnText: {
-    color: theme.colors.textPrimary,
-    fontSize: 16,
-    fontFamily: "dm-sans-regular",
-    right: 80,
-  },
-  smallmore: {
-    color: theme.colors.textPrimary,
-    fontSize: 16,
-    fontFamily: "dm-sans-regular",
-    right: 65,
-  },
-  btnSignout: {
-    color: theme.colors.red,
-    fontSize: 16,
-    fontFamily: "dm-sans-regular",
-    right: 80,
-  },
-  btnIcon: {
-    position: "absolute",
-    left: 1,
-    height: 20,
-    width: 20,
-  },
-  btnIconArrow: {
-    position: "absolute",
-    right: 1,
-    height: 20,
-    width: 20,
-  },
-  btnIconArrowLeft: {
-    position: "absolute",
-    left: 1,
-    height: 20,
-    width: 20,
-  },
-  more: {
-    color: theme.colors.textPrimary,
-    fontSize: 20,
-    fontFamily: "dm-sans-extrabold",
-    left: 130,
-    bottom: 50,
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 16,
   },
-  profile: {
+  textHeader: {
+    fontFamily: "dm-sans-bold",
+    fontSize: 20,
     color: theme.colors.textPrimary,
-    fontSize: 19,
-    fontFamily: "dm-sans-semibold",
-    paddingTop: 4,
-    paddingBottom: 7,
+    justifyContent: "center",
   },
-  alarm: {
-    position: "relative",
+  backButton: {
+    position: "absolute",
+    paddingRight: 8,
+    paddingVertical: 8,
+    alignItems: "center",
+    left: 0,
+    flexDirection: "row",
+    gap: 4,
+  },
+  textButton: {
     color: theme.colors.textPrimary,
-    fontSize: 19,
-    fontFamily: "dm-sans-semibold",
-    top: 40,
-    paddingBottom: 7,
+    fontSize: 16,
+    fontFamily: "dm-sans-medium",
+  },
+  container: {
+    paddingHorizontal: 8,
+    flexDirection: "column",
+  },
+  sectionInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    height: 48,
+  },
+  textTitle: {
+    fontFamily: "dm-sans-regular",
+    color: theme.colors.textPrimary,
+    fontSize: 16,
+  },
+  textInfo: {
+    position: "absolute",
+    left: 106,
+    fontFamily: "dm-sans-medium",
+    color: theme.colors.textPrimary,
+    fontSize: 16,
+  },
+  divLine: {
+    height: 1,
+    backgroundColor: theme.colors.divLine,
+    justifyContent: "flex-end",
+  },
+  menu: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    height: 48,
+  },
+  textMenu: {
+    fontFamily: "dm-sans-medium",
+    color: theme.colors.textPrimary,
+    fontSize: 16,
+  },
+  textMenuRed: {
+    fontFamily: "dm-sans-medium",
+    color: theme.colors.red,
+    fontSize: 16,
   },
 });

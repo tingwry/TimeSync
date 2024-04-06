@@ -60,7 +60,7 @@ export default function NewSchedule() {
       // console.log(result);
     }
 
-    // navigation.goBack();
+    navigation.goBack();
   };
 
   return (
@@ -186,11 +186,12 @@ export default function NewSchedule() {
             </ScrollView>
           </View>
           <View style={styles.footer}>
-            <Button 
+            {/* <Button 
               title="Add Schedule"
               onPress={handleClickPress}  
               color="white"
-            />
+            /> */}
+            <ButtonPrimary text="Add Schedule" press={handleClickPress} />
             {/* <ButtonPrimary text="Add Schedule" onPress={handleClickPress}/> */}
             <Pressable>
               <Text style={styles.cancelButton}>Cancel</Text>

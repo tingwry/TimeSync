@@ -5,12 +5,8 @@ import { theme } from "../theme";
 export default function StackLayout() {
   return (
     <Stack screenOptions={screenOptions}>
-      <Stack.Screen
-        name="Account"
-        options={{
-          headerShown: false,
-        }}
-      />
+      <Stack.Screen name="Account" options={{ headerShown: false }} />
+      <Stack.Screen name="Locations" options={{ headerShown: false }} />
     </Stack>
   );
 }

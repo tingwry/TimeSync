@@ -2,8 +2,8 @@ import { View, Text, StyleSheet, Image, StatusBar, Button } from "react-native";
 import React, { useState, useEffect } from "react";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
-import CardNoSchedule from "@/components/CardNoSchedule";
-import CardUpcomingSchedule from "@/components/CardUpcomingSchedule";
+import CardNoSchedule from "@/components/cards/CardNoSchedule";
+import CardUpcomingSchedule from "@/components/cards/CardUpcomingSchedule";
 import { PortalProvider } from "@gorhom/portal";
 // import API_URL from "@env";
 
@@ -18,7 +18,7 @@ interface ScheduleItem {
   note: string;
 }
 import AlarmClock from "../src/AlarmClock";
-import CardCountDownTimer from "@/components/CardCountDownTimer";
+import CardCountDownTimer from "@/components/cards/CardCountDownTimer";
 import PopUpCountdownTimer from "../src/PopUpCountDownTimer";
 // import PopUpCountdownTimer from "../src/PopUpCountDownTimer";
 

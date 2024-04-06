@@ -1,39 +1,40 @@
 import { theme } from "@/app/theme";
 import React from "react";
-import { Text, Image, View, StyleSheet, Pressable } from "react-native";
+import { Text, Image, View, StyleSheet, Pressable, TouchableOpacity } from "react-native";
 
-export interface CardAddressSmallProps {
+export interface CardLocationsProps {
   locationName: string;
   locationDetail: string;
-  labelIcon: any;
+    labelIcon: any;
+    navigateTo: any
 }
 
-export default function CardAddressSmall(props: CardAddressSmallProps) {
+export default function CardLocations(props: CardLocationsProps) {
   return (
-    <Pressable style={cardStyles.cardStyle}>
+    <TouchableOpacity style={cardStyles.cardStyle} onPress={props.navigateTo}>
       <View style={cardStyles.label}>
         <Image source={props.labelIcon} style={{ width: 20, height: 20 }} />
       </View>
       <View style={cardStyles.addressDetail}>
         <Text style={cardStyles.addressName}>{props.locationName}</Text>
         <Text style={cardStyles.addressLocation}>{props.locationDetail}</Text>
-      </View>
-    </Pressable>
+          </View>
+          <Image source={require("@/assets/icons/chevron-right.png")} style={{width: 24, height: 24}} />
+    </TouchableOpacity>
   );
 }
 
 const cardStyles = StyleSheet.create({
   cardStyle: {
-    width: 216,
-    height: 80,
+    width: "100%",
+    height: 96,
     backgroundColor: theme.colors.blueSecondary,
     marginTop: 16,
     borderRadius: 20,
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
     flexDirection: "row",
-    marginRight: 8,
   },
   label: {
     width: 32,
@@ -44,7 +45,7 @@ const cardStyles = StyleSheet.create({
     alignItems: "center",
   },
   addressDetail: {
-    width: "75%",
+    width: "70%",
     flexDirection: "column",
   },
   addressName: {

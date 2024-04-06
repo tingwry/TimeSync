@@ -10,7 +10,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
-import CardSchedule from "@/components/CardSchedule";
+import CardSchedule from "@/components/cards/CardSchedule";
 import { PortalProvider } from "@gorhom/portal";
 // import API_URL from "@env";
 
@@ -40,7 +40,9 @@ export default function Home() {
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
-        const response = await fetch(`http://172.20.10.12:8000/app/schedule/view/`);
+        const response = await fetch(
+          `http://172.20.10.12:8000/app/schedule/view/`
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch schedule");

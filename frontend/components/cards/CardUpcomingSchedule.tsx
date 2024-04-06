@@ -27,7 +27,7 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
   const handlePress = () => {
     console.warn("View all schedules");
     // navigation.navigate("(viewschedules)");
-    router.navigate("(viewschedules)");
+    router.push("/ViewAllSchedule");
   };
   return (
     <View style={{ paddingHorizontal: 24 }}>

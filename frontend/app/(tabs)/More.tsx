@@ -31,8 +31,10 @@ export default function ListPage() {
           style={styles.chevronStyle}
         />
       </TouchableOpacity>
+
       <View style={styles.divLine} />
-      <TouchableOpacity style={styles.menuButton} onPress={() => router.navigate("Location")}>
+
+      <TouchableOpacity style={styles.menuButton} onPress={() => router.push("/Locations")}>
         <Image
           source={require("@/assets/icons/location.png")}
           style={{width: 20, height: 20}}
@@ -43,8 +45,10 @@ export default function ListPage() {
           style={styles.chevronStyle}
         />
       </TouchableOpacity>
+
       <View style={styles.divLine} />
-      <TouchableOpacity style={styles.menuButton} onPress={() => router.navigate("Account")}>
+
+      <TouchableOpacity style={styles.menuButton} onPress={() => router.navigate("Locations")}>
         <Image
           source={require("@/assets/icons/preparation.png")}
           style={{width: 20, height: 20}}
@@ -55,10 +59,13 @@ export default function ListPage() {
           style={styles.chevronStyle}
         />
       </TouchableOpacity>
+
       <View style={styles.divLine} />
 
       <Text style={styles.sectionTitle}>Alarm</Text>
+
       <View style={styles.divLine} />
+
       <TouchableOpacity style={styles.menuButton} onPress={() => router.navigate("Alarm")}>
         <Image
           source={require("@/assets/icons/alarm-clock.png")}
@@ -70,10 +77,13 @@ export default function ListPage() {
           style={styles.chevronStyle}
         />
       </TouchableOpacity>
+
       <View style={styles.divLine} />
 
       <Text style={styles.sectionTitle}>Settings</Text>
+
       <View style={styles.divLine} />
+
       <TouchableOpacity style={styles.menuButton} onPress={() => router.navigate("General")}>
         <Image
           source={require("@/assets/icons/setting.png")}
@@ -85,7 +95,9 @@ export default function ListPage() {
           style={styles.chevronStyle}
         />
       </TouchableOpacity>
+
       <View style={styles.divLine} />
+
       <TouchableOpacity style={styles.menuButton} onPress={() => router.navigate("Notification")}>
         <Image
           source={require("@/assets/icons/notifications.png")}
@@ -97,6 +109,7 @@ export default function ListPage() {
           style={styles.chevronStyle}
         />
       </TouchableOpacity>
+
       <View style={styles.divLine} />
 
     </View>
