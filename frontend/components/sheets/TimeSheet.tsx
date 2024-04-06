@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { Portal } from "@gorhom/portal";
@@ -15,7 +15,6 @@ import ButtonPrimary from "../buttons/ButtonPrimary";
 import { TimerPicker } from "react-native-timer-picker";
 import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "@/app/theme";
-import React from "react";
 
 export interface TimeSheetProps {
   time: any;

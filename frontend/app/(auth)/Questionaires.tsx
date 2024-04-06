@@ -7,9 +7,10 @@ import { Link } from 'expo-router';
 
 import { TimerPicker } from "react-native-timer-picker";
 import { LinearGradient } from "expo-linear-gradient";
+import ButtonLocation from '@/components/buttons/ButtonLocation';
 
 export default function Questionaires() {
-    const [step, setStep] = useState<number>(1);
+    const [step, setStep] = useState<number>(3);
 
     // set home
     const [home, setHome] = useState<string>('');
@@ -26,7 +27,7 @@ export default function Questionaires() {
         <SafeAreaView style={styles.container}>
             <View style={styles.top}>
                 <Text>top</Text>
-                <Text><Link href="/AllowLocation">Terms</Link></Text>
+                <Text><Link href="/AllowLocation">allow location</Link></Text>
             </View>
             <View style={styles.icontab}>
                 <View style={styles.icon}></View>
@@ -34,6 +35,7 @@ export default function Questionaires() {
             <View style={styles.content}>
                 {(step === 1) ? ( <>
                     <Text style={styles.textHeader}>Set Home Location</Text>
+                    <ButtonLocation onPress={() => {console.log("PP")}}/>
                 </> ) : (step === 2) ? ( <>
                     <Text style={styles.textHeader}>Set Morning</Text>
                     <Text style={styles.textHeader}>Preparation Time</Text>
@@ -43,6 +45,7 @@ export default function Questionaires() {
                     <Text style={styles.textLink}>I'm not sure</Text>
                 </> ) : (step === 3) ? ( <>
                     <Text style={styles.textHeader}>Set Default Destination</Text>
+                    <ButtonLocation onPress={() => {console.log("PP")}}/>
                     <Pressable onPress={() => {}}>
                         <Text>Set location</Text>
                     </Pressable>

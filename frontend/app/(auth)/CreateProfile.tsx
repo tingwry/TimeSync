@@ -9,8 +9,8 @@ import { authService } from '../context/authService';
 export default function CreateProfile() {
     const [loading, isLoading] = useState(false);
 
-    const [email, setEmail] = useState<string>('hi7@gmail.com');
-    const [password, setPassword] = useState<string>('hi7');
+    const [email, setEmail] = useState<string>('hi8@gmail.com');
+    const [password, setPassword] = useState<string>('hi8');
     const [username, setUsername] = useState<string>('');
     const [name, setName] = useState<string>('');
     const [phoneNumber, setPhoneNumber] = useState<string>('');
@@ -76,6 +76,7 @@ export default function CreateProfile() {
                     errorText={errors.phoneNumber}
                 />
                 <Text><Link href="/SignIn">Sign in</Link></Text>
+                <Text><Link href="/Terms">Terms</Link></Text>
             </View>
             <View style={styles.button}>
                 <ButtonPrimary text="Create Accont" press={submit}/>

@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, Pressable, TouchableOpacity } from "react-native";
-import { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { Portal } from "@gorhom/portal";

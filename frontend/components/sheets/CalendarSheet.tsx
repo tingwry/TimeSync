@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
-import {
+import React, {
   useCallback,
   useMemo,
   useRef,
@@ -18,7 +18,6 @@ import { styles } from "./SheetStyles";
 import ButtonPrimary from "../buttons/ButtonPrimary";
 import { Calendar, CalendarUtils } from "react-native-calendars";
 import { theme } from "@/app/theme";
-import React from "react";
 
 export default function CalendarSheet() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);

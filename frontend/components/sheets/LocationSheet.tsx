@@ -1,5 +1,5 @@
 import { View, Text, Image, Pressable, StyleSheet, TouchableOpacity } from "react-native";
-import { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { Portal } from "@gorhom/portal";
@@ -8,7 +8,7 @@ import CardAddress from "../address/CardAddress";
 import { BottomSheetProvider } from "@gorhom/bottom-sheet/lib/typescript/contexts";
 import StartPoint from "../address/StartPoint";
 import { theme } from "@/app/theme";
-import React from "react";
+
 
 export default function LocationSheet() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);

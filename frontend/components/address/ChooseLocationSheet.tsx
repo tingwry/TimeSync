@@ -18,7 +18,7 @@ import BottomSheet, {
   BottomSheetView,
   BottomSheetTextInput,
 } from "@gorhom/bottom-sheet";
-import { useRef, useMemo, useCallback, useState } from "react";
+import React, { useRef, useMemo, useCallback, useState } from "react";
 import { Portal } from "@gorhom/portal";
 
 export default function ChooseLocation() {
