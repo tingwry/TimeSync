@@ -3,8 +3,14 @@ import React from 'react'
 import { Link } from 'expo-router'
 import { theme } from '../theme';
 import { router } from 'expo-router';
+import { useAuth } from '../context/authContext';
 
 export default function AccountPage() {
+    const auth = useAuth();
+    const signOut = () => {
+        console.log('Sign Out')
+        auth.signOut();
+    }
     return (  
         // <View style={styles.background}>
         // <StatusBar barStyle="light-content" />
@@ -43,7 +49,7 @@ export default function AccountPage() {
           <Image source={require('@/assets/icons/chevron-right.png')} style={styles.btnIconArrow} />
         </TouchableOpacity>
         <View style={{ height: 1.5, backgroundColor: theme.colors.divLine}} />
-        <TouchableOpacity style={styles.btnOutline}>
+        <TouchableOpacity style={styles.btnOutline} onPress={signOut}>
           <Text style={styles.btnSignout}>Sign Out</Text>
           <Image source={require('@/assets/icons/chevron-right.png')} style={styles.btnIconArrow} />
         </TouchableOpacity>

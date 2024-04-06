@@ -3,8 +3,10 @@ import React from "react";
 import { AuthProvider } from "./context/authContext";
 
 export default function StackLayout() {
+
     return (
         <AuthProvider>
+            
             <Stack>
                 <Stack.Screen name="index" options={{ headerShown: false }} />
                 <Stack.Screen name="onboarding" options={{ headerShown: false }} />

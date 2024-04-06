@@ -23,6 +23,7 @@ export default function TextInputPrimary({ label, helperText, errorText, passwor
             <TextInput 
                 {...props} 
                 autoCapitalize='none'
+                autoComplete='off'
                 autoCorrect={false}
                 secureTextEntry={hidePassword}
                 placeholderTextColor={theme.colors.textPlaceholder}
@@ -31,11 +32,12 @@ export default function TextInputPrimary({ label, helperText, errorText, passwor
                     { borderColor: 
                         errorText ? theme.colors.red :
                         isFocused ? theme.colors.textPrimary 
-                        : '#FEFEFE1A'}
+                        : '#FEFEFE1A'
+                    }
+                    
                 ]}
                 onFocus={() => {setIsFocused(true)}}
                 onBlur={() => {setIsFocused(false)}}
-                
             />
             {password && <Pressable onPress={() => setHidePassword(!hidePassword)}><Text>toggle hide</Text></Pressable>}
             {/* {helperText && <Text style={styles.helperText}>
@@ -52,7 +54,7 @@ export default function TextInputPrimary({ label, helperText, errorText, passwor
     );
 };
 
-const screenWidth = Dimensions.get("window").width;
+// const screenWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
     container: {

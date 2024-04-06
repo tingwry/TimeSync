@@ -10,26 +10,26 @@ import ButtonGoogle from '@/components/buttons/ButtonGoogle';
 
 export default function SignUpScreen() {
   const [loading, isLoading] = useState(false);
-  const auth = useAuth();
+//   const auth = useAuth();
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   
   const [errors, setErrors] = useState({
-    username: '',
+    email: '',
     password: '',
     confirmPassword: '',
   });
 
   const validateForm = () => {
     let e = {
-        username: '',
+        email: '',
         password: '',
         confirmPassword: '',
     };
     if (email === '') {
-        e.username = 'Email is required';;
+        e.email = 'Email is required';;
     }
     if (password === '') {
         e.password = 'Password is required';
@@ -46,12 +46,8 @@ export default function SignUpScreen() {
 
   const submit = async () => {
     if (validateForm()) {
-        console.log(`Sign Up Screen: email = ${email}, password = ${password}`)
         isLoading(true);
-        await authService.signUp(email, password);
-        router.replace('/CreateProfile');
-    } else {
-        console.log(errors)
+        const res = await authService.checkEmail(email);
     }
   }
 
@@ -63,7 +59,7 @@ export default function SignUpScreen() {
             placeholder='example@email.com'
             value={email}
             onChangeText={setEmail}
-            errorText={errors.username}
+            errorText={errors.email}
         />
         <TextInputPrimary 
             label="Create a Password"
@@ -113,6 +109,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginTop: 16,
         marginBottom: 16,
+        textDecorationLine: 'underline',
     },
     or: {
         color: theme.colors.textPrimary,

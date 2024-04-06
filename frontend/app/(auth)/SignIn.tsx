@@ -76,7 +76,6 @@ export default function SignInScreen() {
                 placeholder='Password'
                 value={password}
                 onChangeText={setPassword}
-
                 errorText={errors.password}
                 password
             />
@@ -112,6 +111,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         marginTop: 4,
         marginBottom: 16,
+        textDecorationLine: 'underline',
     },
     signUpLink: {
         color: theme.colors.textPrimary,
@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginTop: 16,
         marginBottom: 16,
+        textDecorationLine: 'underline',
     },
     or: {
         color: theme.colors.textPrimary,
