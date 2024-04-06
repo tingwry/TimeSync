@@ -7,11 +7,18 @@ import {
   StatusBar,
   Button,
 } from "react-native";
-import React, { useState } from "react";
-import { Link, useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigation, useRouter } from "expo-router";
 import { theme } from "../theme";
+import Sound from "react-native-sound";
 
 // const alarm = require("@/assets/sounds/Sound1.mp3");
+
+const sounds = [
+  "@/assets/sounds/Sound1.mp3",
+  "@/assets/sounds/Sound2.mp3",
+  "@/assets/sounds/Sound3.mp3",
+];
 
 export default function AlarmSetPage() {
   const [isSound1Enabled, setSound1Enabled] = useState(false);
@@ -32,25 +39,137 @@ export default function AlarmSetPage() {
     setSound4Enabled((prevState) => !prevState);
   };
 
-  const router = useRouter();
+  const navigation = useNavigation();
+
+  const [select, setSelected] = useState(1);
+
+  var Sound = require("react-native-sound");
+  const [currentSoundIndex, setCurrentSoundIndex] = useState(null);
+
+  const playSound = (index: any) => {
+    // Stop any currently playing sound
+    // Sound.stop();
+
+    // Initialize the new sound
+    const sound = new Sound(sounds[index], null, (error: any) => {
+      if (error) {
+        console.log("Failed to load the sound", error);
+        return;
+      }
+
+      // Play the sound
+      sound.play((success: any) => {
+        if (success) {
+          console.log("Sound played successfully");
+        } else {
+          console.log("Sound playback failed");
+        }
+      });
+    });
+
+    // Set the current sound index
+    setCurrentSoundIndex(index);
+  };
 
   return (
     <View style={styles.background}>
-      <TouchableOpacity
-        onPress={() => router.push("/Alarm")}
-        style={styles.btnOutline}
-      >
-        <Image
-          source={require("@/assets/icons/chevron-left.png")}
-          style={styles.btnIconArrowLeft}
-        />
-        <Text style={styles.smallmore}>More</Text>
-      </TouchableOpacity>
-      <Text style={styles.general}>Alarms</Text>
-      {/* //for prfile section */}
-      <View>
-        {/* <Text style={styles.btnText}>Account</Text> */}
-        <View style={{ bottom: 25, right: 7 }}>
+      <View style={styles.header}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+        >
+          <Image
+            source={require("@/assets/icons/chevron-left.png")}
+            style={{ width: 24, height: 24 }}
+          />
+          <Text style={styles.textButton}>More</Text>
+        </TouchableOpacity>
+        <Text style={styles.textHeader}>Alarms</Text>
+      </View>
+
+      <View style={styles.container}>
+        <TouchableOpacity
+          style={styles.option}
+          onPress={() => {
+            setSelected(1);
+            // playSound(0);
+          }}
+        >
+          <View>
+            {select === 1 ? (
+              <View style={styles.radioActive}>
+                <Image
+                  source={require("@/assets/icons/radio-check.png")}
+                  style={styles.radioCheckIcon}
+                />
+              </View>
+            ) : (
+              <View style={styles.radioDefault} />
+            )}
+          </View>
+          <Text style={styles.textOption}>Sound 1</Text>
+        </TouchableOpacity>
+
+        <View style={styles.divLine} />
+
+        <TouchableOpacity style={styles.option} onPress={() => setSelected(2)}>
+          <View>
+            {select === 2 ? (
+              <View style={styles.radioActive}>
+                <Image
+                  source={require("@/assets/icons/radio-check.png")}
+                  style={styles.radioCheckIcon}
+                />
+              </View>
+            ) : (
+              <View style={styles.radioDefault} />
+            )}
+          </View>
+          <Text style={styles.textOption}>Sound 2</Text>
+        </TouchableOpacity>
+
+        <View style={styles.divLine} />
+
+        <TouchableOpacity style={styles.option} onPress={() => setSelected(3)}>
+          <View>
+            {select === 3 ? (
+              <View style={styles.radioActive}>
+                <Image
+                  source={require("@/assets/icons/radio-check.png")}
+                  style={styles.radioCheckIcon}
+                />
+              </View>
+            ) : (
+              <View style={styles.radioDefault} />
+            )}
+          </View>
+          <Text style={styles.textOption}>Sound 3</Text>
+        </TouchableOpacity>
+
+        <View style={styles.divLine} />
+
+        <TouchableOpacity style={styles.option} onPress={() => setSelected(4)}>
+          <View>
+            {select === 4 ? (
+              <View style={styles.radioActive}>
+                <Image
+                  source={require("@/assets/icons/radio-check.png")}
+                  style={styles.radioCheckIcon}
+                />
+              </View>
+            ) : (
+              <View style={styles.radioDefault} />
+            )}
+          </View>
+          <Text style={styles.textOption}>Sound 4</Text>
+        </TouchableOpacity>
+
+        <View style={styles.divLine} />
+      </View>
+
+      {/* <View> */}
+      {/* <Text style={styles.btnText}>Account</Text> */}
+      {/* <View style={{ bottom: 25, right: 7 }}>
           <View
             style={{ height: 1.5, backgroundColor: theme.colors.divLine }}
           />
@@ -127,131 +246,84 @@ export default function AlarmSetPage() {
             />
             <Text style={styles.btnText}>Sound 4</Text>
           </View>
-        </View>
-      </View>
+        </View> */}
+      {/* </View> */}
     </View>
   );
 }
 const styles = StyleSheet.create({
   background: {
-    flex: 1,
-    paddingTop: 90,
-    paddingLeft: 32,
-    paddingRight: 32,
+    flexGrow: 1,
     backgroundColor: theme.colors.bluePrimary,
     gap: 16,
+    paddingTop: 68,
+    paddingHorizontal: 24,
   },
-  btnOutline: {
-    backgroundColor: theme.colors.bluePrimary,
-    height: 48,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "flex-start",
+  header: {
     flexDirection: "row",
-    paddingHorizontal: 90,
-    fontFamily: "dm-sans-regular",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 16,
   },
-  normalText: {
+  textHeader: {
+    fontFamily: "dm-sans-bold",
+    fontSize: 20,
+    color: theme.colors.textPrimary,
+    justifyContent: "center",
+  },
+  backButton: {
+    position: "absolute",
+    paddingRight: 8,
+    paddingVertical: 8,
+    alignItems: "center",
+    left: 0,
+    flexDirection: "row",
+    gap: 4,
+  },
+  textButton: {
     color: theme.colors.textPrimary,
     fontSize: 16,
-    fontFamily: "dm-sans-regular",
-    right: 80,
+    fontFamily: "dm-sans-medium",
   },
-  btn: {
-    backgroundColor: theme.colors.red,
+  container: {
+    paddingHorizontal: 8,
+    flexDirection: "column",
+  },
+  option: {
+    flexDirection: "row",
+    gap: 12,
+    alignItems: "center",
     height: 48,
-    width: 326,
-    borderRadius: 6,
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
   },
-  btntoggle: {
-    right: 80,
-  },
-  btntoggle2: {
-    left: 60,
-  },
-  btntoggle3: {
-    left: 90,
-  },
-  btnText: {
-    color: theme.colors.textPrimary,
+  textOption: {
+    fontFamily: "dm-sans-medium",
     fontSize: 16,
-    fontFamily: "dm-sans-regular",
-    right: 60,
-  },
-  smallmore: {
     color: theme.colors.textPrimary,
-    fontSize: 16,
-    fontFamily: "dm-sans-regular",
-    right: 65,
   },
-  btnSignout: {
-    color: theme.colors.red,
-    fontSize: 16,
-    fontFamily: "dm-sans-regular",
-    right: 80,
+  radioDefault: {
+    width: 24,
+    height: 24,
+    borderWidth: 1,
+    borderColor: theme.colors.textPrimary,
+    borderRadius: 12,
   },
-  btnIcon: {
-    position: "absolute",
-    left: 1,
-    height: 20,
-    width: 20,
-  },
-  btnIconArrow: {
-    position: "absolute",
-    right: 1,
-    height: 20,
-    width: 20,
-  },
-  btnIconArrowLeft: {
-    position: "absolute",
-    left: 1,
-    height: 20,
-    width: 20,
-  },
-  general: {
-    color: theme.colors.textPrimary,
-    fontSize: 20,
-    fontFamily: "dm-sans-extrabold",
-    left: 130,
-    bottom: 50,
-    alignItems: "center",
+  radioActive: {
+    width: 24,
+    height: 24,
+    borderWidth: 1,
+    borderColor: theme.colors.textPrimary,
+    backgroundColor: theme.colors.textPrimary,
+    borderRadius: 12,
     justifyContent: "center",
-  },
-  profile: {
-    color: theme.colors.textPrimary,
-    fontSize: 19,
-    fontFamily: "dm-sans-semibold",
-    paddingTop: 4,
-    paddingBottom: 7,
-  },
-  alarm: {
-    position: "relative",
-    color: theme.colors.textPrimary,
-    fontSize: 19,
-    fontFamily: "dm-sans-semibold",
-    top: 40,
-    paddingBottom: 7,
-  },
-  privacy: {
-    marginTop: 20,
-    color: theme.colors.textPrimary,
-    fontSize: 20,
-    fontFamily: "dm-sans-extrabold",
-    left: 4,
-    bottom: 50,
     alignItems: "center",
-    justifyContent: "center",
   },
-  acc: {
-    marginTop: 80,
-    color: theme.colors.textPrimary,
-    fontSize: 20,
-    fontFamily: "dm-sans-extrabold",
-    left: 4,
-    bottom: 50,
-    alignItems: "center",
-    justifyContent: "center",
+  radioCheckIcon: {
+    width: 16,
+    height: 16,
+  },
+  divLine: {
+    height: 1,
+    backgroundColor: theme.colors.divLine,
+    justifyContent: "flex-end",
   },
 });

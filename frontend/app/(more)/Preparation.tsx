@@ -1,17 +1,9 @@
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Image,
-  Text,
-  Pressable,
-} from "react-native";
+import { StyleSheet, TouchableOpacity, View, Image, Text } from "react-native";
 import { theme } from "../theme";
 import React from "react";
-import { router, useNavigation } from "expo-router";
-import CardLocations from "@/components/address/CardLocations";
+import { useNavigation } from "expo-router";
 
-export default function LocationsPage() {
+export default function PreparationPage() {
   const navigation = useNavigation();
 
   return (
@@ -27,20 +19,7 @@ export default function LocationsPage() {
           />
           <Text style={styles.textButton}>More</Text>
         </TouchableOpacity>
-        <Text style={styles.textHeader}>Locations</Text>
-      </View>
-      <View style={styles.container}>
-        <Text style={styles.textTitle}>Home Location</Text>
-        <CardLocations
-          locationName="Home"
-          locationDetail="RHYTHM Rangnam"
-          labelIcon={require("@/assets/icons/home.png")}
-          navigateTo={() => router.push("/locations/LocationHome")}
-        />
-
-        <Text style={[styles.textTitle, { marginTop: 24 }]}>
-          Saved Location
-        </Text>
+        <Text style={styles.textHeader}>Preparation Time</Text>
       </View>
     </View>
   );
@@ -83,21 +62,5 @@ const styles = StyleSheet.create({
   container: {
     // paddingHorizontal: 8,
     flexDirection: "column",
-  },
-  textTitle: {
-    fontFamily: "dm-sans-regular",
-    fontSize: 16,
-    color: theme.colors.textPrimary,
-    marginLeft: 8,
-    marginTop: 8,
-  },
-  cardLocation: {
-    flexDirection: "row",
-    padding: 20,
-    gap: 16,
-    height: 96,
-    backgroundColor: theme.colors.blueSecondary,
-    borderRadius: 20,
-    marginBottom: 16,
   },
 });

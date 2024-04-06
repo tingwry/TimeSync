@@ -34,7 +34,7 @@ export default function ListPage() {
 
       <View style={styles.divLine} />
 
-      <TouchableOpacity style={styles.menuButton} onPress={() => router.push("/Locations")}>
+      <TouchableOpacity style={styles.menuButton} onPress={() => router.navigate("Locations")}>
         <Image
           source={require("@/assets/icons/location.png")}
           style={{width: 20, height: 20}}
@@ -48,7 +48,7 @@ export default function ListPage() {
 
       <View style={styles.divLine} />
 
-      <TouchableOpacity style={styles.menuButton} onPress={() => router.navigate("Locations")}>
+      <TouchableOpacity style={styles.menuButton} onPress={() => router.navigate("Preparation")}>
         <Image
           source={require("@/assets/icons/preparation.png")}
           style={{width: 20, height: 20}}
