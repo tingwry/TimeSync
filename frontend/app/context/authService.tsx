@@ -60,8 +60,8 @@ const register = async (email: string, password: string, username: string, name:
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-            'user_auth' : { email, password },
-            'user_info' : { username, name, phone_number }
+            'userauth' : { email, password },
+            'userinfo' : { username, name, phone_number }
         }),
     });
 

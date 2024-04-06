@@ -9,8 +9,8 @@ import { authService } from '../context/authService';
 export default function CreateProfile() {
     const [loading, isLoading] = useState(false);
 
-    const [email, setEmail] = useState<string>('hi3@gmail.com');
-    const [password, setPassword] = useState<string>('hi3');
+    const [email, setEmail] = useState<string>('hi7@gmail.com');
+    const [password, setPassword] = useState<string>('hi7');
     const [username, setUsername] = useState<string>('');
     const [name, setName] = useState<string>('');
     const [phoneNumber, setPhoneNumber] = useState<string>('');
