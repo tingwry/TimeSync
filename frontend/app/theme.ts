@@ -14,7 +14,7 @@ export const theme = {
       orangePrimary: '#ff971c',
       orangeSecondary: '#ffbc10',
       backgroundNavbar: '#0e1726',
-      labelOrange: '#ff971c',
+      labelOrange: '#ff971c40',
       labelGreen: '#54a424',
       divLine: "#fefefe10",
       modalBackground: "#1B2A47",
