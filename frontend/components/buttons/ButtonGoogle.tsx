@@ -3,7 +3,7 @@ import { theme } from "@/app/theme";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
-import { StyleSheet, Text, Dimensions, View, Pressable } from "react-native";
+import { StyleSheet, Text, Dimensions, View, Pressable, Image } from "react-native";
 
 export interface ButtonGoogleProps {
   onPress: () => void;
@@ -19,6 +19,7 @@ export default function ButtonGoogle(props: ButtonGoogleProps) {
       <View
         style={styles.buttonStyle}
       >
+        <Image source={require("@/assets/icons/google.png")} style={{width: 32, height: 32}} />
         <Text style={styles.buttonText}>Continue with Google</Text>
       </View>
     </Pressable>
@@ -42,6 +43,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: theme.colors.textPrimary,
+    flexDirection: "row",
+    gap: 16
   },
   buttonText: {
     fontFamily: "dm-sans-semibold",
