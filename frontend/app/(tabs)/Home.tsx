@@ -1,12 +1,10 @@
 import { View, Text, StyleSheet, Image, StatusBar, Button } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
-import CardNoSchedule from "@/components/cards/CardNoSchedule";
-import CardUpcomingSchedule from "@/components/cards/CardUpcomingSchedule";
+import CardNoSchedule from "@/components/CardNoSchedule";
+import CardUpcomingSchedule from "@/components/CardUpcomingSchedule";
 import { PortalProvider } from "@gorhom/portal";
-
-// import API_URL from "@env";
 
 interface ScheduleItem {
   event_id: number;
@@ -18,10 +16,6 @@ interface ScheduleItem {
   extra_prep_time: Int16Array;
   note: string;
 }
-import AlarmClock from "../src/AlarmClock";
-import CardCountDownTimer from "@/components/cards/CardCountDownTimer";
-import PopUpCountdownTimer from "../src/PopUpCountDownTimer";
-// import PopUpCountdownTimer from "../src/PopUpCountDownTimer";
 
 export default function Home() {
   const [fontsLoaded] = useFonts({
@@ -35,16 +29,13 @@ export default function Home() {
     return <Text>Loading...</Text>;
   }
 
-  const [schedule, setSchedule] = useState<ScheduleItem | null>(null);
-  const [scheduleNumber, setScheduleNumber] = useState(0);
+  const [schedule, setSchedule] = useState<ScheduleItem| null>(null)
+  const [scheduleNumber, setScheduleNumber] = useState(0)
 
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
-        const response = await fetch(
-          `http://172.20.10.12:8000/app/schedule/recent/`
-        );
-
+        const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/");
         if (!response.ok) {
           throw new Error("Failed to fetch schedule");
         }
@@ -55,7 +46,7 @@ export default function Home() {
         console.error("Error fetching schedule:", error);
       }
     };
-
+  
     fetchSchedule();
   }, []);
 
@@ -65,23 +56,14 @@ export default function Home() {
       <View style={styles.containerHome}>
         <Text style={styles.textTitle}>Hello, User</Text>
         <Text style={styles.textCaption}>Let's see what is up next!</Text>
-        <Text style={styles.textUpcoming}>Upcoming Schedule</Text>
       </View>
-      {/* <PopUpCountdownTimer /> */}
-      {/* <CardUpcomingSchedule
-        event_name={"Presentation"}
-        date={"24 Apr 2024"}
-        start_time={"09:00"}
-        end_time={"12:00"}
-        transportation_mode={"Car"}
-        // extra_prep_time={00:30:00}
-        note={"None"}
-      /> */}
+     
       <View>
-        {scheduleNumber === 0 ? (
+        { scheduleNumber === 0 ? (
           <CardNoSchedule />
         ) : (
           <View style={styles.container}>
+            <Text style={styles.textHeader}>Upcoming Schedule</Text>
             {schedule && (
               <CardUpcomingSchedule
                 event_name={schedule.event_name}
@@ -93,7 +75,7 @@ export default function Home() {
                 note={schedule.note}
               />
             )}
-            {/* {schedule.map((scheduleItem) => (
+              {/* {schedule.map((scheduleItem) => (
                 <CardUpcomingSchedule
                   key={scheduleItem.event_id}
                   event_name={scheduleItem.event_name}
@@ -108,7 +90,6 @@ export default function Home() {
           </View>
         )}
       </View>
-      {/* <AlarmClock /> */}
     </View>
   );
 }
@@ -147,13 +128,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingLeft: 8,
     paddingBottom: 24,
-  },
-  textUpcoming: {
-    color: theme.colors.textPrimary,
-    fontFamily: "dm-sans-semibold",
-    fontSize: 20,
-    paddingLeft: 8,
-    marginTop: 48,
-    marginBottom: 24,
   },
 });
