@@ -26,7 +26,7 @@ export default function StartScreen() {
             <Text style={styles.text_logo}>TimeSync</Text>
             <Text style={styles.text_slogan}>Your time management assistant</Text>
 
-            <ButtonPrimaryLink text={"Get Started"} linkName={"/SignIn"} />
+            <ButtonPrimaryLink text={"Get Started"} linkName={"/onboarding/Onboarding1"} />
         </LinearGradient>   
     )
 }

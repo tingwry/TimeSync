@@ -1,17 +1,25 @@
-import { Redirect, Link } from "expo-router";
-import { StyleSheet, Text, View, Image, StatusBar, Button, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  StatusBar,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useFonts } from "expo-font";
 import { theme } from "../theme";
 import ButtonPrimary from "@/components/buttons/ButtonPrimaryLink";
 import React from "react";
-import { router } from "expo-router";
 
 export default function Onboard2() {
+  const router = useRouter();
   const [fontsLoaded] = useFonts({
     "dm-sans-medium": require("@/assets/fonts/DMSans-Medium.ttf"),
-    "dm-sans-extrabold": require("@/assets/fonts/DMSans-ExtraBold.ttf"),
-    "dm-sans-semibold": require("@/assets/fonts/DMSans-SemiBold.ttf"),
+    "dm-sans-regular": require("@/assets/fonts/DMSans-Regular.ttf"),
+    "dm-sans-bold": require("@/assets/fonts/DMSans-Bold.ttf"),
   });
   if (!fontsLoaded) {
     return <Text>Loading...</Text>;
@@ -20,172 +28,127 @@ export default function Onboard2() {
   return (
     <LinearGradient colors={["#182640", "#263D66"]} style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <TouchableOpacity onPress={() => router.push("/onboarding/Onboarding1")} style={styles.btnOutline}>
-          <Image source={require('@/assets/icons/chevron-left.png')} style={styles.btnIconArrowLeft} />
-          <Text style={styles.previous}>Previous</Text>
+      <View style={styles.navigationTop}>
+        <TouchableOpacity
+          onPress={() => router.push("/onboarding/Onboarding1")}
+          style={styles.backButton}
+        >
+          <Image
+            source={require("@/assets/icons/chevron-left.png")}
+            style={{ width: 24, height: 24 }}
+          />
+          <Text style={styles.textButton}>Previous</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => router.push("/onboarding/Onboarding3")} style={styles.btnSkip}>
-          <Text style={styles.skip}>Skip</Text>
-          <Image source={require('@/assets/icons/chevron-right.png')} style={styles.btnIconArrowRight} />
+
+        <TouchableOpacity
+          onPress={() => router.push("/onboarding/Onboarding3")}
+          style={styles.backButton}
+        >
+          <Text style={styles.textButton}>Skip</Text>
+          <Image
+            source={require("@/assets/icons/chevron-right.png")}
+            style={{ width: 24, height: 24 }}
+          />
         </TouchableOpacity>
-        <View style={{width: 342, height: 355, bottom:48}}>
-      <Image
-        source={require("@/assets/images/onboard-pic-2.png")}
-        style={{width: 342, height: 390, bottom:65, paddingBottom:60}}
-      />
       </View>
-      <Text style={styles.text_wakeup}>Arrive at your destination on time</Text>
-      <Text style={styles.text_slogan}>Know how much time you have to prepare {"\n"}yourself
-       with our personalized timer, and{"\n"} leave your home at the right time.
-       </Text>
-       <View style={{ height: 3, backgroundColor: theme.colors.textPrimary}} />
-       <View style={styles.screenIndicator}>
-        <View style={styles.dot1} />
-        <View style={styles.dot2} />
-        <View style={styles.dot3} />
+      <View style={styles.contentView}>
+        <Image
+          source={require("@/assets/images/onboard-pic-2.png")}
+          style={{ width: 342, height: 342, marginBottom: 32 }}
+        />
+        <Text style={styles.textHeader}>
+          Get ready and leave home just on time
+        </Text>
+        <Text style={styles.textDescription}>
+          Know how much time you have to prepare yourself with our personalized
+          timer, and leave your home at the right time.
+        </Text>
       </View>
-      <ButtonPrimary text={"Next"} linkName={"onboarding/Onboarding3"} />
-      <View style={{ height: 3, backgroundColor: theme.colors.textPrimary}} />
+
+      <View style={styles.indicatorContainer}>
+        <Pressable
+          style={styles.indicator}
+          onPress={() => router.push("/onboarding/Onboarding1")}
+        />
+        <View style={styles.indicatorFocus} />
+        <Pressable
+          style={styles.indicator}
+          onPress={() => router.push("/onboarding/Onboarding3")}
+        />
+      </View>
+
+      <View style={styles.footer}>
+        <ButtonPrimary text="Next" linkName={"/onboarding/Onboarding3"} />
+      </View>
     </LinearGradient>
-    
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    flexGrow: 1,
+    backgroundColor: theme.colors.bluePrimary,
+    gap: 16,
+    paddingTop: 68,
+    paddingHorizontal: 24,
+  },
+  backButton: {
+    paddingRight: 8,
+    paddingVertical: 8,
     alignItems: "center",
+    left: 0,
+    flexDirection: "row",
+    gap: 4,
+  },
+  textButton: {
+    color: theme.colors.textPrimary,
+    fontSize: 16,
+    fontFamily: "dm-sans-medium",
+  },
+  navigationTop: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  contentView: {
+    flexDirection: "column",
     justifyContent: "center",
   },
-  text_wakeup: {
-    bottom:60,
-    fontFamily: "dm-sans-extrabold",
-    color: theme.colors.textPrimary,
-    textAlign:'center',
+  textHeader: {
+    fontFamily: "dm-sans-bold",
     fontSize: 32,
-  },
-  text_slogan: {
-    fontFamily: "dm-sans-medium",
-    color: theme.colors.textCaption,
-    fontSize: 16,
-    bottom:30,
-    // paddingBottom: 15,
-    textAlign:'center',
-    lineHeight: 28,
-  },
-  btnIconArrowRight: {
-    position: 'absolute',
-    left: 245,
-    bottom:90,
-    height:20,
-    width:20,
-  },
-  skip: {
-    position:'absolute',
-      color: theme.colors.textPrimary,
-      fontSize:16,
-      fontFamily:'dm-sans-medium',
-      left: 212,
-      bottom:90,
-  },
-  btnText: {
-    position:'absolute',
     color: theme.colors.textPrimary,
-    fontSize:16,
-    fontFamily:'dm-sans-medium',
-    right:49,
-    top:100,
-},
-btnIconArrow: {
-    position: 'absolute',
-    top:100,
-    right:22,
-    height:24,
-    width:24,
-
-},
-btnPrev: {
-  height: 48,
-  position: 'absolute',
-  borderRadius: 8,
-  alignItems: 'center',
-  justifyContent: 'flex-start',
-  flexDirection: 'row',
-  paddingHorizontal: 90,
-  fontFamily:'dm-sans-regular',
-  left:10,
-},
-btnSkip: {
-  height: 48,
-  right:5,
-  bottom:15,
-  borderRadius: 8,
-  justifyContent: 'flex-start',
-  position: 'relative',
-  flexDirection: 'row',
-  paddingHorizontal: 80,
-  fontFamily:'dm-sans-medium'
-},
-previous: {
-  position:'absolute',
-  color: theme.colors.textPrimary,
-  fontSize:16,
-  fontFamily:'dm-sans-medium',
-  right: 178,
-  bottom:40,
-  
-},
-btnIconArrowLeft: {
-  position: 'absolute',
-  right: 245,
-  bottom:40,
-  height:20,
-  width:20,
-
-},
-btnOutline: {
-  height: 48,
-  left:9,
-  bottom:15,
-  borderRadius: 8,
-  justifyContent: 'flex-start',
-  position: 'relative',
-  flexDirection: 'row',
-  paddingHorizontal: 80,
-  fontFamily:'dm-sans-medium'
-},
-screenIndicator: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  bottom:15,
-  
-},
-dot1: {
-  width: 40,
-  height: 8,
-  borderRadius: 4,
-  backgroundColor: theme.colors.textPlaceholder,
-  marginHorizontal: 13,
-  top:20,
-},
-dot2: {
-  width: 40,
-  height: 8,
-  borderRadius: 4,
-  backgroundColor: theme.colors.textPrimary,
-  marginHorizontal: 13,
-  top:20,
-},
-dot3: {
-  width: 40,
-  height: 8,
-  borderRadius: 4,
-  backgroundColor: theme.colors.textPlaceholder,
-  marginHorizontal: 13,
-  top:20,
-},
-activeDot: {
-  backgroundColor: theme.colors.textPrimary, // Set the active dot color
-},
+    textAlign: "center",
+    lineHeight: 42,
+    marginBottom: 48,
+  },
+  textDescription: {
+    fontFamily: "dm-sans-regular",
+    textAlign: "center",
+    color: theme.colors.textCaption,
+    paddingHorizontal: 16,
+  },
+  footer: {
+    justifyContent: 'flex-end',
+    flex: 1,
+  },
+  indicatorContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 24,
+    marginTop: 24,
+    justifyContent: "center",
+  },
+  indicator: {
+    width: 42,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: theme.colors.textPlaceholder,
+  },
+  indicatorFocus: {
+    width: 42,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: theme.colors.textPrimary,
+  },
 });
