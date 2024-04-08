@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
+import { theme } from "../theme";
 import MapView from "react-native-maps";
 import { Marker, Callout } from "react-native-maps";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
@@ -20,20 +21,31 @@ export default function App() {
 //     mapRef.current.animateToRegion(pin, 3 * 1000);
 //   };
 
-  const onMarkerDragEnd = (e) => {
+  const onMarkerDragEnd = (e: any) => {
     const { latitude, longitude } = e.nativeEvent.coordinate;
-    setPin(prevPin => ({ ...prevPin, latitude, longitude }));
+
+    const validLatitude = Math.min(Math.max(latitude, -90), 90).toFixed(16);
+    const validLongitude = Math.min(Math.max(longitude, -180), 180).toFixed(16);
+
+    setPin(prevPin => ({ ...prevPin, validLatitude, validLongitude }));
     console.log("End", pin);
   };
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch("YOUR_BACKEND_API_URL", {
+      const response = await fetch("http://127.0.0.1:8000/app/location/create/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(pin),
+        body: JSON.stringify({
+          loc_name: "Home",
+          latitude: pin.latitude,
+          longitude: pin.longitude,
+          default_home: false,
+          default_dest: false,
+          user_id: 1,
+        }),
       });
       if (response.ok) {
         console.log("Success");
@@ -47,7 +59,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <GooglePlacesAutocomplete
+      {/* <GooglePlacesAutocomplete
         placeholder='Search'
         fetchDetails={true}
         GooglePlacesSearchQuery={{
@@ -69,8 +81,8 @@ export default function App() {
           container: {flex: 0, position: 'absolute', width: '100%', zIndex: 1},
           listView: {backgroundColor: 'white'},
         }}
-      />
-      {/* <Button onPress={() => goToPin()} title="Go Home" /> */}
+      /> */}
+      {/* <Button onPress={handleSubmit} title="Submit" /> */}
 
       <MapView
         // provider="google"
@@ -96,9 +108,9 @@ export default function App() {
           </Callout>
         </Marker>
       </MapView>
+      <Button onPress={handleSubmit} title="Submit" />
       {/* <Button onPress={() => goToPin()} title="Go Home" /> */}
-      {/* <Text style={styles.text}>Current latitude{region.latitude}</Text>
-      <Text style={styles.text}>Current longitude{region.longitude}</Text>  */}
+
     </View>
   );
 }
@@ -109,7 +121,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
     flex: 1,
     // justifyContent: "flex-end",
-    alignItems: "center",
+    // alignItems: "center",
   },
   map: {
     ...StyleSheet.absoluteFillObject,
@@ -117,5 +129,13 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     backgroundColor: "lightblue",
+  },
+  textUpcoming: {
+    color: theme.colors.textPrimary,
+    fontFamily: "dm-sans-semibold",
+    fontSize: 20,
+    paddingLeft: 8,
+    marginTop: 48,
+    marginBottom: 24,
   },
 });
