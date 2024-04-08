@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet, Image, StatusBar, Button } from "react-native";
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
-import CardNoSchedule from "@/components/CardNoSchedule";
-import CardUpcomingSchedule from "@/components/CardUpcomingSchedule";
+import CardNoSchedule from "@/components/cards/CardNoSchedule";
+import CardUpcomingSchedule from "@/components/cards/CardUpcomingSchedule";
 import { PortalProvider } from "@gorhom/portal";
 
 interface ScheduleItem {

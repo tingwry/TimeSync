@@ -21,8 +21,10 @@ import BottomSheet, {
 import { useRef, useMemo, useCallback, useState } from "react";
 import { Portal } from "@gorhom/portal";
 import React from "react";
+import { ButtonPrimaryProps } from "../buttons/ButtonPrimary";
 
-import MapView,{ Marker, Callout } from "react-native-maps";
+import MapView from "react-native-maps";
+import { Marker, Callout } from "react-native-maps";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 export default function ChooseLocation() {
@@ -68,8 +70,44 @@ export default function ChooseLocation() {
     latitude: 13.736834400006273,
     longitude: 100.53314465311604,
   });
-
+  
   const mapRef = useRef(null);
+
+  const onMarkerDragEnd = (e: any) => {
+    const { latitude, longitude } = e.nativeEvent.coordinate;
+
+    const validLatitude = parseFloat(Math.min(Math.max(latitude, -90), 90).toFixed(16));
+    const validLongitude = parseFloat(Math.min(Math.max(longitude, -180), 180).toFixed(16));
+
+    setPin({ latitude: validLatitude, longitude: validLongitude });
+    console.log("End", { latitude: validLatitude, longitude: validLongitude });
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/app/location/create/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          loc_name: "Home",
+          latitude: pin.latitude,
+          longitude: pin.longitude,
+          default_home: false,
+          default_dest: false,
+          user_id: 1,
+        }),
+      });
+      if (response.ok) {
+        console.log("Success");
+      } else {
+        console.error("Failed to post");
+      }
+    } catch (error) {
+      console.error("Error submitting:", error);
+    }
+  };
 
   return (
     <GestureHandlerRootView>
@@ -86,7 +124,7 @@ export default function ChooseLocation() {
           style={[styles.chevronStyle, { marginTop: 8 }]}
         />
       </Pressable>
-      
+
       <Portal>
         <BottomSheetModal
           ref={bottomSheetModalRef}
@@ -101,7 +139,7 @@ export default function ChooseLocation() {
             <View style={[styles.handleModalIndicatorStyle, { flexGrow: 1 }]} />
 
             <TouchableOpacity
-              style={[styles.modalCloseButton, {marginRight: 16}]}
+              style={[styles.modalCloseButton, { marginRight: 16 }]}
               onPress={handleCloseSheet}
               hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }} // Adjust hitSlop as needed
             >
@@ -110,7 +148,7 @@ export default function ChooseLocation() {
                 style={{ width: 20, height: 20 }}
               />
             </TouchableOpacity>
-            
+
             <View style={menuStyle.header}>
               <View style={[styles.sheetItem, { marginLeft: 32 }]}>
                 <Image
@@ -119,8 +157,30 @@ export default function ChooseLocation() {
                 />
                 <Text style={styles.textHeader}>Choose Location</Text>
               </View>
-              
-            </View>       
+            </View>
+
+            <MapView
+              // provider="google"
+              ref={mapRef}
+              style={{ width: "100%", height: "100%", marginTop: 20}}
+              initialRegion={{
+                latitude: 13.736834400006273,
+                longitude: 100.53314465311604,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}
+            >
+              <Marker
+                coordinate={pin}
+                draggable={true}
+                
+                onDragEnd={onMarkerDragEnd}
+              >
+                <Callout>
+                  <Text>My Location</Text>
+                </Callout>
+              </Marker>
+            </MapView>
 
             {/* Search Bottom Sheet */}
 
@@ -153,8 +213,14 @@ export default function ChooseLocation() {
                       style={{ width: 24, height: 24 }}
                     />
                     <Text style={styles.textHeader}>Location</Text>
+                    {/* <View>
+                      <Text style={styles.textTitle}>{pin.latitude}{pin.longitude}</Text>
+                    </View> */}
                   </View>
-                  <View style={searchContainerStyle}>
+                  <View style={menuStyle.header}>
+                    <Button title="Done" onPress={handleCloseSheet} />
+                  </View>
+                  {/* <View style={searchContainerStyle}>
                     <Image
                       source={require("@/assets/icons/search.png")}
                       style={{ width: 20, height: 20 }}
@@ -165,18 +231,14 @@ export default function ChooseLocation() {
                       placeholderTextColor={theme.colors.textPlaceholder}
                       onFocus={handleSearchFocus}
                     />
-                 </View>
+                 </View> */}
                 </View>
               </BottomSheet>
             </Portal> 
-
           </BottomSheetView>
         </BottomSheetModal>
-        
       </Portal>
-      
     </GestureHandlerRootView>
-    
   );
 }
 
@@ -254,4 +316,5 @@ const menuStyle = StyleSheet.create({
     fontFamily: "dm-sans-regular",
     color: theme.colors.textCaption,
   },
+  
 });

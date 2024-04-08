@@ -116,6 +116,12 @@ export const styles = StyleSheet.create({
         fontFamily: "dm-sans-medium",
         color: theme.colors.textPrimary,
       },
+      textTitle: {
+        fontFamily: "dm-sans-regular",
+        fontSize: 16,
+        color: theme.colors.textPrimary,
+      
+      },
       pressableMenu: {
         flexDirection: "row",
         alignItems: "center",
