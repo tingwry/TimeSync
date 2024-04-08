@@ -8,11 +8,12 @@ import {
 } from "react-native";
 import { theme } from "../theme";
 import React from "react";
-import { router, useNavigation } from "expo-router";
+import { useRouter, useNavigation } from "expo-router";
 import CardLocations from "@/components/address/CardLocations";
 
 export default function LocationsPage() {
   const navigation = useNavigation();
+  const router = useRouter();
 
   return (
     <View style={styles.background}>
@@ -35,7 +36,7 @@ export default function LocationsPage() {
           locationName="Home"
           locationDetail="RHYTHM Rangnam"
           labelIcon={require("@/assets/icons/home.png")}
-          navigateTo={() => router.push("/locations/LocationHome")}
+          navigateTo={() => router.push("/LocationHome")}
         />
 
         <Text style={[styles.textTitle, { marginTop: 24 }]}>

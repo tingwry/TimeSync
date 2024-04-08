@@ -76,7 +76,7 @@ export default function TimeSheet(props: TimeSheetProps) {
                 <TimePickerView />
               </View>
               <View style={styles.modalFooter}>
-                <ButtonPrimary text="Select Time" />
+                <ButtonPrimary text="Select Time" press={handleCloseModalPress}/>
               </View>
             </View>
           </BottomSheetView>

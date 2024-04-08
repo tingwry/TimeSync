@@ -2,7 +2,7 @@ import { StyleSheet, View } from "react-native"
 import { theme } from "../theme"
 import React from "react"
 
-export function LocationHome() {
+export default function LocationHome() {
     return (
         <View style={styles.background}>
             
