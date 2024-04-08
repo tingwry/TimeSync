@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import { theme } from "@/app/theme";
 import { useNavigation } from "@react-navigation/native";
+import React from "react";
 
 interface ScheduleDetailProps {
   event_name: string;

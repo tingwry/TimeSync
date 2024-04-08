@@ -1,4 +1,5 @@
 import { theme } from "@/app/theme";
+import React from "react";
 import { Text, Image, View, StyleSheet, Pressable } from "react-native";
 
 export interface CardAddressSmallProps {

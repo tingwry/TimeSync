@@ -20,6 +20,7 @@ import BottomSheet, {
 } from "@gorhom/bottom-sheet";
 import { useRef, useMemo, useCallback, useState } from "react";
 import { Portal } from "@gorhom/portal";
+import React from "react";
 
 export default function ChooseLocation() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);

@@ -13,7 +13,7 @@ import {
 import { theme } from "../theme";
 import { LinearGradient } from "expo-linear-gradient";
 import { isAbsolute } from "path";
-import CardCountDownTimer from "@/components/CardCountDownTimer";
+import CardCountDownTimer from "@/components/cards/CardCountDownTimer";
 
 const PopUpCountdownTimer = () => {
   const [fontsLoaded] = useFonts({

@@ -4,6 +4,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { Portal } from "@gorhom/portal";
 import { styles } from "./SheetStyles";
+import React from "react";
 
 export default function AlarmNotiSheet() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);

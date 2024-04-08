@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import React, { Children } from "react";
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
 import ButtonNewSchedule from "@/components/buttons/ButtonNewSchedule";
@@ -8,8 +8,10 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import NewSchedule from "./NewSchedule";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PortalProvider } from "@gorhom/portal";
+import { useAuth } from "../context/authContext";
 
 export default function RootLayoutNav() {
+  const auth = useAuth();
   const [fontsLoaded] = useFonts({
     "dm-sans-medium": require("@/assets/fonts/DMSans-Medium.ttf"),
     "dm-sans-extrabold": require("@/assets/fonts/DMSans-ExtraBold.ttf"),
@@ -17,6 +19,10 @@ export default function RootLayoutNav() {
     "dm-sans-regular": require("@/assets/fonts/DMSans-Regular.ttf"),
     "dm-sans-bold": require("@/assets/fonts/DMSans-Bold.ttf"),
   });
+
+  // if (!auth.authData) {
+  //   return <Redirect href="/StartScreen" />;
+  // }
 
   if (!fontsLoaded) {
     return <Text>Loading...</Text>;
@@ -82,9 +88,9 @@ export default function RootLayoutNav() {
         })}
       />
       <Tabs.Screen
-        name="list"
+        name="More"
         options={{
-          title: "list",
+          title: "More",
           tabBarIcon: ({ focused }) => {
             return (
               <View
@@ -111,7 +117,15 @@ export default function RootLayoutNav() {
             );
           },
         }}
+        // listeners={({ navigation }) => ({
+        //   tabPress: (e) => {
+        //     e.preventDefault();
+        //     navigation.navigate("(more)");
+        //   },
+          
+        // })}
       />
+      
     </Tabs>
     
   );

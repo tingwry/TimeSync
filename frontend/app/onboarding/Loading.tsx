@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, StatusBar, Button, TouchableOpacity } fr
 import { LinearGradient } from "expo-linear-gradient";
 import { useFonts } from "expo-font";
 import { theme } from "../theme";
-import ButtonPrimary from "@/components/ButtonPrimary";
+import ButtonPrimary from "@/components/buttons/ButtonPrimaryLink";
 import React from "react";
 import { router } from "expo-router";
 
@@ -33,7 +33,6 @@ export default function Onboard1() {
         source={require("@/assets/images/loadpic.png")}
         style={{ width: 260, height: 260, bottom:45}}
       />
-      {/* {"\n"}  */}
       </View>
       <Text style={styles.text_wakeup}>You are all set!</Text>
       <Text style={styles.text_slogan}>We are preparing for your best experience. {"\n"}Your journey is about to begin!</Text>

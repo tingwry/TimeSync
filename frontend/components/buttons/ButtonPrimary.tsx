@@ -1,3 +1,4 @@
+import React from "react";
 import { theme } from "@/app/theme";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";

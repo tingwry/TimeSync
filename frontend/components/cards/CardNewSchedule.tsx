@@ -1,12 +1,15 @@
 import { theme } from "@/app/theme";
-import { useNavigation } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
+import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 
 export default function CardNewSchedule() {
   const navigation = useNavigation();
+  const router = useRouter();
 
   const handlePress = () => {
-    navigation.navigate("(newschedule)");
+    // navigation.navigate("(newschedule)");
+    router.push("/NewScheduleSheet");
   };
 
   return (

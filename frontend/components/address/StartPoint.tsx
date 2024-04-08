@@ -10,6 +10,7 @@ import { useRef, useMemo, useCallback } from "react";
 import { Portal } from "@gorhom/portal";
 import CardAddressSmall from "./CardAddressSmall";
 import ChooseLocation from "./ChooseLocationSheet";
+import React from "react";
 
 export default function StartPoint() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);

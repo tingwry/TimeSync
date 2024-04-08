@@ -60,9 +60,10 @@ import { View, Text, StyleSheet, Image, StatusBar, Button } from "react-native";
 import React, { useState, useEffect } from "react";
 import { theme } from "../theme";
 import { useFonts } from "expo-font";
-import CardNoSchedule from "@/components/CardNoSchedule";
-import CardUpcomingSchedule from "@/components/CardUpcomingSchedule";
+import CardNoSchedule from "@/components/cards/CardNoSchedule";
+import CardUpcomingSchedule from "@/components/cards/CardUpcomingSchedule";
 import { PortalProvider } from "@gorhom/portal";
+
 // import API_URL from "@env";
 
 interface ScheduleItem {
@@ -76,7 +77,7 @@ interface ScheduleItem {
   note: string;
 }
 import AlarmClock from "../src/AlarmClock";
-import CardCountDownTimer from "@/components/CardCountDownTimer";
+import CardCountDownTimer from "@/components/cards/CardCountDownTimer";
 import PopUpCountdownTimer from "../src/PopUpCountDownTimer";
 // import PopUpCountdownTimer from "../src/PopUpCountDownTimer";
 
@@ -124,9 +125,17 @@ export default function Home() {
         <Text style={styles.textCaption}>Let's see what is up next!</Text>
         <Text style={styles.textUpcoming}>Upcoming Schedule</Text>
       </View>
-      <PopUpCountdownTimer />
+      {/* <PopUpCountdownTimer /> */}
+      {/* <CardUpcomingSchedule
+        event_name={"Presentation"}
+        date={"24 Apr 2024"}
+        start_time={"09:00"}
+        end_time={"12:00"}
+        transportation_mode={"Car"}
+        // extra_prep_time={00:30:00}
+        note={"None"}
+      /> */}
       <View>
-        
         {scheduleNumber === 0 ? (
           <CardNoSchedule />
         ) : (
@@ -157,7 +166,7 @@ export default function Home() {
           </View>
         )}
       </View>
-      <AlarmClock />
+      {/* <AlarmClock /> */}
     </View>
   );
 }
@@ -202,6 +211,7 @@ const styles = StyleSheet.create({
     fontFamily: "dm-sans-semibold",
     fontSize: 20,
     paddingLeft: 8,
-    marginTop: 48
+    marginTop: 48,
+    marginBottom: 24,
   },
 });

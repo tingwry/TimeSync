@@ -8,6 +8,7 @@ import CardAddress from "../address/CardAddress";
 import { BottomSheetProvider } from "@gorhom/bottom-sheet/lib/typescript/contexts";
 import StartPoint from "../address/StartPoint";
 import { theme } from "@/app/theme";
+import React from "react";
 
 export default function LocationSheet() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
