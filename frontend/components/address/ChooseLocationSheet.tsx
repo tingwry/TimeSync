@@ -22,6 +22,9 @@ import { useRef, useMemo, useCallback, useState } from "react";
 import { Portal } from "@gorhom/portal";
 import React from "react";
 
+import MapView,{ Marker, Callout } from "react-native-maps";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+
 export default function ChooseLocation() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["93%"], []);
@@ -60,6 +63,14 @@ export default function ChooseLocation() {
     setFocus(false);
   };
 
+  // map part
+  const [pin, setPin] = useState({
+    latitude: 13.736834400006273,
+    longitude: 100.53314465311604,
+  });
+
+  const mapRef = useRef(null);
+
   return (
     <GestureHandlerRootView>
       <Pressable style={menuStyle.subMenu} onPress={handlePresentModalPress}>
@@ -75,6 +86,7 @@ export default function ChooseLocation() {
           style={[styles.chevronStyle, { marginTop: 8 }]}
         />
       </Pressable>
+      
       <Portal>
         <BottomSheetModal
           ref={bottomSheetModalRef}
@@ -107,7 +119,8 @@ export default function ChooseLocation() {
                 />
                 <Text style={styles.textHeader}>Choose Location</Text>
               </View>
-            </View>
+              
+            </View>       
 
             {/* Search Bottom Sheet */}
 
@@ -152,14 +165,18 @@ export default function ChooseLocation() {
                       placeholderTextColor={theme.colors.textPlaceholder}
                       onFocus={handleSearchFocus}
                     />
-                  </View>
+                 </View>
                 </View>
               </BottomSheet>
-            </Portal>
+            </Portal> 
+
           </BottomSheetView>
         </BottomSheetModal>
+        
       </Portal>
+      
     </GestureHandlerRootView>
+    
   );
 }
 

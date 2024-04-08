@@ -42,6 +42,12 @@ export default function LocationsPage() {
         <Text style={[styles.textTitle, { marginTop: 24 }]}>
           Saved Location
         </Text>
+        <CardLocations
+          locationName="Add new Location"
+          locationDetail="go to nextttt"
+          labelIcon={require("@/assets/icons/school.png")}
+          navigateTo={() => router.push("/MapLocation")} 
+        />
       </View>
     </View>
   );

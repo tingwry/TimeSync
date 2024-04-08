@@ -1,11 +1,13 @@
-import { StyleSheet, View } from "react-native"
+import { StyleSheet, View, Text } from "react-native"
 import { theme } from "../theme"
-import React from "react"
+import React, { useRef, useState } from "react";
 
 export default function LocationHome() {
     return (
         <View style={styles.background}>
-            
+            <View style={styles.container}>
+                <Text>LocationHome</Text>
+            </View>
         </View>
     )
 }
