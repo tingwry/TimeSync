@@ -68,8 +68,8 @@ class Schedule(models.Model):
 class Location(models.Model):
     loc_id = models.AutoField(primary_key=True)
     loc_name = models.CharField(max_length=100)
-    latitude = models.DecimalField(max_digits=9, decimal_places=6)
-    longitude = models.DecimalField(max_digits=10, decimal_places=6)
+    latitude = models.DecimalField(max_digits=22, decimal_places=16)
+    longitude = models.DecimalField(max_digits=22, decimal_places=16)
     default_home = models.BooleanField(default=False)
     default_dest = models.BooleanField(default=False)
 
