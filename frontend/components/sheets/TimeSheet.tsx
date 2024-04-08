@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { Portal } from "@gorhom/portal";
@@ -20,6 +20,7 @@ import React from "react";
 export interface TimeSheetProps {
   time: any;
   title: string;
+  onTimeSelect: (time: string) => void; // Define the prop
 }
 
 export default function TimeSheet(props: TimeSheetProps) {

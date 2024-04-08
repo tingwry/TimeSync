@@ -177,7 +177,7 @@ export default function ChooseLocation() {
                 onDragEnd={onMarkerDragEnd}
               >
                 <Callout>
-                  <Text>My Location</Text>
+                  <Text>My Destination</Text>
                 </Callout>
               </Marker>
             </MapView>

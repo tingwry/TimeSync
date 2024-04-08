@@ -1,5 +1,5 @@
 import { View, Text, Image, Pressable, ScrollView, Button } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   GestureHandlerRootView,
   TextInput,
@@ -29,6 +29,11 @@ export default function NewSchedule() {
   const [extraPrepTime, setExtraPrepTime] = useState(0);
   const [note, setNote] = useState("");
 
+  const handleTransportationModeSelect = useCallback((mode: string) => {
+    console.log("Selected Transportation Mode:", mode);
+    setTransportationMode(mode);
+  }, [setTransportationMode]); 
+
   const handleClickPress = async () => {
     // console.warn(eventName, note);
 
@@ -41,10 +46,10 @@ export default function NewSchedule() {
       },
       body: JSON.stringify({
         event_name: eventName,
-        date: "2022-12-12",
-        start_time: "09:00:00",
-        end_time: "10:00:00",
-        transportation_mode: "walk",
+        date: date,
+        start_time: startTime,
+        end_time: endTime,
+        transportation_mode: transportationMode,
         extra_prep_time: 0,
         note: note,
         user_id: 1,
@@ -94,7 +99,7 @@ export default function NewSchedule() {
                   <Text style={styles.textHeader}>Date</Text>
                 </View>
                 <ScrollView>
-                  <CalendarSheet />
+                  <CalendarSheet onDaySelect={setDate} />
                 </ScrollView>
                 <View style={styles.sheetItem}>
                   <Image
@@ -118,7 +123,7 @@ export default function NewSchedule() {
                     alignItems: "center",
                   }}
                 >
-                  <TimeSheet time={"09:00"} title="Start Time" />
+                  <TimeSheet time={"09:00"} title="Start Time" onTimeSelect={setStartTime}/>
                   <Text
                     style={[
                       styles.textDisplay,
@@ -132,7 +137,7 @@ export default function NewSchedule() {
                   >
                     to
                   </Text>
-                  <TimeSheet time={"10:00"} title="End Time" />
+                  <TimeSheet time={"10:00"} title="End Time" onTimeSelect={setEndTime}/>
                 </View>
                 <View style={styles.divLine} />
                 <View style={styles.sheetItem}>
@@ -153,7 +158,7 @@ export default function NewSchedule() {
                   <Text style={styles.textHeader}>Transportation Mode</Text>
                 </View>
                 <ScrollView>
-                  <TransportationSheet />
+                  <TransportationSheet onTransportationModeSelect={handleTransportationModeSelect}/>
                 </ScrollView>
                 <View style={styles.sheetItem}>
                   <Image

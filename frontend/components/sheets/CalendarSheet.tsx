@@ -20,7 +20,7 @@ import { Calendar, CalendarUtils } from "react-native-calendars";
 import { theme } from "@/app/theme";
 import React from "react";
 
-export default function CalendarSheet() {
+export default function CalendarSheet({ onDaySelect }: CalendarViewProps) {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["62%"], []);
 
@@ -49,6 +49,7 @@ export default function CalendarSheet() {
     month: "long",
     year: "numeric",
   });
+  
 
   return (
     <GestureHandlerRootView style={styles.sheetStyle}>
@@ -135,7 +136,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ onDaySelect }) => {
   const onDayPress = useCallback(
     (day: any) => {
       setSelected(day.dateString);
-      onDaySelect(day.dateString);
+      onDaySelect(day.dateString); // Call the callback with the selected date
       console.log(day);
       return getDate;
     },

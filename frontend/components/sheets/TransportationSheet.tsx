@@ -14,19 +14,25 @@ import { styles } from "./SheetStyles";
 import React from "react";
 import { theme } from "@/app/theme";
 
-export default function TransportationSheet() {
+export interface TransportationSheetProps {
+  onTransportationModeSelect: (mode: string) => void;
+}
+
+export default function TransportationSheet({ onTransportationModeSelect }: TransportationSheetProps) {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["54%"], []);
+
+  const [isSelected, setSelected] = useState("Car");
+
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
 
   const handleCloseModalPress = useCallback(() => {
+    onTransportationModeSelect(isSelected); // Pass the selected transportation mode
     bottomSheetModalRef.current?.close();
-  }, []);
-
-  const [isSelected, setSelected] = useState("Car");
+  }, [isSelected]);
 
   const labelIcons = [
     require("@/assets/icons/car.png"),
