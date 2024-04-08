@@ -15,15 +15,34 @@ export default function App() {
       longitude: 100.53314465311604, });
   const mapRef = useRef(null);
   
-  const goToPin = () => {
-    //complete this animation in 3 seconds
-    mapRef.current.animateToRegion(pin, 3 * 1000);
-  };
+//   const goToPin = () => {
+//     //complete this animation in 3 seconds
+//     mapRef.current.animateToRegion(pin, 3 * 1000);
+//   };
 
   const onMarkerDragEnd = (e) => {
     const { latitude, longitude } = e.nativeEvent.coordinate;
     setPin(prevPin => ({ ...prevPin, latitude, longitude }));
     console.log("End", pin);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch("YOUR_BACKEND_API_URL", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(pin),
+      });
+      if (response.ok) {
+        console.log("Success");
+      } else {
+        console.error("Failed to post");
+      }
+    } catch (error) {
+      console.error("Error submitting:", error);
+    }
   };
 
   return (
@@ -51,7 +70,7 @@ export default function App() {
           listView: {backgroundColor: 'white'},
         }}
       />
-      <Button onPress={() => goToPin()} title="Go Home" />
+      {/* <Button onPress={() => goToPin()} title="Go Home" /> */}
 
       <MapView
         // provider="google"
@@ -77,7 +96,7 @@ export default function App() {
           </Callout>
         </Marker>
       </MapView>
-      <Button onPress={() => goToPin()} title="Go Home" />
+      {/* <Button onPress={() => goToPin()} title="Go Home" /> */}
       {/* <Text style={styles.text}>Current latitude{region.latitude}</Text>
       <Text style={styles.text}>Current longitude{region.longitude}</Text>  */}
     </View>
