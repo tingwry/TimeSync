@@ -70,14 +70,18 @@ export default function ChooseLocation() {
     latitude: 13.736834400006273,
     longitude: 100.53314465311604,
   });
-  
+
   const mapRef = useRef(null);
 
   const onMarkerDragEnd = (e: any) => {
     const { latitude, longitude } = e.nativeEvent.coordinate;
 
-    const validLatitude = parseFloat(Math.min(Math.max(latitude, -90), 90).toFixed(16));
-    const validLongitude = parseFloat(Math.min(Math.max(longitude, -180), 180).toFixed(16));
+    const validLatitude = parseFloat(
+      Math.min(Math.max(latitude, -90), 90).toFixed(16)
+    );
+    const validLongitude = parseFloat(
+      Math.min(Math.max(longitude, -180), 180).toFixed(16)
+    );
 
     setPin({ latitude: validLatitude, longitude: validLongitude });
     console.log("End", { latitude: validLatitude, longitude: validLongitude });
@@ -85,20 +89,23 @@ export default function ChooseLocation() {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/app/location/create/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          loc_name: "Home",
-          latitude: pin.latitude,
-          longitude: pin.longitude,
-          default_home: false,
-          default_dest: false,
-          user_id: 1,
-        }),
-      });
+      const response = await fetch(
+        "http://127.0.0.1:8000/app/location/create/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            loc_name: "Home",
+            latitude: pin.latitude,
+            longitude: pin.longitude,
+            default_home: false,
+            default_dest: false,
+            user_id: 1,
+          }),
+        }
+      );
       if (response.ok) {
         console.log("Success");
       } else {
@@ -159,10 +166,39 @@ export default function ChooseLocation() {
               </View>
             </View>
 
+            {/* <GooglePlacesAutocomplete
+              placeholder="Search"
+              fetchDetails={true}
+              GooglePlacesSearchQuery={{
+                rankby: "distance",
+              }}
+              onPress={(data, details = null) => {
+                // 'details' is provided when fetchDetails = true
+                console.log(data, details);
+              }}
+              query={{
+                key: "AIzaSyD7Q9Q1J9Q9Q9Q9Q9Q9Q9Q9Q9Q9Q9Q9Q9",
+                language: "en",
+                // components: "country:th",
+                types: "address",
+                radius: 100000,
+                location: `${pin.latitude}, ${pin.longitude}`,
+              }}
+              styles={{
+                container: {
+                  flex: 0,
+                  position: "absolute",
+                  width: "100%",
+                  zIndex: 1,
+                },
+                listView: { backgroundColor: "white" },
+              }}
+            /> */}
+
             <MapView
               // provider="google"
               ref={mapRef}
-              style={{ width: "100%", height: "100%", marginTop: 20}}
+              style={{ width: "100%", height: "100%", marginTop: 20 }}
               initialRegion={{
                 latitude: 13.736834400006273,
                 longitude: 100.53314465311604,
@@ -173,7 +209,6 @@ export default function ChooseLocation() {
               <Marker
                 coordinate={pin}
                 draggable={true}
-                
                 onDragEnd={onMarkerDragEnd}
               >
                 <Callout>
@@ -234,7 +269,7 @@ export default function ChooseLocation() {
                  </View> */}
                 </View>
               </BottomSheet>
-            </Portal> 
+            </Portal>
           </BottomSheetView>
         </BottomSheetModal>
       </Portal>
@@ -316,5 +351,4 @@ const menuStyle = StyleSheet.create({
     fontFamily: "dm-sans-regular",
     color: theme.colors.textCaption,
   },
-  
 });

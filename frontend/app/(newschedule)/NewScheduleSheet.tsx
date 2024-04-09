@@ -35,9 +35,9 @@ export default function NewSchedule() {
   }, [setTransportationMode]); 
 
   const handleClickPress = async () => {
-    // console.warn(eventName, note);
+    console.warn(eventName, note);
 
-    const url = `http://172.20.10.12:8000/app/schedule/create/`;
+    const url = `http://127.0.0.1:8000/app/schedule/create/`;
 
     let response = await fetch(url, {
       method: 'POST',
