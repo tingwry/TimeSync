@@ -6,7 +6,7 @@ import { Marker, Callout } from "react-native-maps";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 
-export default function App() {
+export default function MapLocation() {
   const [pin, setPin] = useState({ 
     latitude: 13.736834400006273,
     longitude: 100.53314465311604, 
