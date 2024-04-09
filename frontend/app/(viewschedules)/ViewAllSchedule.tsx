@@ -41,7 +41,7 @@ export default function Home() {
     const fetchSchedule = async () => {
       try {
         const response = await fetch(
-          `http://172.20.10.12:8000/app/schedule/view/`
+          `http://127.0.0.1:8000/app/schedule/view/`
         );
 
         if (!response.ok) {

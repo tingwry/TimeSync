@@ -46,15 +46,15 @@ export default function NewSchedule() {
       },
       body: JSON.stringify({
         event_name: eventName,
-        date: date,
-        start_time: startTime,
-        end_time: endTime,
-        transportation_mode: transportationMode,
+        date: "2024-04-12",
+        start_time: "05:21:00",
+        end_time: "15:21:00",
+        transportation_mode: "car",
         extra_prep_time: 0,
         note: note,
-        user_id: 1,
-        sched_start: 2,
-        sched_destination: 2,
+        uid: 1,
+        sched_start: 1,
+        sched_destination: 1,
         wake_up_aids: 1
       })
     });
