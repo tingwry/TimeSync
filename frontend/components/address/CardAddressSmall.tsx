@@ -1,17 +1,33 @@
 import { theme } from "@/app/theme";
-import React from "react";
+import React, { useRef, useCallback } from "react";
 import { Text, Image, View, StyleSheet, Pressable } from "react-native";
+import {
+  BottomSheetModal,
+  BottomSheetView,
+  TouchableOpacity,
+} from "@gorhom/bottom-sheet";
 
 export interface CardAddressSmallProps {
+  loc_id: number;
   locationName: string;
   // locationLat: number;
   // locationLong: number;
   labelIcon: any;
+  onPress: (loc_id: number) => void;
 }
 
 export default function CardAddressSmall(props: CardAddressSmallProps) {
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  const { onPress, loc_id } = props;
+
+  const handleCloseModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.close();
+  }, []);
   return (
-    <Pressable style={cardStyles.cardStyle}>
+    <TouchableOpacity
+      onPress={() => onPress(props.loc_id)}
+    >
       <View style={cardStyles.label}>
         <Image source={props.labelIcon} style={{ width: 20, height: 20 }} />
       </View>
@@ -20,7 +36,7 @@ export default function CardAddressSmall(props: CardAddressSmallProps) {
         {/* <Text style={cardStyles.addressLocation}>{props.locationLat}</Text>
         <Text style={cardStyles.addressLocation}>{props.locationLong}</Text> */}
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 }
 

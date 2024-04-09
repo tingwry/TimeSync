@@ -5,7 +5,7 @@ import {
   ScrollView,
 } from "react-native-gesture-handler";
 import { styles } from "../sheets/SheetStyles";
-import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
+import { BottomSheetModal, BottomSheetView, TouchableOpacity } from "@gorhom/bottom-sheet";
 import { useRef, useMemo, useCallback } from "react";
 import { Portal } from "@gorhom/portal";
 import CardAddressSmall from "./CardAddressSmall";
@@ -54,6 +54,10 @@ export default function CardAddress() {
   const handleCloseModalPress = useCallback(() => {
     bottomSheetModalRef.current?.close();
   }, []);
+
+  const handleLocationPress = (loc_id: number) => {
+    console.log("Selected location ID:", loc_id);
+  };
 
   return (
     <GestureHandlerRootView>
@@ -112,9 +116,13 @@ export default function CardAddress() {
                 showsHorizontalScrollIndicator={false}
                 contentInset={{ right: 64, left: 0, bottom: 0, top: 0 }}
               >
-                {locations.map((location: { loc_name: string }) => (
+                {locations.map((location: {loc_id: number, loc_name: string }) => (
+                  <TouchableOpacity
+                  style={cardStyles.cardStyle}
+                  onPress={handleCloseModalPress}
+                >
                   <CardAddressSmall
-                    // key={location.loc_id}
+                    loc_id={location.loc_id}
                     locationName={location.loc_name}
                     // locationLat={location.latitude}
                     // locationLong={location.longitude}
@@ -123,7 +131,9 @@ export default function CardAddress() {
                       location.loc_name === "School" ? require("@/assets/icons/school.png") :
                       require("@/assets/icons/search.png")
                     }
+                    onPress={handleLocationPress} 
                   />
+                  </TouchableOpacity>
                 ))}
               </ScrollView>
               <ChooseLocation />
