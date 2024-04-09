@@ -2,5 +2,5 @@ import React from "react";
 import { Redirect } from "expo-router";
 
 export default function StartPage() {
-  return <Redirect href="/StartScreen" />;
+  return <Redirect href="/Home" />;
 };

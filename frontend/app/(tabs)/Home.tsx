@@ -65,7 +65,7 @@ export default function Home() {
         {scheduleNumber === 0 ? (
           <CardNoSchedule />
         ) : (
-          <View style={styles.container}>
+          <View>
             {schedule && (
               <CardUpcomingSchedule
                 event_name={schedule.event_name}
