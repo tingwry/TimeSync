@@ -33,6 +33,8 @@ export default function NewSchedule() {
   const [note, setNote] = useState("");
 
   const handleClickPress = async () => {
+    // console.log(startTime)
+    // console.log(endTime)
     const url = `http://127.0.0.1:8000/app/schedule/create/`;
 
     let response = await fetch(url, {
@@ -43,8 +45,8 @@ export default function NewSchedule() {
       body: JSON.stringify({
         event_name: eventName,
         date: date,
-        start_time: "05:21:00",
-        end_time: "15:21:00",
+        start_time: "05:21",
+        end_time: "15:21",
         transportation_mode: transportationMode,
         extra_prep_time: 0,
         note: note,

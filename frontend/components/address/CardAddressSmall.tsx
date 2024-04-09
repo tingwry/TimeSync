@@ -4,7 +4,8 @@ import { Text, Image, View, StyleSheet, Pressable } from "react-native";
 
 export interface CardAddressSmallProps {
   locationName: string;
-  locationDetail: string;
+  // locationLat: number;
+  // locationLong: number;
   labelIcon: any;
 }
 
@@ -16,7 +17,8 @@ export default function CardAddressSmall(props: CardAddressSmallProps) {
       </View>
       <View style={cardStyles.addressDetail}>
         <Text style={cardStyles.addressName}>{props.locationName}</Text>
-        <Text style={cardStyles.addressLocation}>{props.locationDetail}</Text>
+        {/* <Text style={cardStyles.addressLocation}>{props.locationLat}</Text>
+        <Text style={cardStyles.addressLocation}>{props.locationLong}</Text> */}
       </View>
     </Pressable>
   );
