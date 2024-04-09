@@ -21,8 +21,11 @@ import AlarmNotiSheet from "@/components/sheets/AlarmNotiSheet";
 export default function NewSchedule() {
   const navigation = useNavigation();
 
+  const currentDate = new Date();
+  const defaultDate = currentDate.toISOString().split('T')[0];
+
   const [eventName, setEventName] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(defaultDate);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [transportationMode, setTransportationMode] = useState("");
@@ -33,10 +36,9 @@ export default function NewSchedule() {
     console.log("Selected Transportation Mode:", mode);
     setTransportationMode(mode);
   }, [setTransportationMode]); 
+  
 
   const handleClickPress = async () => {
-    console.warn(eventName, note);
-
     const url = `http://127.0.0.1:8000/app/schedule/create/`;
 
     let response = await fetch(url, {
@@ -46,7 +48,7 @@ export default function NewSchedule() {
       },
       body: JSON.stringify({
         event_name: eventName,
-        date: "2024-04-12",
+        date: date,
         start_time: "05:21:00",
         end_time: "15:21:00",
         transportation_mode: "car",
@@ -59,9 +61,10 @@ export default function NewSchedule() {
       })
     });
     let result = await response.json();
+    console.log(result);
 
-    if (result) {
-      console.warn("Success");
+    if (response.ok) {
+      console.log("Success");
       // console.log(result);
     }
 

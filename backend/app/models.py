@@ -195,7 +195,7 @@ class Schedule(models.Model):
     transportation_mode = models.CharField(
         max_length=20, choices=transportation_mode_choices)
     extra_prep_time = models.IntegerField()
-    note = models.TextField()
+    note = models.TextField(blank=True, null=True)
 
     uid = models.ForeignKey(
         UserInfo, on_delete=models.CASCADE, related_name='schedules')

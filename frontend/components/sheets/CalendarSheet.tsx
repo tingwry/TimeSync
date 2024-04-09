@@ -37,6 +37,7 @@ export default function CalendarSheet({ onDaySelect }: CalendarViewProps) {
 
   const handleDaySelect = (day: string) => {
     setSelectedDay(day);
+    onDaySelect(day);
   };
 
   const handleSelectDate = () => {
@@ -137,7 +138,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ onDaySelect }) => {
     (day: any) => {
       setSelected(day.dateString);
       onDaySelect(day.dateString); // Call the callback with the selected date
-      console.log(day);
+      // console.log("day", day);
       return getDate;
     },
     [onDaySelect]
