@@ -4,7 +4,7 @@ import { theme } from "../theme";
 import { useFonts } from "expo-font";
 import CardNoSchedule from "@/components/cards/CardNoSchedule";
 import CardUpcomingSchedule from "@/components/cards/CardUpcomingSchedule";
-import { PortalProvider } from "@gorhom/portal";
+import CardCountDownTimer from "@/components/cards/CardCountDownTimer";
 
 interface ScheduleItem {
   event_id: number;
@@ -29,13 +29,15 @@ export default function Home() {
     return <Text>Loading...</Text>;
   }
 
-  const [schedule, setSchedule] = useState<ScheduleItem| null>(null)
-  const [scheduleNumber, setScheduleNumber] = useState(0)
+  const [schedule, setSchedule] = useState<ScheduleItem | null>(null);
+  const [scheduleNumber, setScheduleNumber] = useState(0);
 
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/");
+        const response = await fetch(
+          "http://127.0.0.1:8000/app/schedule/recent/"
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch schedule");
         }
@@ -46,7 +48,7 @@ export default function Home() {
         console.error("Error fetching schedule:", error);
       }
     };
-  
+
     fetchSchedule();
   }, []);
 
@@ -56,14 +58,14 @@ export default function Home() {
       <View style={styles.containerHome}>
         <Text style={styles.textTitle}>Hello, User</Text>
         <Text style={styles.textCaption}>Let's see what is up next!</Text>
+        <Text style={styles.textHeader}>Upcoming Schedule</Text>
       </View>
-     
+
       <View>
-        { scheduleNumber === 0 ? (
+        {scheduleNumber === 0 ? (
           <CardNoSchedule />
         ) : (
-          <View style={styles.container}>
-            <Text style={styles.textHeader}>Upcoming Schedule</Text>
+          <View>
             {schedule && (
               <CardUpcomingSchedule
                 event_name={schedule.event_name}
@@ -75,7 +77,7 @@ export default function Home() {
                 note={schedule.note}
               />
             )}
-              {/* {schedule.map((scheduleItem) => (
+            {/* {schedule.map((scheduleItem) => (
                 <CardUpcomingSchedule
                   key={scheduleItem.event_id}
                   event_name={scheduleItem.event_name}
@@ -128,5 +130,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingLeft: 8,
     paddingBottom: 24,
+    marginTop: 48,
   },
 });

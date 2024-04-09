@@ -62,7 +62,7 @@ export default function NotificationPage() {
         <View style={styles.divLine} />
 
         <View style={styles.menu}>
-          <Text style={styles.textMenu}>Departure Time</Text>
+          <Text style={styles.textMenu}>Departure Time Reminder</Text>
           <View style={styles.switch}>
             <Switch
               trackColor={{
@@ -77,24 +77,10 @@ export default function NotificationPage() {
         </View>
 
         <View style={styles.divLine} />
-        <View style={styles.menu}>
-          <Text style={styles.textMenu}>Follow Up</Text>
-          <View style={styles.switch}>
-            <Switch
-              trackColor={{
-                false: theme.colors.textPrimary,
-                true: theme.colors.green,
-              }}
-              ios_backgroundColor={theme.colors.textCaption}
-              onValueChange={toggleFollowUpSwitch}
-              value={isFollowUpEnabled}
-            />
-          </View>
-        </View>
-        <View style={styles.divLine} />
+        
         <View style={styles.caution}>
           <Text style={styles.cautionMessage}>
-            "Follow Up" notification will notify you if the Countdown Timer is not stopped.
+            "Departure Time Reminder" notification will notify Departure Time if the Countdown Timer is not stopped.
           </Text>
         </View>
       </View>
