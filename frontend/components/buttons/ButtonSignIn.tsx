@@ -3,27 +3,22 @@ import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import React from "react";
-import { StyleSheet, Text, Dimensions, View, Pressable } from "react-native";
+import { Dimensions, Pressable, View, Text, StyleSheet } from "react-native";
 
-export interface ButtonPrimaryProps {
-  text: string;
-  linkName: any;
-}
-
-export default function ButtonPrimaryLink(props: ButtonPrimaryProps) {
+export default function ButtonSignIn() {
   const [fontsLoaded] = useFonts({
     "dm-sans-extrabold": require("@/assets/fonts/DMSans-ExtraBold.ttf"),
   });
 
   return (
-    <Link push href={props.linkName} asChild style={[styles.container, styles.shadowProp]}>
-      <Pressable>
-        <LinearGradient
-          colors={["#CF7B04", "#EDA33C"]}
-          style={styles.buttonStyle}
-        >
-          <Text style={styles.buttonText}>{props.text}</Text>
-        </LinearGradient>
+    <Link
+      push
+      href={"/Home"}
+      asChild
+      style={[styles.container, styles.shadowProp]}
+    >
+      <Pressable style={styles.buttonStyle}>
+        <Text style={styles.buttonText}>Sign in with existing account</Text>
       </Pressable>
     </Link>
   );
@@ -33,8 +28,8 @@ const screenWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   container: {
-    // position: "absolute",
-    // bottom: 44,
+    position: "absolute",
+    marginBottom: 24,
     width: "100%",
     alignItems: "center",
   },
@@ -44,6 +39,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: theme.colors.textPrimary,
   },
   buttonText: {
     fontFamily: "dm-sans-extrabold",

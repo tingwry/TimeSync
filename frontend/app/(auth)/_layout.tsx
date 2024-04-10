@@ -11,7 +11,11 @@ export default function _layout() {
             <Stack.Screen name="CreateProfile" options={{ headerShown: false }}/>
             <Stack.Screen name="Terms" options={{ headerShown: false }}/>
             <Stack.Screen name="AllowLocation" options={{ headerShown: false }}/>
-            <Stack.Screen name="Questionaires" options={{ headerShown: false }}/>
+            <Stack.Screen name="Questionaires" options={{ headerShown: false }} />
+            <Stack.Screen name="SetHomeLocation" options={{ headerShown: false }} />
+            <Stack.Screen name="SetPreparationTime" options={{ headerShown: false }} />
+            <Stack.Screen name="SetDestinationLocation" options={{ headerShown: false }} />
+            <Stack.Screen name="MapHome" options={{ headerShown: false }}/>
         </Stack>
     )
 }

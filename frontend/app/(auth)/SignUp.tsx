@@ -125,7 +125,6 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
   },
-
   textHeader: {
     color: theme.colors.textPrimary,
     fontFamily: "dm-sans-bold",

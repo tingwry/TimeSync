@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.blueSecondary,
     borderRadius: 24,
     padding: 10,
-    marginBottom: 25,
+    // marginBottom: 25,
     paddingHorizontal: 20,
     flexDirection: "row", // This ensures items are placed in a row
     justifyContent: "space-between", // This evenly distributes items along the row
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   alarmContainer: {
     backgroundColor: theme.colors.blueSecondary,
     borderRadius: 20,
-    marginBottom: 24,
+    marginBottom: 16,
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   detailsContainer: {
     backgroundColor: theme.colors.blueSecondary,
     borderRadius: 20,
-    marginBottom: 24,
+    marginBottom: 16,
     paddingHorizontal: 20,
     paddingVertical: 24,
     flexDirection: "row",
