@@ -10,4 +10,5 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('schedule/', include('app.api.schedule.urls'), name='schedule'),
     path('auth/', include('app.api.auth.urls'), name='auth'),
+    path('ML/', include('app.api.ML.urls'), name='ML' )
 ]
