@@ -1,5 +1,10 @@
-from .models import UserInfo, Schedule, Location
+from .models import UserAuth, UserInfo, Schedule, Location
 from rest_framework import serializers
+
+class UserAuthSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAuth
+        fields = '__all__'
 
 class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:

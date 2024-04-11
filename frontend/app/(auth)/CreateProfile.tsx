@@ -3,16 +3,53 @@ import React, { useState } from 'react'
 import TextInputPrimary from '@/components/textinputs/TextInputPrimary'
 import ButtonPrimary from '@/components/buttons/ButtonPrimary';
 import { theme } from '../theme';
-import { Link, router } from 'expo-router';
+import { Link, router, useLocalSearchParams } from 'expo-router';
+import { authService } from '../context/authService';
 
 export default function CreateProfile() {
-    const [name, setName] = useState<string>('');
+    const [loading, isLoading] = useState(false);
+
+    // const email = route.params.email;
+    // const password = route.params.password;
+    const { email, password } = useLocalSearchParams<{ email: string, password: string }>();
+
     const [username, setUsername] = useState<string>('');
+    const [name, setName] = useState<string>('');
     const [phoneNumber, setPhoneNumber] = useState<string>('');
 
+    const [errors, setErrors] = useState({
+        username: '',
+        name: '',
+        phoneNumber: '',
+      });
+
+    const validateForm = () => {
+        let e = {
+            username: '',
+            name: '',
+            phoneNumber: '',
+        };
+        if (username === '') {
+            e.username = 'Username is required';
+        }
+        if (name === '') {
+            e.name = 'Name is required';
+        } 
+        if (phoneNumber === '') {
+            e.phoneNumber = 'Phone number is required';
+        }
+    
+        setErrors(e);
+        return Object.values(e).every(x => x === '')
+      }
+    
     const submit = async () => {
-        console.log(`Create Profile: name = ${name}, username = ${username}, phoneNumber = ${phoneNumber}`)
-        router.replace('/Terms');
+        if (validateForm()) {
+            isLoading(true);
+            const res = await authService.register(
+                email, password, username, name, phoneNumber
+            );
+        } 
     }
 
     return (

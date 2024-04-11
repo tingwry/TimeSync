@@ -7,7 +7,6 @@ import {
   StyleSheet,
 } from "react-native";
 import React, { useState } from "react";
-import { useAuth } from "../context/authContext";
 import { Link, router } from "expo-router";
 import { authService } from "../context/authService";
 import ButtonPrimary from "@/components/buttons/ButtonPrimary";
@@ -19,54 +18,61 @@ import { LinearGradient } from "expo-linear-gradient";
 
 export default function SignUpScreen() {
   const [loading, isLoading] = useState(false);
-  const auth = useAuth();
+    //   const auth = useAuth();
 
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [confirmPassword, setConfirmPassword] = useState<string>('');
+    
+    const [errors, setErrors] = useState({
+        email: '',
+        password: '',
+        confirmPassword: '',
+    });
 
-  const [errors, setErrors] = useState({
-    username: "",
-    password: "",
-    confirmPassword: "",
-  });
+    const validateForm = () => {
+        let e = {
+            email: '',
+            password: '',
+            confirmPassword: '',
+        };
+        if (email === '') {
+            e.email = 'Email is required';;
+        }
+        if (password === '') {
+            e.password = 'Password is required';
+        } 
+        if (confirmPassword === '') {
+            e.confirmPassword = 'Confirm Password is required';
+        } else if (password !== confirmPassword && password !== '' && confirmPassword !== '') {
+            e.confirmPassword = 'Passwords do not match';
+        }
 
-  const validateForm = () => {
-    let e = {
-      username: "",
-      password: "",
-      confirmPassword: "",
-    };
-    if (email === "") {
-      e.username = "Email is required";
+        setErrors(e);
+        return Object.values(e).every(x => x === '')
     }
-    if (password === "") {
-      e.password = "Password is required";
-    }
-    if (confirmPassword === "") {
-      e.confirmPassword = "Confirm Password is required";
-    } else if (
-      password !== confirmPassword &&
-      password !== "" &&
-      confirmPassword !== ""
-    ) {
-      e.confirmPassword = "Passwords do not match";
+
+    const submit = async () => {
+        if (validateForm()) {
+            isLoading(true);
+            const res = await authService.checkEmail(email);
+            console.log(res)
+            if (res.email) {
+                setErrors({ 
+                    email: res.email,
+                    password: '',
+                    confirmPassword: '',
+                });
+            } else {
+                console.log('no error')
+                router.push({ 
+                    pathname: '/CreateProfile',
+                    params: { email, password }
+                });
+            }
+        }
     }
 
-    setErrors(e);
-    return Object.values(e).every((x) => x === "");
-  };
-
-  const submit = async () => {
-    if (validateForm()) {
-      console.log(`Sign Up Screen: email = ${email}, password = ${password}`);
-      isLoading(true);
-      await authService.signUp(email, password);
-      router.replace("/CreateProfile");
-    } else {
-      console.log(errors);
-    }
-  };
 
   return (
     <LinearGradient colors={["#182640", "#263D66"]} style={styles.container}>
@@ -77,7 +83,7 @@ export default function SignUpScreen() {
           placeholder="example@email.com"
           value={email}
           onChangeText={setEmail}
-          errorText={errors.username}
+          errorText={errors.email}
         />
         <PasswordInput
           label="Create a Password"
