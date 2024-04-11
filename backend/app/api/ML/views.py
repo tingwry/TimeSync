@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from backend.app.api.ML.ml_model import predict_times
+from .ml_model import predict_times
 
 def predict_times_view(request):
     if request.method == 'POST':
