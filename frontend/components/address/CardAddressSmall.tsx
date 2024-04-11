@@ -27,6 +27,7 @@ export default function CardAddressSmall(props: CardAddressSmallProps) {
   return (
     <TouchableOpacity
       onPress={() => onPress(props.loc_id)}
+      style={cardStyles.cardStyle}
     >
       <View style={cardStyles.label}>
         <Image source={props.labelIcon} style={{ width: 20, height: 20 }} />
