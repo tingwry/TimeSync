@@ -1,16 +1,20 @@
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TextInputPrimary from '@/components/textinputs/TextInputPrimary'
 import ButtonPrimary from '@/components/buttons/ButtonPrimary';
 import { theme } from '../theme';
-import { Link, router } from 'expo-router';
+import { Link, router, useLocalSearchParams } from 'expo-router';
 import { authService } from '../context/authService';
+
+
 
 export default function CreateProfile() {
     const [loading, isLoading] = useState(false);
 
-    const [email, setEmail] = useState<string>('hi8@gmail.com');
-    const [password, setPassword] = useState<string>('hi8');
+    // const email = route.params.email;
+    // const password = route.params.password;
+    const { email, password } = useLocalSearchParams<{ email: string, password: string }>();
+
     const [username, setUsername] = useState<string>('');
     const [name, setName] = useState<string>('');
     const [phoneNumber, setPhoneNumber] = useState<string>('');

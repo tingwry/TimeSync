@@ -31,7 +31,7 @@ const signIn = async (email: string, password: string): Promise<AuthData> => {
     // }
 }
 
-const checkEmail = async (email: string ): Promise<AuthData> => {
+const checkEmail = async (email: string) => {
     const response = await fetch('http://127.0.0.1:8000/app/auth/check-email/', {
         method: 'POST',
         headers: {
@@ -39,17 +39,22 @@ const checkEmail = async (email: string ): Promise<AuthData> => {
         },
         body: JSON.stringify({ email }),
     });
+    
 
     if (response.ok) {
         const data = await response.json()
         console.log(data)
-        // router.replkace('/CreateProfile');
+        // router.push({ 
+        //     pathname: '/CreateProfile',
+        //     params: { email, password }
+        // });
         return data;
     } else {
         const errorData = await response.json();
+        console.log(errorData)
         const errorMessage = errorData.email ? errorData.email[0] : "Unknown error occurred" 
         console.log(errorMessage)
-        return errorMessage;
+        return {email: errorMessage};
     }
 }
 

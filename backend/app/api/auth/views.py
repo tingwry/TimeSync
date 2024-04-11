@@ -64,7 +64,7 @@ class EmailCheckView(APIView):
     def post(self, request):
         serializer = EmailCheckSerializer(data=request.data)
         if serializer.is_valid():
-            return Response({"email_exists": False}, status=status.HTTP_200_OK)
+            return Response({"email": False}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         

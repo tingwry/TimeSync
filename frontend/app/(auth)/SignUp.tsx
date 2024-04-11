@@ -9,83 +9,97 @@ import { theme } from '../theme';
 import ButtonGoogle from '@/components/buttons/ButtonGoogle';
 
 export default function SignUpScreen() {
-  const [loading, isLoading] = useState(false);
-//   const auth = useAuth();
+    const [loading, isLoading] = useState(false);
+    //   const auth = useAuth();
 
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
-  
-  const [errors, setErrors] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
-
-  const validateForm = () => {
-    let e = {
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [confirmPassword, setConfirmPassword] = useState<string>('');
+    
+    const [errors, setErrors] = useState({
         email: '',
         password: '',
         confirmPassword: '',
-    };
-    if (email === '') {
-        e.email = 'Email is required';;
-    }
-    if (password === '') {
-        e.password = 'Password is required';
-    } 
-    if (confirmPassword === '') {
-        e.confirmPassword = 'Confirm Password is required';
-    } else if (password !== confirmPassword && password !== '' && confirmPassword !== '') {
-        e.confirmPassword = 'Passwords do not match';
+    });
+
+    const validateForm = () => {
+        let e = {
+            email: '',
+            password: '',
+            confirmPassword: '',
+        };
+        if (email === '') {
+            e.email = 'Email is required';;
+        }
+        if (password === '') {
+            e.password = 'Password is required';
+        } 
+        if (confirmPassword === '') {
+            e.confirmPassword = 'Confirm Password is required';
+        } else if (password !== confirmPassword && password !== '' && confirmPassword !== '') {
+            e.confirmPassword = 'Passwords do not match';
+        }
+
+        setErrors(e);
+        return Object.values(e).every(x => x === '')
     }
 
-    setErrors(e);
-    return Object.values(e).every(x => x === '')
-  }
-
-  const submit = async () => {
-    if (validateForm()) {
-        isLoading(true);
-        const res = await authService.checkEmail(email);
+    const submit = async () => {
+        if (validateForm()) {
+            isLoading(true);
+            const res = await authService.checkEmail(email);
+            console.log(res)
+            if (res.email) {
+                setErrors({ 
+                    email: res.email,
+                    password: '',
+                    confirmPassword: '',
+                });
+            } else {
+                console.log('no error')
+                router.push({ 
+                    pathname: '/CreateProfile',
+                    params: { email, password }
+                });
+            }
+        }
     }
-  }
 
-  return (
-    <SafeAreaView style={styles.container}>
-        <Text style={styles.textHeader}>Sign up</Text>
-        <TextInputPrimary 
-            label="Email"
-            placeholder='example@email.com'
-            value={email}
-            onChangeText={setEmail}
-            errorText={errors.email}
-        />
-        <TextInputPrimary 
-            label="Create a Password"
-            placeholder='Password'
-            value={password}
-            onChangeText={setPassword}
-            errorText={errors.password}
-            password
-            // helperText="Your password must contain at least 10 characters and at least 1 uppercase letter."
-        />
-        <TextInputPrimary 
-            label="Confirm your password"
-            placeholder='Password'
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            errorText={errors.confirmPassword}
-            password
-            // helperText="Your password must contain at least 10 characters and at least 1 uppercase letter."
-        />
-        <ButtonPrimary text="Continue" press={submit}/>
-        <Text style={styles.signInLink}><Link href="/SignIn">Sign in with existing account</Link></Text>
-        <Text style={styles.or}>Or</Text>
-        <ButtonGoogle onPress={() => {console.log('google pressed')}}/>
-        <Text style={styles.signInLink}><Link href="/CreateProfile">Create a profile</Link></Text>
-    </SafeAreaView>
-  )
+    return (
+        <SafeAreaView style={styles.container}>
+            <Text style={styles.textHeader}>Sign up</Text>
+            <TextInputPrimary 
+                label="Email"
+                placeholder='example@email.com'
+                value={email}
+                onChangeText={setEmail}
+                errorText={errors.email}
+            />
+            <TextInputPrimary 
+                label="Create a Password"
+                placeholder='Password'
+                value={password}
+                onChangeText={setPassword}
+                errorText={errors.password}
+                password
+                // helperText="Your password must contain at least 10 characters and at least 1 uppercase letter."
+            />
+            <TextInputPrimary 
+                label="Confirm your password"
+                placeholder='Password'
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                errorText={errors.confirmPassword}
+                password
+                // helperText="Your password must contain at least 10 characters and at least 1 uppercase letter."
+            />
+            <ButtonPrimary text="Continue" press={submit}/>
+            <Text style={styles.signInLink}><Link href="/SignIn">Sign in with existing account</Link></Text>
+            <Text style={styles.or}>Or</Text>
+            <ButtonGoogle onPress={() => {console.log('google pressed')}}/>
+            <Text style={styles.signInLink}><Link href="/CreateProfile">Create a profile</Link></Text>
+        </SafeAreaView>
+    )
 }
 
 const styles = StyleSheet.create({
