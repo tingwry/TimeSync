@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigation, useRouter } from "expo-router";
 import { theme } from "../theme";
 import Sound from "react-native-sound";
+import { Audio } from "expo-av";
 
 // const alarm = require("@/assets/sounds/Sound1.mp3");
 
@@ -43,33 +44,43 @@ export default function AlarmSetPage() {
 
   const [select, setSelected] = useState(1);
 
-  var Sound = require("react-native-sound");
-  const [currentSoundIndex, setCurrentSoundIndex] = useState(null);
+  // const [currentSoundIndex, setCurrentSoundIndex] = useState(null);
 
-  const playSound = (index: any) => {
-    // Stop any currently playing sound
-    // Sound.stop();
+  // const playSound = (index: any) => {
+  //   // Stop any currently playing sound
+  //   // Sound.stop();
 
-    // Initialize the new sound
-    const sound = new Sound(sounds[index], null, (error: any) => {
-      if (error) {
-        console.log("Failed to load the sound", error);
-        return;
-      }
+  //   // Initialize the new sound
+  //   const sound = new Sound(sounds[index], null, (error: any) => {
+  //     if (error) {
+  //       console.log("Failed to load the sound", error);
+  //       return;
+  //     }
 
-      // Play the sound
-      sound.play((success: any) => {
-        if (success) {
-          console.log("Sound played successfully");
-        } else {
-          console.log("Sound playback failed");
+  //     // Play the sound
+  //     sound.play((success: any) => {
+  //       if (success) {
+  //         console.log("Sound played successfully");
+  //       } else {
+  //         console.log("Sound playback failed");
+  //       }
+  //     });
+  //   });
+
+  //   // Set the current sound index
+  //   setCurrentSoundIndex(index);
+  // };
+
+  const [currentSound, setSound] = useState<Audio.Sound>();
+
+  useEffect(() => {
+    return currentSound
+      ? () => {
+          console.log("Unloading Sound");
+          currentSound.unloadAsync();
         }
-      });
-    });
-
-    // Set the current sound index
-    setCurrentSoundIndex(index);
-  };
+      : undefined;
+  }, [currentSound]);
 
   return (
     <View style={styles.background}>
@@ -90,9 +101,14 @@ export default function AlarmSetPage() {
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.option}
-          onPress={() => {
+          onPress={async () => {
             setSelected(1);
-            // playSound(0);
+            if (currentSound) await currentSound.stopAsync();
+            const { sound } = await Audio.Sound.createAsync(
+              require("@/assets/sounds/Sound1.mp3")
+            );
+            setSound(sound);
+            await sound.playAsync();
           }}
         >
           <View>
@@ -112,7 +128,18 @@ export default function AlarmSetPage() {
 
         <View style={styles.divLine} />
 
-        <TouchableOpacity style={styles.option} onPress={() => setSelected(2)}>
+        <TouchableOpacity
+          style={styles.option}
+          onPress={async () => {
+            setSelected(2);
+            if (currentSound) await currentSound.stopAsync();
+            const { sound } = await Audio.Sound.createAsync(
+              require("@/assets/sounds/Sound2.mp3")
+            );
+            setSound(sound);
+            await sound.playAsync();
+          }}
+        >
           <View>
             {select === 2 ? (
               <View style={styles.radioActive}>
@@ -130,7 +157,18 @@ export default function AlarmSetPage() {
 
         <View style={styles.divLine} />
 
-        <TouchableOpacity style={styles.option} onPress={() => setSelected(3)}>
+        <TouchableOpacity
+          style={styles.option}
+          onPress={async () => {
+            setSelected(3);
+            if (currentSound) await currentSound.stopAsync();
+            const { sound } = await Audio.Sound.createAsync(
+              require("@/assets/sounds/Sound3.mp3")
+            );
+            setSound(sound);
+            await sound.playAsync();
+          }}
+        >
           <View>
             {select === 3 ? (
               <View style={styles.radioActive}>
@@ -167,87 +205,6 @@ export default function AlarmSetPage() {
         <View style={styles.divLine} />
       </View>
 
-      {/* <View> */}
-      {/* <Text style={styles.btnText}>Account</Text> */}
-      {/* <View style={{ bottom: 25, right: 7 }}>
-          <View
-            style={{ height: 1.5, backgroundColor: theme.colors.divLine }}
-          />
-          <View style={styles.btnOutline}>
-            <TouchableOpacity onPress={toggleSound1}>
-              <Image
-                source={
-                  isSound1Enabled
-                    ? require("@/assets/icons/checked.png")
-                    : require("@/assets/icons/notcheck.png")
-                }
-                style={styles.btntoggle}
-              />
-            </TouchableOpacity>
-            <View
-              style={{ height: 1.5, backgroundColor: theme.colors.divLine }}
-            />
-            <Text style={styles.btnText}>Sound 1</Text>
-          </View>
-          <View
-            style={{ height: 1.5, backgroundColor: theme.colors.divLine }}
-          />
-          <View style={styles.btnOutline}>
-            <TouchableOpacity onPress={toggleSound2}>
-              <Image
-                source={
-                  isSound2Enabled
-                    ? require("@/assets/icons/checked.png")
-                    : require("@/assets/icons/notcheck.png")
-                }
-                style={styles.btntoggle}
-              />
-            </TouchableOpacity>
-            <View
-              style={{ height: 1.5, backgroundColor: theme.colors.divLine }}
-            />
-            <Text style={styles.btnText}>Sound 2</Text>
-          </View>
-          <View
-            style={{ height: 1.5, backgroundColor: theme.colors.divLine }}
-          />
-          <View style={styles.btnOutline}>
-            <TouchableOpacity onPress={toggleSound3}>
-              <Image
-                source={
-                  isSound3Enabled
-                    ? require("@/assets/icons/checked.png")
-                    : require("@/assets/icons/notcheck.png")
-                }
-                style={styles.btntoggle}
-              />
-            </TouchableOpacity>
-            <View
-              style={{ height: 1.5, backgroundColor: theme.colors.divLine }}
-            />
-            <Text style={styles.btnText}>Sound 3</Text>
-          </View>
-          <View
-            style={{ height: 1.5, backgroundColor: theme.colors.divLine }}
-          />
-          <View style={styles.btnOutline}>
-            <TouchableOpacity onPress={toggleSound4}>
-              <Image
-                source={
-                  isSound4Enabled
-                    ? require("@/assets/icons/checked.png")
-                    : require("@/assets/icons/notcheck.png")
-                }
-                style={styles.btntoggle}
-              />
-            </TouchableOpacity>
-            <View
-              style={{ height: 1.5, backgroundColor: theme.colors.divLine }}
-            />
-            <Text style={styles.btnText}>Sound 4</Text>
-          </View>
-        </View> */}
-      {/* </View> */}
     </View>
   );
 }
