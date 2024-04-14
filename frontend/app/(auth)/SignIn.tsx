@@ -57,15 +57,12 @@ export default function SignInScreen() {
   };
 
   const login = async () => {
-    console.log("Sign In Screen: login");
     if (validateForm()) {
-      console.log(`Sign In Screen: email = ${email}, password = ${password}`);
       isLoading(true);
       await auth.signIn(email, password);
-      console.log("Sign In Screen: router.replace(/Home)");
+
       router.replace("/Home");
     } else {
-      console.log("Email or Password is empty");
     }
   };
 

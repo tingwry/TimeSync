@@ -1,6 +1,7 @@
 import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthData, authService } from "./authService";
+import { Redirect, router } from "expo-router";
 
 type AuthContextData = {
     authData?: AuthData;
@@ -50,15 +51,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const signIn = async (email: string, _password: string) => {
         // call the service passing credential (email and password).
         // In a real App this data will be provided by the user from some InputText components.
-        console.log(`context email = ${email}, password = ${_password}`);
         const _authData = await authService.signIn(email, _password);
+        // console.log(_authData);
         setAuthData(_authData);
         AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
     };
-
-    // const signUp = async (email: string, _password: string) => {
-    //     const _authData = await authService.signUp(email, _password);
-    // }
 
     const signOut = async () => {
         // Remove data from context, so the App can be notified
@@ -68,13 +65,17 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         // Remove the data from Async Storage
         // to NOT be recoverede in next session.
         await AsyncStorage.removeItem('@AuthData');
+        router.dismissAll
+        router.replace('/SignIn');
     };
+
+    // const updateToken = async () => {
 
     return (
         // This component will be used to encapsulate the whole App,
         // so all components will have access to the Context
         <AuthContext.Provider value={{ authData, loading, signIn, signOut }}>
-            { children }
+            { loading ? null : children }
         </AuthContext.Provider>
     );
 }

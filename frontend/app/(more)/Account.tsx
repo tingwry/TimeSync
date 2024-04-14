@@ -8,18 +8,48 @@ import {
   Button,
   TextInput,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigation, useRouter } from "expo-router";
 import { theme } from "../theme";
 import { router } from "expo-router";
+import { authService } from "../context/authService";
+import { AuthContext, useAuth } from "../context/authContext";
 
 export default function AccountPage() {
   const navigation = useNavigation();
+  const auth = useAuth();
+  const access = auth.authData?.access;
 
-  const [name, setName] = useState("Amy");
-  const [username, setUsername] = useState("@amychampagne");
-  const [phone, setPhone] = useState("+ 66 89 888 9999");
-  const [email, setEmail] = useState("amy.champagne@gmail.com");
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+
+  let getData = async () => {
+    let response = await fetch('http://127.0.0.1:8000/app/auth/get-user/', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + access
+        },
+    });
+
+    let data = await response.json();
+    console.log(data);
+    if (response.ok) {
+        setName(data.name);
+        setUsername(data.username);
+        setPhone(data.phone_number);
+        setEmail(data.email);
+    } else {
+
+    }
+    
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <View style={styles.background}>
@@ -70,11 +100,13 @@ export default function AccountPage() {
 
         <View style={styles.sectionInfo}>
           <Text style={styles.textTitle}>Email</Text>
-          <TextInput
+          <Text
             style={styles.textInfo}
-            onChangeText={(email) => setEmail(email)}
-            value={email}
-          />
+            // onChangeText={(email) => setEmail(email)}
+            // value={email}
+          >
+            {email}
+            </Text>
         </View>
         <View style={styles.divLine} />
 
@@ -87,7 +119,7 @@ export default function AccountPage() {
         </TouchableOpacity>
         <View style={styles.divLine} />
 
-        <TouchableOpacity style={styles.menu}>
+        <TouchableOpacity style={styles.menu} onPress={auth.signOut}>
           <Text style={styles.textMenuRed}>Sign out</Text>
           <Image
             source={require("@/assets/icons/chevron-right.png")}

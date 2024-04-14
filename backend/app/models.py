@@ -162,7 +162,7 @@ class UserAuth(AbstractUser):
     REQUIRED_FIELDS = ['password']
 
     def __str__(self):
-        return (str(self.uid) + " : " + self.email)
+        return str(self.uid)
 
     objects = UserAuthManager()
 
@@ -181,7 +181,7 @@ class UserInfo(models.Model):
     total_prep_time = models.IntegerField(default=0)
 
     def __str__(self):
-        return (str(self.username) + " : " + self.email)
+        return (str(self.uid) + " : " + self.username)
 
 class Schedule(models.Model):
     event_id = models.AutoField(primary_key=True)

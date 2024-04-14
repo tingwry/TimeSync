@@ -35,7 +35,7 @@ class RegisterUserAuthSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         return UserAuth.objects.create_user(**validated_data)
-  
+    
 
 class RegisterUserInfoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -68,7 +68,25 @@ class RegisterSerializer(serializers.Serializer):
         userinfo_serializer = RegisterUserInfoSerializer(data=userinfo_data)
 
         if userauth_serializer.is_valid() and userinfo_serializer.is_valid():
-            userauth = userauth_serializer.save()
-            userinfo = userinfo_serializer.save(uid=userauth)
-            return userinfo
-        raise serializers.ValidationError(userinfo_serializer.errors)
+            userauth_instance = userauth_serializer.save()
+            userinfo_instance = userinfo_serializer.save(uid=userauth_instance)
+            return {
+                'userauth': userauth_instance,
+                'userinfo': userinfo_instance
+            }
+        else:
+            raise serializers.ValidationError({
+                'userauth': userauth_serializer.errors,
+                'userinfo': userinfo_serializer.errors
+            })
+        
+
+class GetUserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserInfo
+        fields = ['username', 'name', 'phone_number']
+
+class SignOutSerializer(serializers.ModelSerializer):
+    pass
+
+

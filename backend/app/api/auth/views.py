@@ -1,11 +1,11 @@
 from rest_framework.views import APIView, status
 from rest_framework.response import Response
-from .serializers import MyTokenObtainPairSerializer, EmailCheckSerializer, RegisterSerializer
-from django.contrib.auth import authenticate
-from ...models import UserAuth
+from rest_framework.permissions import IsAuthenticated
+from .serializers import MyTokenObtainPairSerializer, EmailCheckSerializer, RegisterSerializer, GetUserInfoSerializer
+from ...models import UserAuth, UserInfo
 
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
     
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
@@ -26,7 +26,8 @@ class MyTokenObtainPairView(TokenObtainPairView):
                 'refresh': serializer.validated_data['refresh'],
                 'uid': uid
             }
-            return Response(res, status=status.HTTP_200_OK)    
+            return Response(res, status=status.HTTP_200_OK)  
+        # return Response({ "error": "Email or password is incorrect"}, status=status.HTTP_400_BAD_REQUEST)  
 
 # class LoginView(APIView):
 #     def post(self, request):
@@ -64,7 +65,7 @@ class EmailCheckView(APIView):
     def post(self, request):
         serializer = EmailCheckSerializer(data=request.data)
         if serializer.is_valid():
-            return Response({"email": False}, status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
@@ -73,5 +74,33 @@ class RegisterView(APIView):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class GetUser(APIView):
+    serializer_class = GetUserInfoSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        user = request.user
+        user_info = UserInfo.objects.get(uid=user)
+        data = {
+            "email": user.email,
+            "username": user_info.username,
+            "name": user_info.name,
+            "phone_number": user_info.phone_number
+        }
+        return Response(data, status=status.HTTP_200_OK)
+
+class SignOutView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
