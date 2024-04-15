@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { Portal } from "@gorhom/portal";
@@ -17,13 +17,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "@/app/theme";
 import React from "react";
 
-export interface TimeSheetProps {
-  time: any;
-  title: string;
-  onTimeSelect: (time: string) => void; // Define the prop
-}
-
-export default function TimeSheet(this: any, props: TimeSheetProps) {
+export default function StartTimeSheet(this: any) {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["60%"], []);
 
@@ -36,11 +30,26 @@ export default function TimeSheet(this: any, props: TimeSheetProps) {
   }, []);
 
   const currentDate = new Date();
-  const formattedTime = new Date(currentDate).toLocaleTimeString("en-GB", {
-    timeStyle: "short",
+  const formattedTime = currentDate.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
   });
 
-  const [time, setTime] = useState(formattedTime);
+  let currentHour = parseInt(formattedTime.substring(0, 2)) + 1;
+  let initialHours = (currentDate.getHours() + 1).toString();
+  const initialMinutes = "00";
+
+  if (currentHour === 24) {
+    initialHours = "00";
+  } else if (currentHour < 10) {
+    initialHours = currentHour.toString();
+  }
+
+  const initialTime = `${initialHours.padStart(2, "0")}:${initialMinutes}`;
+
+  const timerPickerRef = useRef<TimerPickerRef>(null);
+  const [selectedHours, setSelectedHours] = useState(initialHours);
+  const [selectedMinutes, setSelectedMinutes] = useState(initialMinutes);
 
   return (
     <GestureHandlerRootView style={styles.sheetStyle}>
@@ -49,7 +58,7 @@ export default function TimeSheet(this: any, props: TimeSheetProps) {
         style={styles.pressableMenu}
       >
         <Text style={[styles.textDisplay, { fontSize: 24 }]}>
-          {props.time}
+          {initialTime}
         </Text>
       </TouchableOpacity>
 
@@ -80,15 +89,61 @@ export default function TimeSheet(this: any, props: TimeSheetProps) {
                   source={require("@/assets/icons/clock.png")}
                   style={{ width: 24, height: 24 }}
                 />
-                <Text style={styles.textHeader}>{props.title}</Text>
+                <Text style={styles.textHeader}>Start Time</Text>
               </View>
               <View style={timeStyle.timePicker}>
-                <TimePickerView />
+                <View
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginTop: 32,
+                    marginBottom: 24,
+                  }}
+                >
+                  <TimerPicker
+                    padWithNItems={2}
+                    hourLabel=":"
+                    minuteLabel=""
+                    hideSeconds={true}
+                    LinearGradient={LinearGradient}
+                    initialHours={parseInt(initialHours)}
+                    styles={{
+                      backgroundColor: theme.colors.modalBackground,
+                      pickerItem: {
+                        fontSize: 40,
+                        color: theme.colors.textPrimary,
+                        fontFamily: "dm-sans-medium",
+                      },
+                      pickerLabel: {
+                        fontSize: 40,
+                        marginTop: 0,
+                        color: theme.colors.textPrimary,
+                        fontFamily: "dm-sans-medium",
+                      },
+                      pickerContainer: {
+                        marginRight: 0,
+                      },
+                      pickerItemContainer: {
+                        marginHorizontal: -16,
+                      },
+                      pickerLabelContainer: {
+                        right: -20,
+                        top: 0,
+                        bottom: 6,
+                        width: 40,
+                        alignItems: "center",
+                      },
+                    }}
+                  />
+                </View>
               </View>
               <View style={styles.modalFooter}>
                 <ButtonPrimary
                   text="Select Time"
-                  press={handleCloseModalPress}
+                  press={() => {
+                    handleCloseModalPress();
+                    setSelectedHours()
+                  }}
                 />
               </View>
             </View>

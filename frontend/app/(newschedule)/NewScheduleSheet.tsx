@@ -16,6 +16,7 @@ import ButtonPrimary from "@/components/buttons/ButtonPrimary";
 import TransportationSheet from "@/components/sheets/TransportationSheet";
 import PreparationSheet from "@/components/sheets/PreparationSheet";
 import AlarmNotiSheet from "@/components/sheets/AlarmNotiSheet";
+import StartTimeSheet from "@/components/sheets/StartTimeSheet";
 // import { API_URL } from "@env";
 
 export default function NewSchedule() {
@@ -29,10 +30,13 @@ export default function NewSchedule() {
   const [extraPrepTime, setExtraPrepTime] = useState(0);
   const [note, setNote] = useState("");
 
-  const handleTransportationModeSelect = useCallback((mode: string) => {
-    console.log("Selected Transportation Mode:", mode);
-    setTransportationMode(mode);
-  }, [setTransportationMode]); 
+  const handleTransportationModeSelect = useCallback(
+    (mode: string) => {
+      console.log("Selected Transportation Mode:", mode);
+      setTransportationMode(mode);
+    },
+    [setTransportationMode]
+  );
 
   const handleClickPress = async () => {
     // console.warn(eventName, note);
@@ -40,9 +44,9 @@ export default function NewSchedule() {
     const url = `http://172.20.10.12:8000/app/schedule/create/`;
 
     let response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         event_name: eventName,
@@ -55,8 +59,8 @@ export default function NewSchedule() {
         user_id: 1,
         sched_start: 2,
         sched_destination: 2,
-        wake_up_aids: 1
-      })
+        wake_up_aids: 1,
+      }),
     });
     let result = await response.json();
 
@@ -123,7 +127,9 @@ export default function NewSchedule() {
                     alignItems: "center",
                   }}
                 >
-                  <TimeSheet time={"09:00"} title="Start Time" onTimeSelect={setStartTime}/>
+                  {/* <TimeSheet title="Start Time" onTimeSelect={setStartTime}/>
+                   */}
+                  <StartTimeSheet />
                   <Text
                     style={[
                       styles.textDisplay,
@@ -137,7 +143,11 @@ export default function NewSchedule() {
                   >
                     to
                   </Text>
-                  <TimeSheet time={"10:00"} title="End Time" onTimeSelect={setEndTime}/>
+                  <TimeSheet
+                    time={"10:00"}
+                    title="End Time"
+                    onTimeSelect={setEndTime}
+                  />
                 </View>
                 <View style={styles.divLine} />
                 <View style={styles.sheetItem}>
@@ -158,7 +168,9 @@ export default function NewSchedule() {
                   <Text style={styles.textHeader}>Transportation Mode</Text>
                 </View>
                 <ScrollView>
-                  <TransportationSheet onTransportationModeSelect={handleTransportationModeSelect}/>
+                  <TransportationSheet
+                    onTransportationModeSelect={handleTransportationModeSelect}
+                  />
                 </ScrollView>
                 <View style={styles.sheetItem}>
                   <Image

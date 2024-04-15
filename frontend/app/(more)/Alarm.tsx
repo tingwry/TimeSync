@@ -22,23 +22,23 @@ const sounds = [
 ];
 
 export default function AlarmSetPage() {
-  const [isSound1Enabled, setSound1Enabled] = useState(false);
-  const [isSound2Enabled, setSound2Enabled] = useState(false);
-  const [isSound3Enabled, setSound3Enabled] = useState(false);
-  const [isSound4Enabled, setSound4Enabled] = useState(false);
+  // const [isSound1Enabled, setSound1Enabled] = useState(false);
+  // const [isSound2Enabled, setSound2Enabled] = useState(false);
+  // const [isSound3Enabled, setSound3Enabled] = useState(false);
+  // const [isSound4Enabled, setSound4Enabled] = useState(false);
 
-  const toggleSound1 = () => {
-    setSound1Enabled((prevState) => !prevState);
-  };
-  const toggleSound2 = () => {
-    setSound2Enabled((prevState) => !prevState);
-  };
-  const toggleSound3 = () => {
-    setSound3Enabled((prevState) => !prevState);
-  };
-  const toggleSound4 = () => {
-    setSound4Enabled((prevState) => !prevState);
-  };
+  // const toggleSound1 = () => {
+  //   setSound1Enabled((prevState) => !prevState);
+  // };
+  // const toggleSound2 = () => {
+  //   setSound2Enabled((prevState) => !prevState);
+  // };
+  // const toggleSound3 = () => {
+  //   setSound3Enabled((prevState) => !prevState);
+  // };
+  // const toggleSound4 = () => {
+  //   setSound4Enabled((prevState) => !prevState);
+  // };
 
   const navigation = useNavigation();
 
