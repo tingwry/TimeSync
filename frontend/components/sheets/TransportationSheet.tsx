@@ -23,16 +23,17 @@ export default function TransportationSheet({ onTransportationModeSelect }: Tran
   const snapPoints = useMemo(() => ["54%"], []);
 
   const [isSelected, setSelected] = useState("Car");
-
+  const [selectedTransportationMode, setSelectedTransportationMode] = useState("car");
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
 
-  const handleCloseModalPress = useCallback(() => {
-    onTransportationModeSelect(isSelected); // Pass the selected transportation mode
+  const handleCloseModalPress = useCallback((mode: string) => {
+    onTransportationModeSelect(mode); // Pass the selected transportation mode
     bottomSheetModalRef.current?.close();
-  }, [isSelected]);
+  }, [onTransportationModeSelect]);
+
 
   const labelIcons = [
     require("@/assets/icons/car.png"),
@@ -73,7 +74,8 @@ export default function TransportationSheet({ onTransportationModeSelect }: Tran
             <View style={styles.handleModalIndicatorStyle} />
             <TouchableOpacity
               style={[styles.modalCloseButton, { marginRight: 16 }]}
-              onPress={handleCloseModalPress}
+              onPress={() => handleCloseModalPress(selectedTransportationMode)}
+
               hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }} // Adjust hitSlop as needed
             >
               <Image
@@ -99,7 +101,7 @@ export default function TransportationSheet({ onTransportationModeSelect }: Tran
                   onPress={() => {
                     setSelected("Car");
                     setLabel(labelIcons[0]);
-                    handleCloseModalPress();
+                    handleCloseModalPress("car");
                   }}
                 >
                   <View style={cardStyles.detail}>
@@ -123,7 +125,7 @@ export default function TransportationSheet({ onTransportationModeSelect }: Tran
                   onPress={() => {
                     setSelected("Motorcycle");
                     setLabel(labelIcons[1]);
-                    handleCloseModalPress();
+                    handleCloseModalPress("motorcycle");
                   }}
                 >
                   <View style={cardStyles.detail}>
@@ -147,7 +149,7 @@ export default function TransportationSheet({ onTransportationModeSelect }: Tran
                   onPress={() => {
                     setSelected("Bus");
                     setLabel(labelIcons[2]);
-                    handleCloseModalPress();
+                    handleCloseModalPress("bus");
                   }}
                 >
                   <View style={cardStyles.detail}>
@@ -171,7 +173,7 @@ export default function TransportationSheet({ onTransportationModeSelect }: Tran
                   onPress={() => {
                     setSelected("Metro");
                     setLabel(labelIcons[3]);
-                    handleCloseModalPress();
+                    handleCloseModalPress("metro");
                   }}
                 >
                   <View style={cardStyles.detail}>
@@ -195,7 +197,7 @@ export default function TransportationSheet({ onTransportationModeSelect }: Tran
                   onPress={() => {
                     setSelected("Walk");
                     setLabel(labelIcons[4]);
-                    handleCloseModalPress();
+                    handleCloseModalPress("walk");
                   }}
                 >
                   <View style={cardStyles.detail}>

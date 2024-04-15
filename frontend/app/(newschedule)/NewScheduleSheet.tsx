@@ -22,26 +22,21 @@ import StartTimeSheet from "@/components/sheets/StartTimeSheet";
 export default function NewSchedule() {
   const navigation = useNavigation();
 
+  const currentDate = new Date();
+  const defaultDate = currentDate.toISOString().split("T")[0];
+
   const [eventName, setEventName] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(defaultDate);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [transportationMode, setTransportationMode] = useState("");
+  const [transportationMode, setTransportationMode] = useState("car");
   const [extraPrepTime, setExtraPrepTime] = useState(0);
   const [note, setNote] = useState("");
 
-  const handleTransportationModeSelect = useCallback(
-    (mode: string) => {
-      console.log("Selected Transportation Mode:", mode);
-      setTransportationMode(mode);
-    },
-    [setTransportationMode]
-  );
-
   const handleClickPress = async () => {
-    // console.warn(eventName, note);
-
-    const url = `http://172.20.10.12:8000/app/schedule/create/`;
+    // console.log(startTime)
+    // console.log(endTime)
+    const url = `http://127.0.0.1:8000/app/schedule/create/`;
 
     let response = await fetch(url, {
       method: "POST",
@@ -51,24 +46,24 @@ export default function NewSchedule() {
       body: JSON.stringify({
         event_name: eventName,
         date: date,
-        start_time: startTime,
-        end_time: endTime,
+        start_time: "05:21",
+        end_time: "15:21",
         transportation_mode: transportationMode,
         extra_prep_time: 0,
         note: note,
-        user_id: 1,
-        sched_start: 2,
-        sched_destination: 2,
+        uid: 1,
+        sched_start: 1,
+        sched_destination: 1,
         wake_up_aids: 1,
       }),
     });
     let result = await response.json();
+    // console.log(result);
 
-    if (result) {
-      console.warn("Success");
+    if (response.ok) {
+      console.log("Success");
       // console.log(result);
     }
-
     navigation.goBack();
   };
 
@@ -169,7 +164,9 @@ export default function NewSchedule() {
                 </View>
                 <ScrollView>
                   <TransportationSheet
-                    onTransportationModeSelect={handleTransportationModeSelect}
+                    onTransportationModeSelect={(mode: string) => {
+                      setTransportationMode(mode);
+                    }}
                   />
                 </ScrollView>
                 <View style={styles.sheetItem}>

@@ -1,8 +1,17 @@
-import { StyleSheet, Text, View, Image, Pressable, Button, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Pressable,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 import { theme } from "@/app/theme";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { useRouter } from "expo-router";
+import MapView from "react-native-maps";
 
 interface ScheduleDetailProps {
   event_name: string;
@@ -12,6 +21,8 @@ interface ScheduleDetailProps {
   transportation_mode: string;
   extra_prep_time: Int16Array;
   note: string;
+  latitude: number;
+  longitude: number;
 }
 
 const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
@@ -20,6 +31,8 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
   start_time,
   end_time,
   transportation_mode,
+  latitude,
+  longitude
 }) => {
   const navigation = useNavigation();
   const router = useRouter();
@@ -71,7 +84,13 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
             <Text style={styles.textDepart}>08:00</Text>
           </View>
         </View>
-        <View
+        <MapView
+          initialRegion={{
+            latitude: latitude,
+            longitude: longitude,
+            latitudeDelta: 0.00000000000000000001,
+            longitudeDelta: 0.00000000000000001,
+          }}
           style={{
             width: "45%",
             height: "100%",
@@ -190,7 +209,7 @@ const styles = StyleSheet.create({
     fontSize: 48,
     color: theme.colors.textPrimary,
     textAlign: "right",
-  }
+  },
 });
 
 export default CardScheduleDetail;

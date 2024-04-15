@@ -16,6 +16,7 @@ export default function _layout() {
             <Stack.Screen name="SetPreparationTime" options={{ headerShown: false }} />
             <Stack.Screen name="SetDestinationLocation" options={{ headerShown: false }} />
             <Stack.Screen name="MapHome" options={{ headerShown: false }}/>
+            <Stack.Screen name="MapDestination" options={{ headerShown: false }}/>
         </Stack>
     )
 }

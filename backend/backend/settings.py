@@ -132,10 +132,6 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 # env = environ.Env()
 # environ.Env.read_env()
-
-
-load_dotenv()
-
 # SECRET_KEY = os.getenv("SECRET_KEY")
 
 
