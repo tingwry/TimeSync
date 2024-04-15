@@ -142,7 +142,6 @@ export default function StartTimeSheet(this: any) {
                   text="Select Time"
                   press={() => {
                     handleCloseModalPress();
-                    setSelectedHours()
                   }}
                 />
               </View>
