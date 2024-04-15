@@ -126,7 +126,7 @@ export default function MapHome() {
           {/* <Button onPress={handleSubmit} title="Submit" /> */}
           <Marker coordinate={pin} draggable={true} onDragEnd={onMarkerDragEnd}>
             <Callout>
-              <Text>My Destination</Text>
+              <Text>My Home</Text>
             </Callout>
           </Marker>
         </MapView>
