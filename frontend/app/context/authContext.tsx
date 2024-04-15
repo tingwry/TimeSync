@@ -60,16 +60,39 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const signOut = async () => {
         // Remove data from context, so the App can be notified
         // and send the user to the AuthStack
-        setAuthData(undefined);
+        // setAuthData(undefined);
 
         // Remove the data from Async Storage
         // to NOT be recoverede in next session.
         await AsyncStorage.removeItem('@AuthData');
+        
+        await authService.signOut(authData?.access, authData?.refresh);
+        setAuthData(undefined);
+
         router.dismissAll
         router.replace('/SignIn');
     };
 
     // const updateToken = async () => {
+
+    useEffect(() => {
+        let interval = setInterval(async () => {
+            if (authData) {
+                try {
+                    const _authData = await authService.refreshToken(authData.refresh);
+                    setAuthData(_authData);
+                    AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
+                    console.log('Token refreshed');
+                    console.log(_authData);
+                } catch (error) {
+                    console.error('Error refreshing token:', error);
+                    signOut();
+                }
+            }
+        }, 1000 * 60 * 10);
+        return () => clearInterval(interval);
+    }, [authData]);
+
 
     return (
         // This component will be used to encapsulate the whole App,

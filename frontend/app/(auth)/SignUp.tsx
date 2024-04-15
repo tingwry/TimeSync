@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   StyleSheet,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, router } from "expo-router";
 import { authService } from "../context/authService";
 import ButtonPrimary from "@/components/buttons/ButtonPrimary";
@@ -17,7 +17,7 @@ import PasswordInput from "@/components/textinputs/PasswordInput";
 import { LinearGradient } from "expo-linear-gradient";
 
 export default function SignUpScreen() {
-  const [loading, isLoading] = useState(false);
+    const [loading, isLoading] = useState(false);
     //   const auth = useAuth();
 
     const [email, setEmail] = useState<string>('');
@@ -55,24 +55,32 @@ export default function SignUpScreen() {
     const submit = async () => {
         if (validateForm()) {
             isLoading(true);
-            const res = await authService.checkEmail(email);
-            console.log(res)
-            if (res.email) {
-                setErrors({ 
-                    email: res.email,
-                    password: '',
-                    confirmPassword: '',
-                });
-            } else {
-                console.log('no error')
+            const response = await fetch('http://127.0.0.1:8000/app/auth/check-email/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            });
+            
+            isLoading(false);
+            if (response.ok) {
                 router.push({ 
                     pathname: '/CreateProfile',
                     params: { email, password }
                 });
+                return;
+            } else {
+                const errorData = await response.json();
+                const errorMessage = errorData.email ? errorData.email[0] : "Unknown error occurred" 
+                setErrors({
+                    email: errorMessage,
+                    password: '',
+                    confirmPassword: '',
+                });
             }
         }
     }
-
 
   return (
     <LinearGradient colors={["#182640", "#263D66"]} style={styles.container}>
@@ -117,9 +125,6 @@ export default function SignUpScreen() {
           console.log("google pressed");
         }}
       />
-      <Text style={styles.signInLink}>
-        <Link href="/CreateProfile">Create a profile</Link>
-      </Text>
     </LinearGradient>
   );
 }
@@ -131,7 +136,6 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
   },
-
   textHeader: {
     color: theme.colors.textPrimary,
     fontFamily: "dm-sans-bold",
@@ -157,5 +161,6 @@ const styles = StyleSheet.create({
   authContainer: {
     width: "100%",
     flexDirection: "column",
+    paddingHorizontal: 32,
   },
 });

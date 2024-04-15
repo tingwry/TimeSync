@@ -7,12 +7,13 @@ import {
   StatusBar,
   Button,
   TextInput,
+  Modal,
+  Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigation, useRouter } from "expo-router";
 import { theme } from "../theme";
 import { router } from "expo-router";
-import { authService } from "../context/authService";
 import { AuthContext, useAuth } from "../context/authContext";
 
 export default function AccountPage() {
@@ -25,6 +26,9 @@ export default function AccountPage() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
 
+  const [loading, isLoading] = useState(false);
+  const [signOutModalVisible, setSignOutModalVisible] = useState(false);
+
   let getData = async () => {
     let response = await fetch('http://127.0.0.1:8000/app/auth/get-user/', {
         method: 'GET',
@@ -35,17 +39,25 @@ export default function AccountPage() {
     });
 
     let data = await response.json();
-    console.log(data);
     if (response.ok) {
         setName(data.name);
         setUsername(data.username);
         setPhone(data.phone_number);
         setEmail(data.email);
     } else {
-
+      console.log("Something went wrong on more - account page");
+      console.log(data);
     }
     
   };
+
+  const signOutAlert = async () => {
+    setSignOutModalVisible(true);
+  }
+
+  const signOutConfirm = async () => {
+    auth.signOut();
+  }
 
   useEffect(() => {
     getData();
@@ -66,6 +78,43 @@ export default function AccountPage() {
         </TouchableOpacity>
         <Text style={styles.textHeader}>Account</Text>
       </View>
+
+      <Modal
+        animationType="none"
+        presentationStyle="overFullScreen"
+        transparent={true}
+        visible={signOutModalVisible}
+        onRequestClose={() => setSignOutModalVisible(false)}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.signOutModalView}>
+            <Text style={styles.signOutModalTextTitle}>
+              Do you want to sign out?
+            </Text>
+            <Text style={styles.signOutModalText}>
+              You can sign in back at anytime. Your information will not be lost.
+            </Text>
+            <View style={styles.buttonContainer}>
+              <Pressable 
+                style={styles.buttonCancel}
+                onPress={() => setSignOutModalVisible(false)}
+              >
+                <Text style={styles.buttonText}>
+                  Cancel
+                </Text>
+              </Pressable>
+              <Pressable 
+                style={styles.buttonYes}
+                onPress={signOutConfirm}
+              >
+                <Text style={styles.buttonText}>
+                  Yes
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       <View style={styles.container}>
         <View style={styles.sectionInfo}>
@@ -110,7 +159,7 @@ export default function AccountPage() {
         </View>
         <View style={styles.divLine} />
 
-        <TouchableOpacity style={styles.menu}>
+        <TouchableOpacity style={styles.menu} onPress={() => {router.push('/(more)/ResetPassword')}}>
           <Text style={styles.textMenu}>Reset Password</Text>
           <Image
             source={require("@/assets/icons/chevron-right.png")}
@@ -119,7 +168,7 @@ export default function AccountPage() {
         </TouchableOpacity>
         <View style={styles.divLine} />
 
-        <TouchableOpacity style={styles.menu} onPress={auth.signOut}>
+        <TouchableOpacity style={styles.menu} onPress={signOutAlert}>
           <Text style={styles.textMenuRed}>Sign out</Text>
           <Image
             source={require("@/assets/icons/chevron-right.png")}
@@ -206,5 +255,68 @@ const styles = StyleSheet.create({
     fontFamily: "dm-sans-medium",
     color: theme.colors.red,
     fontSize: 16,
+  },
+  
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: '#00000080',
+  },
+  signOutModalView: {
+    backgroundColor: theme.colors.blueSecondary,
+    // height: 176,
+    borderRadius: 20,
+    alignItems: 'center',
+    padding: 24,
+    paddingHorizontal: 32,
+    margin: 24,
+    width: 342,
+  },
+  signOutModalTextTitle: {
+    fontFamily: "dm-sans-bold",
+    fontSize: 16,
+    marginBottom: 15,
+    textAlign: 'center',
+    color: theme.colors.textPrimary,
+  },
+  signOutModalText: {
+    // marginBottom: 15,
+    textAlign: 'center',
+    fontSize: 12,
+    color: theme.colors.textCaption,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    marginTop: 24,
+  },
+  buttonCancel: {
+    backgroundColor: theme.colors.blueSecondary,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: theme.colors.textPrimary,
+
+    width: 128,
+    height: 40,
+
+    justifyContent: 'center',
+    alignItems: 'center',    
+  },
+  buttonYes: {
+    backgroundColor: theme.colors.red,
+    borderRadius: 20,
+
+    width: 128,
+    height: 40,
+
+    justifyContent: 'center',
+    alignItems: 'center',  
+  },
+  buttonText : {
+    color: theme.colors.textPrimary,
+    fontFamily: "dm-sans-bold",
   },
 });

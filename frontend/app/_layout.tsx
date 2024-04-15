@@ -12,16 +12,15 @@ export default function StackLayout() {
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                 <Stack.Screen name="(viewschedules)" options={{ headerShown: true }} />
                 <Stack.Screen
-                  name="(newschedule)"
-                  options={{
-                    headerShown: false,
-                    animation: "slide_from_bottom",
-                    animationDuration: 250,
-                  }}
+                    name="(newschedule)"
+                    options={{
+                      headerShown: false,
+                      animation: "slide_from_bottom",
+                      animationDuration: 250,
+                    }}
                 />
                 <Stack.Screen name="(more)" options={{ headerShown: false }} />
             </Stack>
         </AuthProvider>
-      
     );
 }

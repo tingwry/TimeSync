@@ -41,15 +41,62 @@ export default function CreateProfile() {
     
         setErrors(e);
         return Object.values(e).every(x => x === '')
-      }
-    
+    }
+
     const submit = async () => {
         if (validateForm()) {
             isLoading(true);
-            const res = await authService.register(
-                email, password, username, name, phoneNumber
-            );
-        } 
+            // const res = await authService.register(
+            //     email, password, username, name, phoneNumber
+            // );
+            const response = await fetch('http://127.0.0.1:8000/app/auth/register/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    'userauth' : { 
+                        "email": email, 
+                        "password": password 
+                    },
+                    'userinfo' : { 
+                        "username": username, 
+                        "name": name, 
+                        "phone_number": phoneNumber 
+                    }
+                }),
+            });
+
+            isLoading(false);
+            if (response.ok) {
+                router.replace({ 
+                    pathname: '/SignIn',
+                });
+            } else {
+                const errorData = await response.json();
+                if (errorData.userinfo) {
+                    let e = {
+                        username: '',
+                        name: '',
+                        phoneNumber: '',
+                    };
+                    if (errorData.userinfo.username) {
+                        e.username = errorData.userinfo.username[0];
+                    }
+                    if (errorData.userinfo.name) {
+                        e.name = errorData.userinfo.name[0];
+                    }
+                    if (errorData.userinfo.phone_number) {
+                        e.phoneNumber = errorData.userinfo.phone_number[0];
+                    }
+                    setErrors(e);
+                } else {
+                    console.log('Something went wrong')
+                    console.log(errorData)
+                }
+                // {"userinfo": {"username": ["user info with this username already exists."]}}
+            }
+        }
     }
 
     return (
@@ -61,18 +108,21 @@ export default function CreateProfile() {
                     placeholder='Your name or nickname'
                     value={name}
                     onChangeText={setName}
+                    errorText={errors.name}
                 />
                 <TextInputPrimary 
                     label="Username"
                     placeholder='@yourusername'
                     value={username}
                     onChangeText={setUsername}
+                    errorText={errors.username}
                 />
                 <TextInputPrimary 
                     label="Phone number"
                     placeholder='Your phone number'
                     value={phoneNumber}
                     onChangeText={setPhoneNumber}
+                    errorText={errors.phoneNumber}
                 />
                 <Text><Link href="/SignIn">Sign in</Link></Text>
             </View>

@@ -20,9 +20,9 @@ export default function RootLayoutNav() {
     "dm-sans-bold": require("@/assets/fonts/DMSans-Bold.ttf"),
   });
 
-  // if (!auth.authData) {
-  //   return <Redirect href="/StartScreen" />;
-  // }
+  if (!auth.authData) {
+    return <Redirect href="/StartScreen" />;
+  }
 
   if (!fontsLoaded) {
     return <Text>Loading...</Text>;
