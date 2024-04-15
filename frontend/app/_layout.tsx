@@ -11,6 +11,7 @@ export default function StackLayout() {
                 <Stack.Screen name="(auth)" options={{ headerShown: false }} />
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                 <Stack.Screen name="(viewschedules)" options={{ headerShown: false }} />
+                <Stack.Screen name="(locations)" options={{ headerShown: false }} />
                 <Stack.Screen
                   name="(newschedule)"
                   options={{

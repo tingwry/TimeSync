@@ -5,8 +5,8 @@ import { theme } from "../theme";
 export default function StackLayout() {
   return (
     <Stack screenOptions={screenOptions}>
-      <Stack.Screen name="LocationHome" options={{ headerShown: true }} />
-      <Stack.Screen name="MapLocation" options={{ headerShown: true }} />
+      <Stack.Screen name="LocationHome" options={{ headerShown: false }} />
+      <Stack.Screen name="MapLocation" options={{ headerShown: false }} />
     </Stack>
   );
 }
