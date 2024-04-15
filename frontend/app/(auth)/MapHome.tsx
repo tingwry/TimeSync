@@ -15,6 +15,9 @@ import { styles } from "@/components/sheets/SheetStyles";
 import { router, useNavigation } from "expo-router";
 import { useFonts } from "expo-font";
 import ButtonPrimary from "@/components/buttons/ButtonPrimary";
+import MapView from "react-native-maps";
+import { Marker, Callout } from "react-native-maps";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 export default function MapHome() {
   const searchSnapPoints = useMemo(() => ["30%"], []);
@@ -40,6 +43,58 @@ export default function MapHome() {
 
   const navigation = useNavigation();
 
+  const [pin, setPin] = useState({
+    latitude: 13.736834400006273,
+    longitude: 100.53314465311604,
+  });
+
+  const mapRef = useRef(null);
+
+  const onMarkerDragEnd = (e: any) => {
+    const { latitude, longitude } = e.nativeEvent.coordinate;
+
+    const validLatitude = parseFloat(
+      Math.min(Math.max(latitude, -90), 90).toFixed(16)
+    );
+    const validLongitude = parseFloat(
+      Math.min(Math.max(longitude, -180), 180).toFixed(16)
+    );
+
+    setPin({ latitude: validLatitude, longitude: validLongitude });
+    console.log("End", { latitude: validLatitude, longitude: validLongitude });
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:8000/app/location/create/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            loc_name: "Home",
+            latitude: pin.latitude,
+            longitude: pin.longitude,
+            default_home: true,
+            default_dest: false,
+            uid: 1,
+          }),
+        }
+      );
+      if (response.ok) {
+        console.log("Success");
+        navigation.goBack()
+      } else {
+        console.error("Failed to post");
+        console.log(response.status)
+      }
+    } catch (error) {
+      console.error("Error submitting:", error);
+    }
+  };
+
   return (
     <GestureHandlerRootView style={menuStyles.background}>
       <View style={menuStyles.headerView}>
@@ -54,6 +109,29 @@ export default function MapHome() {
           <Text style={menuStyles.textButton}>Back</Text>
         </TouchableOpacity>
         <Text style={menuStyles.textHeader}>Choose Location</Text>
+      </View>
+      <View style={menuStyles.container}>
+
+        <MapView
+          // provider="google"
+          ref={mapRef}
+          style={{ width: "100%", height: "100%", marginTop: 20 }}
+          initialRegion={{
+            latitude: 13.736834400006273,
+            longitude: 100.53314465311604,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        >
+          {/* <Button onPress={handleSubmit} title="Submit" /> */}
+          <Marker coordinate={pin} draggable={true} onDragEnd={onMarkerDragEnd}>
+            <Callout>
+              <Text>My Destination</Text>
+            </Callout>
+          </Marker>
+        </MapView>
+
+        {/* <Button onPress={() => goToPin()} title="Go Home" /> */}
       </View>
       <BottomSheet
         ref={bottomSheetRef}
@@ -92,7 +170,7 @@ export default function MapHome() {
           </View>
         </View>
         <View style={menuStyles.footer}>
-          <ButtonPrimary text="Set as Home" press={() => navigation.goBack()} />
+          <ButtonPrimary text="Set as Home" press={handleSubmit} />
         </View>
       </BottomSheet>
     </GestureHandlerRootView>
@@ -149,4 +227,11 @@ const menuStyles = StyleSheet.create({
     color: theme.colors.textCaption,
     marginHorizontal: 8,
   },
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    marginTop: 100,
+    flex: 1,
+    // justifyContent: "flex-end",
+    // alignItems: "center",
+  }
 });

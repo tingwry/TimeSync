@@ -22,7 +22,7 @@ export default function SetDestinationLocation() {
       <View style={styles.contentView}>
         <Pressable
           style={styles.mapButton}
-          onPress={() => router.push("/MapHome")}
+          onPress={() => router.push("/MapDestination")}
         >
           <View style={styles.mapLabel}>
             <Image
@@ -35,7 +35,7 @@ export default function SetDestinationLocation() {
       </View>
 
       <View style={styles.footer}>
-        <Link href="/onboarding/Loading">Next</Link>
+        <Link href="/(tabs)/Home">Next</Link>
         <View style={styles.indicatorContainer}>
           <Pressable
             style={styles.indicatorFocus}
@@ -50,7 +50,7 @@ export default function SetDestinationLocation() {
         </View>
         <ButtonPrimary
           text="Choose Location"
-          press={() => router.push("/MapHome")}
+          press={() => router.push("/MapDestination")}
         />
       </View>
     </LinearGradient>
