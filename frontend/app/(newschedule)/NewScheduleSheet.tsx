@@ -17,6 +17,7 @@ import TransportationSheet from "@/components/sheets/TransportationSheet";
 import PreparationSheet from "@/components/sheets/PreparationSheet";
 import AlarmNotiSheet from "@/components/sheets/AlarmNotiSheet";
 import StartTimeSheet from "@/components/sheets/StartTimeSheet";
+import EndTimeSheet from "@/components/sheets/EndTimeSheet";
 // import { API_URL } from "@env";
 
 export default function NewSchedule() {
@@ -138,11 +139,7 @@ export default function NewSchedule() {
                   >
                     to
                   </Text>
-                  <TimeSheet
-                    time={"10:00"}
-                    title="End Time"
-                    onTimeSelect={setEndTime}
-                  />
+                  <EndTimeSheet />
                 </View>
                 <View style={styles.divLine} />
                 <View style={styles.sheetItem}>

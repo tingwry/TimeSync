@@ -20,6 +20,14 @@ import { Marker, Callout } from "react-native-maps";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 export default function MapHome() {
+  const [fontsLoaded] = useFonts({
+    "dm-sans-regular": require("@/assets/fonts/DMSans-Regular.ttf"),
+    "dm-sans-bold": require("@/assets/fonts/DMSans-Bold.ttf"),
+  });
+  if (!fontsLoaded) {
+    return <Text>Loading...</Text>;
+  }
+  
   const searchSnapPoints = useMemo(() => ["30%"], []);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const handleCollapseSearchPress = () => bottomSheetRef.current?.collapse();
