@@ -7,7 +7,14 @@ import joblib
 
 def train_models():
     # *Waiting* Get data from database
-    df = pd.read_csv('data.csv')
+    # df = pd.read_csv('data.csv')
+    data = {
+    'PreparationTime': [40, 30, 25, 30, 25, 15, 28],
+    'TravelTime': [10, 7, 5, 7, 9, 5, 9],
+    'DesiredArrivingTime': ['11:55', '8:51', '9:19', '11:03', '12:50','8:56', '15:59']
+}
+
+    df = pd.DataFrame(data)
 
     # Convert ArrivingTime to minutes since midnight
     df['ArrivingTime'] = pd.to_datetime(df['ArrivingTime']).dt.hour * 60 + pd.to_datetime(df['ArrivingTime']).dt.minute
