@@ -5,6 +5,7 @@ import { useFonts } from "expo-font";
 import CardNoSchedule from "@/components/cards/CardNoSchedule";
 import CardUpcomingSchedule from "@/components/cards/CardUpcomingSchedule";
 import CardCountDownTimer from "@/components/cards/CardCountDownTimer";
+import { useAuth } from "../context/authContext";
 
 interface ScheduleItem {
   event_id: number;
@@ -29,21 +30,33 @@ export default function Home() {
     return <Text>Loading...</Text>;
   }
 
+  const auth = useAuth();
+  const access = auth.authData?.access;
+  const user = auth.authData?.username;
+
   const [schedule, setSchedule] = useState<ScheduleItem | null>(null);
   const [scheduleNumber, setScheduleNumber] = useState(0);
   const [location, setLocation] = useState("");
   const [lat, setLat] = useState(0);
   const [long, setLong] = useState(0);
 
+  
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
-        const response = await fetch(
-          "http://127.0.0.1:8000/app/schedule/recent/"
-        );
+        const response = await fetch(`${process.env.BASE_URL}/schedule/recent/`, {
+        // const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer ' + access
+          },
+        });
+
         if (!response.ok) {
           throw new Error("Failed to fetch schedule");
         }
+
         const data = await response.json();
         setLocation(data.sched_destination)
         // console.log("sched location", location)
@@ -86,7 +99,7 @@ export default function Home() {
     <View style={styles.background}>
       <StatusBar barStyle="light-content" />
       <View style={styles.containerHome}>
-        <Text style={styles.textTitle}>Hello, User</Text>
+        <Text style={styles.textTitle}>Hello, {user}</Text>
         <Text style={styles.textCaption}>Let's see what is up next!</Text>
         <Text style={styles.textHeader}>Upcoming Schedule</Text>
       </View>

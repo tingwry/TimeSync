@@ -7,16 +7,70 @@ import {
   StatusBar,
   Button,
   Switch,
+  Modal,
+  Pressable,
 } from "react-native";
 import React, { useState } from "react";
 import { Link, useNavigation } from "expo-router";
 import { theme } from "../theme";
+import PasswordInput from "@/components/textinputs/PasswordInput";
+import TextInputPrimary from "@/components/textinputs/TextInputPrimary";
+import { useAuth } from "../context/authContext";
 
 export default function GeneralPage() {
+  const navigation = useNavigation();
+  const auth = useAuth();
+  const access = auth.authData?.access;
+
   const [isEnabled, setIsEnabled] = useState(true);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
-  const navigation = useNavigation();
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [deletePasswordModalVisible, setDeletePasswordModalVisible] = useState(false);
+
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({
+    password: '',
+  });
+
+  const validateForm = () => {
+    let e = {
+        password: '',
+    };
+    if (password === '') {
+        e.password = 'Password is required';
+    } 
+
+    setErrors(e);
+    return Object.values(e).every(x => x === '')
+  }
+
+  const submit = async () => {
+    if (validateForm()) {
+      console.log('delete account');
+      const response = await fetch(`${process.env.BASE_URL}/auth/delete-account/`, {
+          method: 'DELETE',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + access
+          },
+          body: JSON.stringify({ 
+              'password' : password,
+          }),
+      });
+
+      if (response.ok) {
+          alert('Account deleted successfully');
+          auth.signOut();
+      } else {
+          const errorData = await response.json();
+          const errorMessage = errorData.password ? errorData.password[0] : "Unknown error occurred" 
+          setErrors({
+              password: errorMessage,
+          });
+      }
+    }
+  }
 
   return (
     <View style={styles.background}>
@@ -33,6 +87,88 @@ export default function GeneralPage() {
         </TouchableOpacity>
         <Text style={styles.textHeader}>General</Text>
       </View>
+
+      <Modal
+        animationType="none"
+        presentationStyle="overFullScreen"
+        transparent={true}
+        visible={deleteModalVisible}
+        onRequestClose={() => {
+          setDeleteModalVisible(false);
+          setDeletePasswordModalVisible(false);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.deleteModalView}>
+            { deletePasswordModalVisible ? ( <>
+              <Text style={styles.deleteModalTextTitle}>
+                Please enter your password to confirm the account deletion
+              </Text>
+              <Text style={styles.deleteModalText}>
+                All of your information will be permanently deleted once proceeded.
+              </Text>
+
+              <PasswordInput 
+                // label="Password"
+                placeholder="Password"
+                value={password}
+                onChangeText={setPassword}
+                errorText={errors.password}
+                password
+                style={styles.passwordInput}
+              />
+
+              <View style={styles.buttonContainer}>
+                <Pressable 
+                  style={styles.buttonCancel}
+                  onPress={() => {
+                    setDeleteModalVisible(false);
+                    setDeletePasswordModalVisible(false);
+                  }}
+                >
+                  <Text style={styles.buttonText}>
+                    Discard
+                  </Text>
+                </Pressable>
+                <Pressable 
+                  style={styles.buttonYes}
+                  onPress={submit}
+                >
+                  <Text style={styles.buttonText}>
+                    Delete my account
+                  </Text>
+                </Pressable>
+              </View>
+            </> ) : ( <>
+              <Text style={styles.deleteModalTextTitle}>
+                Are you sure you would like to delete your account?
+              </Text>
+              <Text style={styles.deleteModalText}>
+                All of your information will be permanently deleted once proceeded.
+              </Text>
+              <View style={styles.buttonContainer}>
+                <Pressable 
+                  style={styles.buttonCancel}
+                  onPress={() => setDeleteModalVisible(false)}
+                >
+                  <Text style={styles.buttonText}>
+                    Keep my account
+                  </Text>
+                </Pressable>
+                <Pressable 
+                  style={styles.buttonYes}
+                  onPress={() => setDeletePasswordModalVisible(true)}
+                >
+                  <Text style={styles.buttonText}>
+                    Yes, Delete my account
+                  </Text>
+                </Pressable>
+              </View>
+            </> )}
+            
+          </View>
+        </View>
+      </Modal>
 
       <View style={styles.container}>
         <Text style={styles.textTitle}>Privacy</Text>
@@ -57,7 +193,7 @@ export default function GeneralPage() {
         <Text style={styles.textTitle}>Account Management</Text>
 
         <View style={styles.divLine} />
-        <TouchableOpacity style={styles.menu}>
+        <TouchableOpacity style={styles.menu} onPress={() => {setDeleteModalVisible(true)}}>
           <Text style={styles.textMenuRed}>Delete Account</Text>
           <Image
             source={require("@/assets/icons/chevron-right.png")}
@@ -70,6 +206,7 @@ export default function GeneralPage() {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   background: {
     flexGrow: 1,
@@ -141,4 +278,71 @@ const styles = StyleSheet.create({
     padding: 1,
     borderRadius: 20,
   },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: '#00000080',
+  },
+  deleteModalView: {
+    backgroundColor: theme.colors.blueSecondary,
+    // height: 176,
+    borderRadius: 20,
+    alignItems: 'center',
+    padding: 24,
+    paddingHorizontal: 32,
+    margin: 24,
+    width: 342,
+  },
+  deleteModalTextTitle: {
+    fontFamily: "dm-sans-bold",
+    fontSize: 16,
+    marginBottom: 15,
+    textAlign: 'center',
+    color: theme.colors.textPrimary,
+  },
+  deleteModalText: {
+    // marginBottom: 15,
+    textAlign: 'center',
+    fontSize: 12,
+    color: theme.colors.textCaption,
+    marginBottom: 16,
+  },
+  passwordInput: {
+    backgroundColor: theme.colors.orange,
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    width: '100%',
+    marginTop: 24,
+    gap: 16,
+  },
+  buttonCancel: {
+    backgroundColor: theme.colors.blueSecondary,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: theme.colors.textPrimary,
+
+    width: '100%',
+    height: 40,
+
+    justifyContent: 'center',
+    alignItems: 'center',    
+  },
+  buttonYes: {
+    backgroundColor: theme.colors.red,
+    borderRadius: 20,
+
+    width: '100%',
+    height: 40,
+
+    justifyContent: 'center',
+    alignItems: 'center',  
+  },
+  buttonText : {
+    color: theme.colors.textPrimary,
+    fontFamily: "dm-sans-bold",
+  },
+
 });

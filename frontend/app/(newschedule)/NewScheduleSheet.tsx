@@ -16,10 +16,13 @@ import ButtonPrimary from "@/components/buttons/ButtonPrimary";
 import TransportationSheet from "@/components/sheets/TransportationSheet";
 import PreparationSheet from "@/components/sheets/PreparationSheet";
 import AlarmNotiSheet from "@/components/sheets/AlarmNotiSheet";
+import { useAuth } from "../context/authContext";
 // import { API_URL } from "@env";
 
 export default function NewSchedule() {
   const navigation = useNavigation();
+  const auth = useAuth();
+  const access = auth.authData?.access;
 
   const currentDate = new Date();
   const defaultDate = currentDate.toISOString().split("T")[0];
@@ -35,12 +38,28 @@ export default function NewSchedule() {
   const handleClickPress = async () => {
     // console.log(startTime)
     // console.log(endTime)
-    const url = `http://127.0.0.1:8000/app/schedule/create/`;
+    const req = {
+      event_name: eventName,
+      date: date,
+      start_time: "05:21",
+      end_time: "15:21",
+      transportation_mode: transportationMode,
+      extra_prep_time: 0,
+      note: note,
+      uid: 2,
+      sched_start: 1,
+      sched_destination: 1,
+      wake_up_aids: 1,
+    }
+    
+    // const url = `http://127.0.0.1:8000/app/schedule/create/`;
+    
 
-    let response = await fetch(url, {
+    let response = await fetch(`${process.env.BASE_URL}/schedule/create/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'Authorization': 'Bearer ' + access
       },
       body: JSON.stringify({
         event_name: eventName,
@@ -50,20 +69,26 @@ export default function NewSchedule() {
         transportation_mode: transportationMode,
         extra_prep_time: 0,
         note: note,
-        uid: 1,
+        uid: 2,
         sched_start: 1,
         sched_destination: 1,
         wake_up_aids: 1,
       }),
     });
+    console.log(req)
     let result = await response.json();
-    // console.log(result);
+    console.log("res")
+    console.log(result);
 
     if (response.ok) {
       console.log("Success");
-      // console.log(result);
+      console.log(result);
+      navigation.goBack();
+    } else {
+      console.log("Failed");
+      console.log(result);
     }
-    navigation.goBack();
+    
   };
 
   return (

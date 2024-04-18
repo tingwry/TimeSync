@@ -33,7 +33,7 @@ export default function AllowLocation() {
         <ButtonPrimary
           text="Allow Access to Location Service"
           press={() => {
-            router.replace("/Questionaires");
+            router.replace("/SetHomeLocation");
           }}
         />
       </View>
