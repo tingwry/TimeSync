@@ -2,22 +2,21 @@ import {
   View,
   Text,
   Image,
-  Pressable,
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { Portal } from "@gorhom/portal";
 import { styles } from "./SheetStyles";
 import ButtonPrimary from "../buttons/ButtonPrimary";
-import { TimerPicker, TimerPickerRef } from "react-native-timer-picker";
+import { TimerPicker } from "react-native-timer-picker";
 import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "@/app/theme";
 import React from "react";
 
-export default function StartTimeSheet(this: any) {
+export default function StartTimeSheet() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["60%"], []);
 
@@ -47,9 +46,11 @@ export default function StartTimeSheet(this: any) {
 
   const initialTime = `${initialHours.padStart(2, "0")}:${initialMinutes}`;
 
-  const timerPickerRef = useRef<TimerPickerRef>(null);
   const [selectedHours, setSelectedHours] = useState(initialHours);
   const [selectedMinutes, setSelectedMinutes] = useState(initialMinutes);
+
+  const [selectedTime, setSelectedTime] = useState(initialTime);
+  const formattedSelctedTime = `${selectedHours.padStart(2, "0")}:${selectedMinutes.padStart(2, "0")}`
 
   return (
     <GestureHandlerRootView style={styles.sheetStyle}>
@@ -58,7 +59,7 @@ export default function StartTimeSheet(this: any) {
         style={styles.pressableMenu}
       >
         <Text style={[styles.textDisplay, { fontSize: 24 }]}>
-          {initialTime}
+          {selectedTime}
         </Text>
       </TouchableOpacity>
 
@@ -98,6 +99,7 @@ export default function StartTimeSheet(this: any) {
                     justifyContent: "center",
                     marginTop: 32,
                     marginBottom: 24,
+                    flexDirection: "row"
                   }}
                 >
                   <TimerPicker
@@ -106,7 +108,12 @@ export default function StartTimeSheet(this: any) {
                     minuteLabel=""
                     hideSeconds={true}
                     LinearGradient={LinearGradient}
-                    initialHours={parseInt(initialHours)}
+                    initialHours={parseInt(selectedHours)}
+                    initialMinutes={parseInt(selectedMinutes)}
+                    onDurationChange={(time) => {
+                      setSelectedHours(time.hours.toString());
+                      setSelectedMinutes(time.minutes.toString());
+                    }}
                     styles={{
                       backgroundColor: theme.colors.modalBackground,
                       pickerItem: {
@@ -142,6 +149,7 @@ export default function StartTimeSheet(this: any) {
                   text="Select Time"
                   press={() => {
                     handleCloseModalPress();
+                    setSelectedTime(formattedSelctedTime);
                   }}
                 />
               </View>
@@ -152,55 +160,6 @@ export default function StartTimeSheet(this: any) {
     </GestureHandlerRootView>
   );
 }
-
-const TimePickerView = () => {
-  return (
-    <View
-      style={{
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: 32,
-        marginBottom: 24,
-      }}
-    >
-      <TimerPicker
-        padWithNItems={2}
-        hourLabel=":"
-        minuteLabel=""
-        hideSeconds={true}
-        LinearGradient={LinearGradient}
-        initialHours={9}
-        styles={{
-          backgroundColor: theme.colors.modalBackground,
-          pickerItem: {
-            fontSize: 40,
-            color: theme.colors.textPrimary,
-            fontFamily: "dm-sans-medium",
-          },
-          pickerLabel: {
-            fontSize: 40,
-            marginTop: 0,
-            color: theme.colors.textPrimary,
-            fontFamily: "dm-sans-medium",
-          },
-          pickerContainer: {
-            marginRight: 0,
-          },
-          pickerItemContainer: {
-            marginHorizontal: -16,
-          },
-          pickerLabelContainer: {
-            right: -20,
-            top: 0,
-            bottom: 6,
-            width: 40,
-            alignItems: "center",
-          },
-        }}
-      />
-    </View>
-  );
-};
 
 const timeStyle = StyleSheet.create({
   timePicker: {

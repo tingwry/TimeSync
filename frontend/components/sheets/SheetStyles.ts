@@ -81,64 +81,68 @@ export const styles = StyleSheet.create({
     borderTopRightRadius: 24,
   },
   sheetView: {
-        marginTop: 32,
-        paddingLeft: 32,
-        paddingRight: 32,
-      },
-      modalSheetView: {
-        marginTop: 8,
-        paddingLeft: 32,
-        paddingRight: 32,
-        flexGrow: 1
-      },
-      sheetItem: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 12,
-        marginTop: 24,
-      },
-      textHeader: {
-        color: theme.colors.textCaption,
-        fontFamily: "dm-sans-regular",
-        fontSize: 16,
-      },
-      eventNameInput: {
-        marginTop: 16,
-        marginBottom: 4,
-        fontSize: 20,
-        fontFamily: "dm-sans-semibold",
-        color: theme.colors.textPrimary,
-        paddingBottom: 8,
-        borderBottomWidth: 1,
-        borderBottomColor: theme.colors.textCaption,
-      },
-      textDisplay: {
-        fontFamily: "dm-sans-medium",
-        color: theme.colors.textPrimary,
-      },
-      textTitle: {
-        fontFamily: "dm-sans-regular",
-        fontSize: 16,
-        color: theme.colors.textPrimary,
-      
-      },
-      pressableMenu: {
-        flexDirection: "row",
-        alignItems: "center",
-        height: 40,
-        paddingLeft: 36,
+    marginTop: 32,
+    paddingLeft: 32,
+    paddingRight: 32,
   },
-      chevronStyle: {
-        width: 24,
-        height: 24,
-        right: 0,
-        position: "absolute",
-      },
-      divLine: {
-        height: 1,
-        backgroundColor: theme.colors.divLine,
-        marginTop: 12,
-        justifyContent: "flex-end",
+  modalSheetView: {
+    marginTop: 8,
+    paddingLeft: 32,
+    paddingRight: 32,
+    flexGrow: 1
+  },
+  sheetItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    marginTop: 24,
+  },
+  textHeader: {
+    color: theme.colors.textCaption,
+    fontFamily: "dm-sans-regular",
+    fontSize: 16,
+  },
+  eventNameInput: {
+    marginTop: 16,
+    marginBottom: 4,
+    fontSize: 20,
+    fontFamily: "dm-sans-semibold",
+    color: theme.colors.textPrimary,
+    paddingBottom: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.textCaption,
+  },
+  textDisplay: {
+    fontFamily: "dm-sans-medium",
+    color: theme.colors.textPrimary,
+  },
+  textDisplayBlur: {
+    fontFamily: "dm-sans-medium",
+    color: theme.colors.textPlaceholder,
+  },
+  textTitle: {
+    fontFamily: "dm-sans-regular",
+    fontSize: 16,
+    color: theme.colors.textPrimary,
+      
+  },
+  pressableMenu: {
+    flexDirection: "row",
+    alignItems: "center",
+    height: 40,
+    paddingLeft: 36,
+  },
+  chevronStyle: {
+    width: 24,
+    height: 24,
+    right: 0,
+    position: "absolute",
+  },
+  divLine: {
+    height: 1,
+    backgroundColor: theme.colors.divLine,
+    marginTop: 12,
+    justifyContent: "flex-end",
   },
   footer: {
     backgroundColor: theme.colors.bluePrimary,
