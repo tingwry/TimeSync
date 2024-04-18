@@ -1,7 +1,9 @@
 from django.urls import path
 from . import views
+from .views import (
+    MLView
+)
 
 urlpatterns = [
-    # path('predict/', views.predict_times_view, name='predict_times'),
-    # path('predict/', MLViews.as_view(), name='predict_times'),
+    path('predict/', MLView.as_view() , name='predict_times'),
 ]
