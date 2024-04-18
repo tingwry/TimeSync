@@ -10,7 +10,7 @@
 #     ('metro', 'Metro'),
 #     ('walk', 'Walk')
 # ]
-    
+
 # class UserInfo(models.Model):
 #     user_id = models.AutoField(primary_key=True)
 #     username = models.CharField(max_length=100, unique=True)
@@ -121,6 +121,7 @@ transportation_mode_choices = [
     ('walk', 'Walk')
 ]
 
+
 class UserAuthManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -130,7 +131,7 @@ class UserAuthManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
-    
+
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
@@ -146,7 +147,8 @@ class UserAuthManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
-    
+
+
 class UserInfo(models.Model):
     uid = models.AutoField(primary_key=True)
     # user_id = models.AutoField(primary_key=True)
@@ -184,6 +186,7 @@ class UserAuth(AbstractUser):
         return self.email
 
     objects = UserAuthManager()
+
 
 class Schedule(models.Model):
     # event_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -243,9 +246,9 @@ class PrepActivityTime(models.Model):
         return self.prep_activity_name
 
 
-class TotalPrepTime():
-    # iteration = models.AutoField(primary_key=True)
-    iteration = models.IntegerField()
+class TotalPrepTime(models.Model):
+    iteration = models.AutoField(primary_key=True)
+    # iteration = models.IntegerField()
     prep_time = models.IntegerField()
 
     uid = models.ForeignKey(
@@ -253,8 +256,7 @@ class TotalPrepTime():
     # user_id = models.ForeignKey(
     #     UserInfo, on_delete=models.CASCADE, related_name='total_prep_times')
 
-    class Meta:
-        unique_together = (('iteration', 'user_id'),)
-
     def __str__(self):
         return f"Iteration {self.iteration} - Total Prep Time: {self.prep_time}"
+
+    objects = models.Manager()

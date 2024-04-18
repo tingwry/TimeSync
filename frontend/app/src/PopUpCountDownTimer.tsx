@@ -14,6 +14,7 @@ import { theme } from "../theme";
 import { LinearGradient } from "expo-linear-gradient";
 import { isAbsolute } from "path";
 import CardCountDownTimer from "@/components/cards/CardCountDownTimer";
+import { useNavigation } from "expo-router";
 
 const PopUpCountdownTimer = () => {
   const [fontsLoaded] = useFonts({
@@ -25,10 +26,15 @@ const PopUpCountdownTimer = () => {
   if (!fontsLoaded) {
     return <Text>Loading...</Text>;
   }
-  const [time, setTime] = useState<number | null>(0.1 * 60); // 25 minutes in seconds
+
+  const MLtime = 25; // time calculated by ML from table userinfo
+
+  const [time, setTime] = useState<number | null>(MLtime * 60); // 25 minutes in seconds
   const [modalVisible, setModalVisible] = useState(false);
   const [remainingTime, setRemainingTime] = useState<number | null>(null);
   const [exceed, setExceed] = useState(false);
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -65,11 +71,38 @@ const PopUpCountdownTimer = () => {
       .padStart(2, "0")}`;
   };
 
-  const stopCountdown = () => {
+  const stopCountdown = async () => {
     setModalVisible(false);
     console.log(time);
     console.log(remainingTime);
     setTime(null);
+
+    let actualPrepTime;
+
+    if (exceed && remainingTime) {
+      actualPrepTime = MLtime + remainingTime;
+    } else if (!exceed && remainingTime) {
+      actualPrepTime = MLtime - remainingTime;
+    }
+
+    const url = `http://127.0.0.1:8000/app/preptime/create/`;
+
+    let response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        uid: 1,
+        prep_time: actualPrepTime,
+      }),
+    });
+    let result = await response.json();
+
+    if (result) {
+      console.warn("Success");
+      // console.log(result);
+    }
   };
 
   return (
