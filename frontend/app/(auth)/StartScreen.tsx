@@ -33,7 +33,7 @@ export default function StartScreen() {
         <ButtonSignIn />
         <ButtonPrimaryLink
           text={"Get Started"}
-          linkName={"/SetHomeLocation"}
+          linkName={"/onboarding/Onboarding1"}
         />
       </View>
     </LinearGradient>

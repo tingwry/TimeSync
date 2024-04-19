@@ -13,7 +13,7 @@ export default function ButtonSignIn() {
   return (
     <Link
       push
-      href={"/Home"}
+      href={"/SignIn"}
       asChild
       style={[styles.container, styles.shadowProp]}
     >

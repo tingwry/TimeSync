@@ -1,69 +1,120 @@
 from rest_framework.views import APIView, status
+from rest_framework import generics
 from rest_framework.response import Response
-from .serializers import UserAuthSerializer
-from django.contrib.auth import authenticate
-from ...models import UserAuth
+from rest_framework.permissions import IsAuthenticated
+from .serializers import (
+    MyTokenObtainPairSerializer, 
+    EmailCheckSerializer, 
+    RegisterSerializer, 
+    SignOutSerializer, 
+    ResetPasswordSerializer, 
+    GetUserInfoSerializer, 
+    DeleteAccountSerializer
+)
+from ...models import UserAuth, UserInfo
 
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        print("get_token token = ", token)
-
-        # Add custom claims
-        token['email'] = user.email
-        token['uid'] = user.uid
-        # ...
-        print("get_token token = ", token)
-        # return {"email": user.email, "token": token}
-        return token
+from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
     
-
+# error handling + refresh is not implemented
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
 
+        if serializer.is_valid(raise_exception=True):
+            # Retrieve access token from validated data
+            access_token = serializer.validated_data['access']
 
+            # Decode access token to get user info
+            decoded_token = AccessToken(access_token)
+            uid = decoded_token['uid']
+            username = decoded_token['username']
+            name = decoded_token['name']
+
+            res = {
+                'access': access_token,
+                'refresh': serializer.validated_data['refresh'],
+                'uid': uid,
+                'username': username,
+                'name': name
+            }
+            return Response(res, status=status.HTTP_200_OK)  
+        # return Response({ "error": "Email or password is incorrect"}, status=status.HTTP_400_BAD_REQUEST)  
+
+# ok
+class EmailCheckView(APIView):
+    def post(self, request):
+        serializer = EmailCheckSerializer(data=request.data)
+        if serializer.is_valid():
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# ok   
 class RegisterView(APIView):
     def post(self, request):
-        serializer = UserAuthSerializer(data=request.data)
+        serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
 
-class LoginView(APIView):
+# ok
+class SignOutView(APIView):
+    serializer_class = SignOutSerializer
+    permission_classes = (IsAuthenticated,)
+
     def post(self, request):
-        email = request.data['email']
-        password = request.data['password']
-
-        user = UserAuth.objects.filter(email=email).first()
-
-        serializer = MyTokenObtainPairSerializer(data=request.data)
+        serializer = SignOutSerializer(data=request.data)
         if serializer.is_valid():
-            email = serializer.validated_data['email']
-            password = serializer.validated_data['password']
+            serializer.save()
+            return Response(status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # try:
+        #     refresh_token = request.data["refresh_token"]
+        #     token = RefreshToken(refresh_token)
+        #     token.blacklist()
 
-            user = authenticate(email=email, password=password)
+        #     return Response(status=status.HTTP_205_RESET_CONTENT)
+        # except Exception as e:
+        #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
-            if user is None:
-                return Response({
-                    'status': 400,
-                    'message': 'User not found',
-                    'data': {}
-                }, status=status.HTTP_400_BAD_REQUEST)
-            
-            if not user.check_password(password):
-                return Response({
-                    'status': 400,
-                    'message': 'Invalid password',
-                    'data': {}
-                }, status=status.HTTP_400_BAD_REQUEST)
-            
-            return Response(serializer.validated_data, status=status.HTTP_200_OK)
+# ok
+class ResetPasswordView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        serializer = ResetPasswordSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.update(instance=request.user, validated_data=serializer.validated_data)
+            return Response(status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+# ok
+class GetUser(APIView):
+    serializer_class = GetUserInfoSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        user = request.user
+        user_info = UserInfo.objects.get(uid=user)
+        data = {
+            "email": user.email,
+            "username": user_info.username,
+            "name": user_info.name,
+            "phone_number": user_info.phone_number
+        }
+        return Response(data, status=status.HTTP_200_OK)
+
+class DeleteAccountView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def delete(self, request):
+        serializer = DeleteAccountSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.delete(instance=request.user)
+            return Response(status=status.HTTP_200_OK)
+        print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

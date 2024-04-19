@@ -30,7 +30,7 @@ export default function Onboard1() {
       <StatusBar barStyle="light-content" />
       <View style={styles.navigationTop}>
         <TouchableOpacity
-          onPress={() => router.push("/onboarding/Onboarding3")}
+          onPress={() => router.push("/SignUp")}
           style={styles.backButton}
         >
           <Text style={styles.textButton}>Skip</Text>

@@ -1,5 +1,6 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Redirect, SplashScreen } from "expo-router";
+import { useAuth } from "./context/authContext";
 import { useFonts } from "expo-font";
 
 export default function StartPage() {
@@ -20,6 +21,9 @@ export default function StartPage() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
-
-  return <Redirect href="/StartScreen" />;
-}
+    const auth = useAuth();
+    if (!auth.authData) {
+        return <Redirect href="/StartScreen" />;
+    }
+    return <Redirect href="/Home" />;
+};

@@ -35,7 +35,7 @@ export default function SetDestinationLocation() {
       </View>
 
       <View style={styles.footer}>
-        <Link href="/(tabs)/Home">Next</Link>
+        <Link href="/SignIn">Next</Link>
         <View style={styles.indicatorContainer}>
           <Pressable
             style={styles.indicatorFocus}

@@ -27,46 +27,41 @@ export default function SignInScreen() {
   const [password, setPassword] = useState<string>("");
 
   const [errors, setErrors] = useState({
-    username: "",
-    password: "",
+      username: "",
+      password: "",
   });
 
   const [fontsLoaded] = useFonts({
-    "dm-sans-medium": require("@/assets/fonts/DMSans-Medium.ttf"),
-    "dm-sans-extrabold": require("@/assets/fonts/DMSans-ExtraBold.ttf"),
-    "dm-sans-semibold": require("@/assets/fonts/DMSans-SemiBold.ttf"),
-    "dm-sans-regular": require("@/assets/fonts/DMSans-Regular.ttf"),
-    "dm-sans-bold": require("@/assets/fonts/DMSans-Bold.ttf"),
+      "dm-sans-medium": require("@/assets/fonts/DMSans-Medium.ttf"),
+      "dm-sans-extrabold": require("@/assets/fonts/DMSans-ExtraBold.ttf"),
+      "dm-sans-semibold": require("@/assets/fonts/DMSans-SemiBold.ttf"),
+      "dm-sans-regular": require("@/assets/fonts/DMSans-Regular.ttf"),
+      "dm-sans-bold": require("@/assets/fonts/DMSans-Bold.ttf"),
   });
 
   const validateForm = () => {
-    let e = {
-      username: "",
-      password: "",
-      confirmPassword: "",
+      let e = {
+          username: "",
+          password: "",
+          confirmPassword: "",
+      };
+      if (email === "") {
+          e.username = "Email is required";
+      }
+      if (password === "") {
+          e.password = "Password is required";
+      }
+
+      setErrors(e);
+      return Object.values(e).every((x) => x === "");
     };
-    if (email === "") {
-      e.username = "Email is required";
-    }
-    if (password === "") {
-      e.password = "Password is required";
-    }
 
-    setErrors(e);
-    return Object.values(e).every((x) => x === "");
-  };
-
-  const login = async () => {
-    console.log("Sign In Screen: login");
-    if (validateForm()) {
-      console.log(`Sign In Screen: email = ${email}, password = ${password}`);
-      isLoading(true);
-      await auth.signIn(email, password);
-      console.log("Sign In Screen: router.replace(/Home)");
-      router.replace("/Home");
-    } else {
-      console.log("Email or Password is empty");
-    }
+    const login = async () => {
+        if (validateForm()) {
+            isLoading(true);
+            await auth.signIn(email, password);
+            router.replace("/Home");
+        }
   };
 
   return (
@@ -81,15 +76,6 @@ export default function SignInScreen() {
           onChangeText={setEmail}
           errorText={errors.username}
         />
-        {/* <TextInputPrimary
-        label="Password"
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        errorText={errors.password}
-        password
-      /> */}
-
         <PasswordInput
           label="Password"
           placeholder="Password"
@@ -115,9 +101,6 @@ export default function SignInScreen() {
           console.log("google pressed");
         }}
       />
-      <Text style={styles.signUpLink}>
-        <Link href="/CreateProfile">Create a profile</Link>
-      </Text>
     </LinearGradient>
   );
 }
@@ -142,8 +125,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 4,
     marginBottom: 16,
-    right: 32,
-      position: "absolute",
+    right: 0,
+    position: "absolute",
     textDecorationLine: "underline",
   },
   signUpLink: {
@@ -151,7 +134,7 @@ const styles = StyleSheet.create({
     fontFamily: "dm-sans-semibold",
     fontSize: 16,
     marginTop: 16,
-      marginBottom: 16,
+    marginBottom: 16,
     textDecorationLine: "underline",
   },
   or: {
@@ -164,5 +147,6 @@ const styles = StyleSheet.create({
   authContainer: {
     width: "100%",
     flexDirection: "column",
+    paddingHorizontal: 32,
   },
 });

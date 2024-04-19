@@ -2,6 +2,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from ...models import Schedule
 from ...serializers import ScheduleSerializer
+from rest_framework.permissions import IsAuthenticated
 
 # view all schedule
 class ScheduleViewAll(generics.ListAPIView):
@@ -25,8 +26,21 @@ class ScheduleViewRecent(generics.RetrieveAPIView):
 
 # create schedule
 class ScheduleCreate(generics.CreateAPIView):
-    queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
+    # permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        # print("create schedule")
+        serializer = ScheduleSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(uid=request.user)  # Save schedule with associated user
+            print("create schedule")
+            print(serializer.data)
+            return Response(serializer.data)
+        
+        return Response(serializer.errors)
+        # return Response(request.data)
+    
 
 # delete schedule
 class ScheduleDelete(generics.DestroyAPIView):
