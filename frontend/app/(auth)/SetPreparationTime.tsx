@@ -1,18 +1,21 @@
 import { StyleSheet, View, Text, Image, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "../theme";
-import React from "react";
+import React, { useState } from "react";
 import ButtonPrimary from "@/components/buttons/ButtonPrimary";
 import { useRouter } from "expo-router";
+import { TimerPicker } from "react-native-timer-picker";
 
 export default function SetPreparationTime() {
   const router = useRouter();
+  const [selectedMinutes, setSelectedMinutes] = useState("45");
+
   return (
     <LinearGradient colors={["#182640", "#263D66"]} style={styles.container}>
       <View style={styles.header}>
         <View style={styles.labelView}>
           <Image
-            source={require("@/assets/icons/home-location.png")}
+            source={require("@/assets/icons/clock-start.png")}
             style={{ width: 80, height: 80 }}
           />
         </View>
@@ -22,22 +25,66 @@ export default function SetPreparationTime() {
         Measure the time since you wake up until the time you have left your
         home.
       </Text>
-      <View style={styles.contentView}></View>
+      <View style={styles.contentView}>
+        <TimerPicker
+          padWithNItems={1}
+          minuteLabel="mins"
+          hideSeconds={true}
+          hideHours={true}
+          LinearGradient={LinearGradient}
+          initialMinutes={parseInt(selectedMinutes)}
+          onDurationChange={(time) => {
+            setSelectedMinutes(time.minutes.toString());
+          }}
+          styles={{
+            backgroundColor: "#FFFFFF00",
+            pickerItem: {
+              fontSize: 40,
+              color: theme.colors.textPrimary,
+              fontFamily: "dm-sans-medium",
+            },
+            pickerLabel: {
+              fontSize: 24,
+              marginTop: 0,
+              color: theme.colors.textPrimary,
+              fontFamily: "dm-sans-medium",
+            },
+            pickerContainer: {
+              marginRight: 0,
+            },
+            pickerItemContainer: {
+              marginHorizontal: -16,
+            },
+            pickerLabelContainer: {
+              right: -36,
+              top: 0,
+              bottom: -12,
+              width: 56,
+              alignItems: "center",
+            },
+          }}
+        />
+      </View>
 
       <View style={styles.footer}>
+        <Pressable onPress={() => router.push("/SetDestinationLocation")}>
+          <Text style={styles.cancelButton}>I'm not sure</Text>
+        </Pressable>
         <View style={styles.indicatorContainer}>
           <Pressable
             style={styles.indicatorFocus}
-            onPress={() => router.push("/SetPreparationTime")}
+            onPress={() => router.push("/SetHomeLocation")}
           />
           <View style={styles.indicatorFocus} />
           <Pressable
             style={styles.indicator}
             onPress={() => router.push("/SetDestinationLocation")}
           />
-          
         </View>
-        <ButtonPrimary text="Continue" press={() => router.push("/MapHome")} />
+        <ButtonPrimary
+          text="Continue"
+          press={() => router.push("/SetDestinationLocation")}
+        />
       </View>
     </LinearGradient>
   );
@@ -60,8 +107,11 @@ const styles = StyleSheet.create({
   },
   contentView: {
     width: "100%",
-    flexDirection: "column",
     paddingHorizontal: 32,
+    alignItems: "center",
+    marginLeft: -48,
+    justifyContent: "center",
+    marginTop: 64,
   },
   labelView: {
     width: 128,
@@ -106,6 +156,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     flex: 1,
     bottom: 44,
+    alignItems: "center",
   },
   indicatorContainer: {
     flexDirection: "row",
@@ -132,5 +183,14 @@ const styles = StyleSheet.create({
     color: theme.colors.textCaption,
     textAlign: "center",
     marginHorizontal: 48,
+  },
+  cancelButton: {
+    padding: 8,
+    color: theme.colors.textPrimary,
+    fontSize: 16,
+    fontFamily: "dm-sans-semibold",
+    marginTop: 4,
+    textDecorationLine: "underline",
+    marginBottom: 16
   },
 });

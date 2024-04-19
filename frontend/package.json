@@ -56,7 +56,6 @@
     "jest-expo": "~50.0.4",
     "react-native-dotenv": "^3.4.11",
     "react-native-toggle-calendar": "^1.0.3",
-    "react-native-wheel-pick": "^1.2.2",
     "react-test-renderer": "18.2.0",
     "typescript": "^5.1.3"
   },

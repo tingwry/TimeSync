@@ -20,11 +20,11 @@ import MapView from "react-native-maps";
 import { Marker, Callout } from "react-native-maps";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
-export default function MapHome() {
-  const [fontsLoaded] = useFonts({
-    "dm-sans-regular": require("@/assets/fonts/DMSans-Regular.ttf"),
-    "dm-sans-bold": require("@/assets/fonts/DMSans-Bold.ttf"),
-  });
+export default function MapDestination() {
+  // const [fontsLoaded] = useFonts({
+  //   "dm-sans-regular": require("@/assets/fonts/DMSans-Regular.ttf"),
+  //   "dm-sans-bold": require("@/assets/fonts/DMSans-Bold.ttf"),
+  // });
 
   const searchSnapPoints = useMemo(() => ["34%"], []);
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -122,7 +122,7 @@ export default function MapHome() {
         <MapView
           // provider="google"
           ref={mapRef}
-          style={{ width: "100%", height: "100%", marginTop: 20 }}
+          style={{ width: "100%", height: "82%", marginTop: 20 }}
           initialRegion={{
             latitude: 13.736834400006273,
             longitude: 100.53314465311604,
@@ -131,7 +131,12 @@ export default function MapHome() {
           }}
         >
           {/* <Button onPress={handleSubmit} title="Submit" /> */}
-          <Marker coordinate={pin} draggable={true} onDragEnd={onMarkerDragEnd}>
+          <Marker
+            coordinate={pin}
+            draggable={true}
+            onDragEnd={onMarkerDragEnd}
+            image={require("@/assets/icons/map-marker.png")}
+          >
             <Callout>
               <Text>My Destination</Text>
             </Callout>
@@ -173,8 +178,10 @@ export default function MapHome() {
                         <Text style={styles.textTitle}>{pin.latitude}{pin.longitude}</Text>
                       </View> */}
 
-          <View style={[menuStyles.sheetView, {marginHorizontal: -32}]}>
-            <Text style={[menuStyles.textLocation, {marginLeft: 32}]}>Set Location as</Text>
+          <View style={[menuStyles.sheetView, { marginHorizontal: -32 }]}>
+            <Text style={[menuStyles.textLocation, { marginLeft: 32 }]}>
+              Set Location as
+            </Text>
             <ScrollView
               horizontal={true}
               style={cardStyles.horizontalCardScroll}
@@ -243,9 +250,7 @@ export default function MapHome() {
             </ScrollView>
           </View>
         </View>
-        <View style={{ marginTop: 8 }}>
-          
-        </View>
+        <View style={{ marginTop: 8 }}></View>
         <ButtonPrimary text="Set as Destination" press={handleSubmit} />
       </BottomSheet>
     </GestureHandlerRootView>

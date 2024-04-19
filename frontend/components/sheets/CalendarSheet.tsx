@@ -115,7 +115,10 @@ interface CalendarViewProps {
 }
 
 const CalendarView: React.FC<CalendarViewProps> = ({ onDaySelect }) => {
-  const initialDate = "2024-04-04";
+  
+  const currentDate = new Date();
+
+  const initialDate = currentDate.toJSON().substring(0, 10);
 
   const formattedInitialMonth = new Date(initialDate).toLocaleDateString(
     "en-US",
