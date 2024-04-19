@@ -40,66 +40,69 @@ export default function Home() {
   const [lat, setLat] = useState(0);
   const [long, setLong] = useState(0);
 
-  
-  useEffect(() => {
-    const fetchSchedule = async () => {
-      try {
-        const response = await fetch(`${process.env.BASE_URL}/schedule/recent/`, {
-        // const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            'Authorization': 'Bearer ' + access
-          },
-        });
+  const fetchSchedule = async () => {
+    try {
+      const baseUrl = process.env.BASE_URL;
+      const response = await fetch(`${baseUrl}/schedule/recent/`, {
+      // const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/", {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ' + access
+        },
+      });
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch schedule");
-        }
-
-        const data = await response.json();
+      const data = await response.json();
+      if (response.ok) {
+        // console.log(data);
         setLocation(data.sched_destination)
         // console.log("sched location", location)
         setScheduleNumber(data.length);
         setSchedule(data);
-      } catch (error) {
-        console.error("Error fetching schedule:", error);
+      } else {
+        console.error(data);
+        // throw new Error("Failed to fetch schedule");
       }
-    };
+    } catch (error) {
+      console.error("Home - Error fetching schedule:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchSchedule();
   }, []);
 
-  useEffect(() => {
-    // Check if location is available
-    if (location) {
-      const fetchSchedule = async () => {
-        try {
-          const response2 = await fetch(
-            `http://127.0.0.1:8000/app/location/view/${location}/`
-          );
-          if (!response2.ok) {
-            throw new Error("Failed to fetch location");
-          }
-          const data2 = await response2.json();
-          // console.log(data2);
-          setLat(data2.latitude);
-          setLong(data2.longitude);
-          console.log("lat, long", lat, long);
-        } catch (error) {
-          console.error("Error fetching schedule:", error);
-        }
-      };
+  // useEffect(() => {
+  //   // Check if location is available
+  //   if (location) {
+  //     const fetchSchedule = async () => {
+  //       try {
+  //         const response2 = await fetch(
+  //           `http://127.0.0.1:8000/app/location/view/${location}/`
+  //         );
+  //         if (!response2.ok) {
+  //           throw new Error("Failed to fetch location");
+  //         }
+  //         const data2 = await response2.json();
+  //         // console.log(data2);
+  //         setLat(data2.latitude);
+  //         setLong(data2.longitude);
+  //         console.log("lat, long", lat, long);
+  //       } catch (error) {
+  //         console.error("Error fetching schedule:", error);
+  //       }
+  //     };
   
-      fetchSchedule();
-    }
-  }, [location]); // Add location as a dependency
+  //     fetchSchedule();
+  //   }
+  // }, [location]); // Add location as a dependency
 
   return (
     <View style={styles.background}>
       <StatusBar barStyle="light-content" />
       <View style={styles.containerHome}>
         <Text style={styles.textTitle}>Hello, {user}</Text>
+        {/* <Button title="fetch" onPress={() => fetchSchedule} /> */}
         <Text style={styles.textCaption}>Let's see what is up next!</Text>
         <Text style={styles.textHeader}>Upcoming Schedule</Text>
       </View>

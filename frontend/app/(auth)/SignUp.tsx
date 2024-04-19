@@ -55,7 +55,8 @@ export default function SignUpScreen() {
     const submit = async () => {
         if (validateForm()) {
             isLoading(true);
-            const response = await fetch(`${process.env.BASE_URL}/auth/check-email/`, {
+            const baseUrl = process.env.BASE_URL;
+            const response = await fetch(`${baseUrl}/auth/check-email/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

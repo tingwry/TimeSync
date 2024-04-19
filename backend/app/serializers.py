@@ -1,4 +1,4 @@
-from .models import UserInfo, Schedule, Location
+from .models import UserAuth, UserInfo, Schedule, Location
 from rest_framework import serializers
 
 class UserInfoSerializer(serializers.ModelSerializer):
@@ -7,37 +7,19 @@ class UserInfoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ScheduleSerializer(serializers.ModelSerializer):
+    uid = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = Schedule
         fields = '__all__'
 
-    # event_id = models.AutoField(primary_key=True)
-    # event_name = models.CharField(max_length=100)
-    # date = models.DateField()
-    # start_time = models.TimeField()
-    # end_time = models.TimeField()
-    # transportation_mode = models.CharField(
-    #     max_length=20, choices=transportation_mode_choices)
-    # extra_prep_time = models.IntegerField()
-    # note = models.TextField()
-
-    # uid = models.ForeignKey(
-    #     UserInfo, on_delete=models.CASCADE, related_name='schedules')
-    # # user_id = models.ForeignKey(
-    # #     UserInfo, on_delete=models.CASCADE, related_name='schedules')
-    # sched_start = models.ForeignKey(
-    #     'Location', on_delete=models.CASCADE, related_name='start_locations')
-    # sched_destination = models.ForeignKey(
-    #     'Location', on_delete=models.CASCADE, related_name='destination_locations')
-    # wake_up_aids = models.ForeignKey(
-    #     UserInfo, on_delete=models.CASCADE, related_name='wake_up_friends')
-    # # prep_activities = models.ManyToManyField('PrepActivityTime')
-
     def create(self, validated_data):
         # Extract foreign key IDs from validated data
-        sched_start_id = validated_data.pop('sched_start')
-        sched_destination_id = validated_data.pop('sched_destination')
-        wake_up_aids_id = validated_data.pop('wake_up_aids')
+        # uid = self.context['request'].user
+        
+        sched_start_id = validated_data.pop('sched_start').loc_id
+        sched_destination_id = validated_data.pop('sched_destination').loc_id
+        wake_up_aids_id = validated_data.pop('wake_up_aids').uid
 
         # Retrieve Location and UserInfo instances using IDs
         sched_start = Location.objects.get(pk=sched_start_id)

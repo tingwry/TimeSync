@@ -61,16 +61,16 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         // Remove data from context, so the App can be notified
         // and send the user to the AuthStack
         // setAuthData(undefined);
+        router.dismissAll
+        router.replace('/SignIn');
+        // await authService.signOut(authData?.access, authData?.refresh);
+        setAuthData(undefined);
 
         // Remove the data from Async Storage
         // to NOT be recoverede in next session.
         await AsyncStorage.removeItem('@AuthData');
-        
-        await authService.signOut(authData?.access, authData?.refresh);
-        setAuthData(undefined);
 
-        router.dismissAll
-        router.replace('/SignIn');
+        
     };
 
     // const updateToken = async () => {

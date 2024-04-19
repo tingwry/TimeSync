@@ -1,5 +1,5 @@
 import { View, Text, Image, Pressable, ScrollView, Button } from "react-native";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   GestureHandlerRootView,
   TextInput,
@@ -36,58 +36,60 @@ export default function NewSchedule() {
   const [extraPrepTime, setExtraPrepTime] = useState(0);
   const [note, setNote] = useState("");
 
+  const req = {
+    event_name: eventName,
+    date: date,
+    start_time: startTime,
+    end_time: endTime,
+    transportation_mode: transportationMode,
+    extra_prep_time: extraPrepTime,
+    note: note,
+    // uid: 2,
+    sched_start: 1,
+    sched_destination: 2,
+    wake_up_aids: 1,
+  }
+
+  useEffect(() => {
+    console.log(req)
+  }, [req])
+
   const handleClickPress = async () => {
     // console.log(startTime)
     // console.log(endTime)
-    const req = {
-      event_name: eventName,
-      date: date,
-      start_time: "05:21",
-      end_time: "15:21",
-      transportation_mode: transportationMode,
-      extra_prep_time: 0,
-      note: note,
-      uid: 2,
-      sched_start: 1,
-      sched_destination: 1,
-      wake_up_aids: 1,
-    }
+    
     
     // const url = `http://127.0.0.1:8000/app/schedule/create/`;
     
-
-    let response = await fetch(`${process.env.BASE_URL}/schedule/create/`, {
-      method: "POST",
+    const baseUrl = process.env.BASE_URL;
+    let response = await fetch(`${baseUrl}/schedule/create/`, {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + access
       },
       body: JSON.stringify({
         event_name: eventName,
         date: date,
-        start_time: "05:21",
-        end_time: "15:21",
+        start_time: "9:00",
+        end_time: "9:30",
         transportation_mode: transportationMode,
         extra_prep_time: 0,
         note: note,
-        uid: 2,
+        // uid: 2,
         sched_start: 1,
-        sched_destination: 1,
+        sched_destination: 2,
         wake_up_aids: 1,
       }),
     });
     console.log(req)
     let result = await response.json();
-    console.log("res")
-    console.log(result);
 
     if (response.ok) {
       console.log("Success");
-      console.log(result);
       navigation.goBack();
     } else {
-      console.log("Failed");
-      console.log(result);
+      console.error(result);
     }
     
   };

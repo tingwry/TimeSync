@@ -15,6 +15,7 @@ import { useFonts } from "expo-font";
 import CardSchedule from "@/components/cards/CardSchedule";
 import { PortalProvider } from "@gorhom/portal";
 import { router, useNavigation } from "expo-router";
+import { useAuth } from "../context/authContext";
 // import API_URL from "@env";
 
 interface ScheduleItem {
@@ -38,6 +39,8 @@ export default function Home() {
   }
 
   const navigation = useNavigation();
+  const auth = useAuth();
+  const access = auth.authData?.access;
 
   const [schedule, setSchedule] = useState<ScheduleItem[]>([]);
   const [scheduleNumber, setScheduleNumber] = useState(0);
@@ -45,16 +48,26 @@ export default function Home() {
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
-        const response = await fetch(`${process.env.BASE_URL}/schedule/view/`);
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch schedule");
-        }
+        const baseUrl = process.env.BASE_URL;
+        const response = await fetch(`${baseUrl}/schedule/view/`, {
+        // const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/", {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + access
+          },
+        });
+        
         const data = await response.json();
-        setScheduleNumber(data.length);
-        setSchedule(data);
+        if (response.ok) {
+          setScheduleNumber(data.length);
+          setSchedule(data);
+        } else {
+          console.error(data);
+        }
+        
       } catch (error) {
-        console.error("Error fetching schedule:", error);
+        console.error("View all schedule - Error fetching schedule:", error);
       }
     };
 

@@ -30,7 +30,9 @@ export default function AccountPage() {
   const [signOutModalVisible, setSignOutModalVisible] = useState(false);
 
   let getData = async () => {
-    let response = await fetch(`${process.env.BASE_URL}/auth/get-user/`, {
+    // console.log(`${process.env.BASE_URL}/auth/sign-out/`);
+    const baseUrl = process.env.BASE_URL;
+    const response = await fetch(`${baseUrl}/auth/get-user/`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -38,7 +40,7 @@ export default function AccountPage() {
         },
     });
 
-    let data = await response.json();
+    const data = await response.json();
     if (response.ok) {
         setName(data.name);
         setUsername(data.username);
@@ -56,7 +58,11 @@ export default function AccountPage() {
   }
 
   const signOutConfirm = async () => {
-    auth.signOut();
+    await auth.signOut();
+    router.dismissAll();
+    router.push({
+      pathname: '/SignIn',
+    });
   }
 
   useEffect(() => {

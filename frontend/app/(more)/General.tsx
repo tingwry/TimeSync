@@ -48,7 +48,8 @@ export default function GeneralPage() {
   const submit = async () => {
     if (validateForm()) {
       console.log('delete account');
-      const response = await fetch(`${process.env.BASE_URL}/auth/delete-account/`, {
+      const baseUrl = process.env.BASE_URL;
+      const response = await fetch(`${baseUrl}/auth/delete-account/`, {
           method: 'DELETE',
           headers: {
               'Content-Type': 'application/json',

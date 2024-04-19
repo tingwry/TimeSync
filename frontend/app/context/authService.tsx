@@ -9,6 +9,8 @@ export type AuthData = {
     name: string;
 };
 
+
+
 const checkEmail = async (email: string) => {
     // const response = await fetch('http://127.0.0.1:8000/app/auth/check-email/', {
     //     method: 'POST',
@@ -72,7 +74,10 @@ const register = async (email: string, password: string, username: string, name:
 }
 
 const signIn = async (email: string, password: string): Promise<AuthData> => {
-    const response = await fetch(`${process.env.BASE_URL}/auth/token/`, {
+    // console.log(`${process.env.BASE_URL}`)
+    // const url = "${process.env.BASE_URL}/auth/token/"
+    const baseUrl = process.env.BASE_URL;
+    const response = await fetch(`${baseUrl}/auth/token/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -92,7 +97,8 @@ const signIn = async (email: string, password: string): Promise<AuthData> => {
 }
 
 const refreshToken = async (refresh: string): Promise<AuthData> => {
-    const response = await fetch(`${process.env.BASE_URL}/auth/token/refresh/`, {
+    const baseUrl = process.env.BASE_URL;
+    const response = await fetch(`${baseUrl}/auth/token/refresh/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -115,7 +121,8 @@ const refreshToken = async (refresh: string): Promise<AuthData> => {
 
 const signOut = async (access?: string, refresh? : string) => {
     if (refresh) {
-        const response = await fetch(`${process.env.BASE_URL}/auth/sign-out/`, {
+        const baseUrl = process.env.BASE_URL;
+        const response = await fetch(`${baseUrl}/auth/sign-out/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -128,9 +135,11 @@ const signOut = async (access?: string, refresh? : string) => {
             return;
         } else {
             const errorData = await response.json();
-            console.log(errorData)
-            throw new Error("Something went wrong");
+            console.error(errorData)
+            return;
         } 
+    } else {
+        return;
     }
     
 }

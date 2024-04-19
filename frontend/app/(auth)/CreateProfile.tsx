@@ -50,21 +50,19 @@ export default function CreateProfile() {
             // const res = await authService.register(
             //     email, password, username, name, phoneNumber
             // );
-            const response = await fetch(`${process.env.BASE_URL}/auth/register/`, {
+            
+            const baseUrl = process.env.BASE_URL;
+            const response = await fetch(`${baseUrl}/auth/register/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ 
-                    'userauth' : { 
-                        "email": email, 
-                        "password": password 
-                    },
-                    'userinfo' : { 
-                        "username": username, 
-                        "name": name, 
-                        "phone_number": phoneNumber 
-                    }
+                    "email": email, 
+                    "password": password,
+                    "username": username, 
+                    "name": name, 
+                    "phone_number": phoneNumber 
                 }),
             });
 

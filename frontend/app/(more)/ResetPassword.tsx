@@ -50,8 +50,9 @@ export default function ResetPassword() {
             isLoading(true);
             // const res = await authService.register(
             //     email, password, username, name, phoneNumber
-            // );        
-            const response = await fetch(`${process.env.BASE_URL}/auth/reset-password/`, {
+            // );
+            const baseUrl = process.env.BASE_URL;
+            const response = await fetch(`${baseUrl}/auth/reset-password/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
