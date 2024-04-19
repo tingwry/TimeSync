@@ -14,10 +14,12 @@ import { Portal } from "@gorhom/portal";
 import { styles } from "./SheetStyles";
 import React from "react";
 import { theme } from "@/app/theme";
+import { TimerPicker } from "react-native-timer-picker";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function PreparationSheet() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["33%", "66%"], []);
+  const snapPoints = useMemo(() => ["33%", "61%"], []);
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -50,6 +52,8 @@ export default function PreparationSheet() {
     handleCollapseModalPress();
   }
 
+  const [selectedMinutes, setSelectedMinutes] = useState("30");
+
   return (
     <GestureHandlerRootView style={styles.sheetStyle}>
       <TouchableOpacity
@@ -68,7 +72,7 @@ export default function PreparationSheet() {
         <BottomSheetModal
           ref={bottomSheetModalRef}
           snapPoints={snapPoints}
-          index={0}
+          index={isExtraTimeEnabled ? 1 : 0}
           handleIndicatorStyle={styles.handleIndicator}
           backgroundStyle={styles.modalBackgroundStyle}
           enablePanDownToClose={true}
@@ -130,16 +134,84 @@ export default function PreparationSheet() {
                 </View>
                 <View style={menuStyles.divLine} />
 
-                <View style={menuStyles.caution}>
-                  <Image
-                    source={require("@/assets/icons/alert-circle.png")}
-                    style={{ width: 16, height: 16 }}
-                  />
-                  <Text style={menuStyles.cautionMessage}>
-                    Disable “Morning Preparation Time” will shorten the
-                    “Countdown Timer”.
-                  </Text>
-                  
+                <View>
+                  {isExtraTimeEnabled ? (
+                    <>
+                      <Text style={[menuStyles.textMenu, {marginTop: 16}]}>
+                        Extra time required
+                      </Text>
+                      <View
+                        style={{
+                          alignItems: "center",
+                          marginVertical: 24,
+                          marginLeft: -48,
+                        }}
+                      >
+                        <TimerPicker
+                          padWithNItems={1}
+                          minuteLabel="mins"
+                          hideSeconds={true}
+                          hideHours={true}
+                          LinearGradient={LinearGradient}
+                          initialMinutes={parseInt(selectedMinutes)}
+                          onDurationChange={(time) => {
+                            setSelectedMinutes(time.minutes.toString());
+                          }}
+                          styles={{
+                            backgroundColor: "#FFFFFF00",
+                            pickerItem: {
+                              fontSize: 40,
+                              color: theme.colors.textPrimary,
+                              fontFamily: "dm-sans-medium",
+                            },
+                            pickerLabel: {
+                              fontSize: 24,
+                              marginTop: 0,
+                              color: theme.colors.textPrimary,
+                              fontFamily: "dm-sans-medium",
+                            },
+                            pickerContainer: {
+                              marginRight: 0,
+                            },
+                            pickerItemContainer: {
+                              marginHorizontal: -16,
+                            },
+                            pickerLabelContainer: {
+                              right: -36,
+                              top: 0,
+                              bottom: -12,
+                              width: 56,
+                              alignItems: "center",
+                            },
+                          }}
+                        />
+                      </View>
+
+                      <View style={menuStyles.divLine} />
+
+                      <View style={menuStyles.caution}>
+                        <Image
+                          source={require("@/assets/icons/alert-circle.png")}
+                          style={{ width: 16, height: 16 }}
+                        />
+                        <Text style={menuStyles.cautionMessage}>
+                          Disable “Morning Preparation Time” will shorten the
+                          “Countdown Timer”.
+                        </Text>
+                      </View>
+                    </>
+                  ) : (
+                    <View style={menuStyles.caution}>
+                      <Image
+                        source={require("@/assets/icons/alert-circle.png")}
+                        style={{ width: 16, height: 16 }}
+                      />
+                      <Text style={menuStyles.cautionMessage}>
+                        Disable “Morning Preparation Time” will shorten the
+                        “Countdown Timer”.
+                      </Text>
+                    </View>
+                  )}
                 </View>
               </View>
             </View>
@@ -176,6 +248,7 @@ const menuStyles = StyleSheet.create({
     paddingVertical: 12,
     gap: 8,
     flexDirection: "row",
+    marginLeft: -2,
   },
   cautionMessage: {
     fontFamily: "dm-sans-regular",

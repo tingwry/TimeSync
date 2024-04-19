@@ -116,11 +116,11 @@ export default function CardAddress() {
                 showsHorizontalScrollIndicator={false}
                 contentInset={{ right: 64, left: 0, bottom: 0, top: 0 }}
               >
-                {locations.map((location: {loc_id: number, loc_name: string }) => (
-                  <TouchableOpacity
-                  style={cardStyles.cardStyle}
-                  onPress={handleCloseModalPress}
-                >
+                {locations.map((location: { loc_id: number, loc_name: string }) => (
+                //   <TouchableOpacity
+                //   style={cardStyles.cardStyle}
+                //   onPress={handleCloseModalPress}
+                // >
                   <CardAddressSmall
                     loc_id={location.loc_id}
                     locationName={location.loc_name}
@@ -129,11 +129,11 @@ export default function CardAddress() {
                     labelIcon={
                       location.loc_name === "Home" ? require("@/assets/icons/home.png") :
                       location.loc_name === "School" ? require("@/assets/icons/school.png") :
-                      require("@/assets/icons/search.png")
+                      require("@/assets/icons/location.png")
                     }
                     onPress={handleLocationPress} 
                   />
-                  </TouchableOpacity>
+                  // </TouchableOpacity>
                 ))}
               </ScrollView>
               <ChooseLocation />

@@ -21,7 +21,7 @@ import BottomSheet, {
 import { useRef, useMemo, useCallback, useState } from "react";
 import { Portal } from "@gorhom/portal";
 import React from "react";
-import { ButtonPrimaryProps } from "../buttons/ButtonPrimary";
+import ButtonPrimary, { ButtonPrimaryProps } from "../buttons/ButtonPrimary";
 
 import MapView from "react-native-maps";
 import { Marker, Callout } from "react-native-maps";
@@ -39,7 +39,7 @@ export default function ChooseLocation() {
     bottomSheetModalRef.current?.close();
   }, []);
 
-  const searchSnapPoints = useMemo(() => ["25%", "75%"], []);
+  const searchSnapPoints = useMemo(() => ["30%"], []);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const handleCollapseSearchPress = () => bottomSheetRef.current?.collapse();
   const handleCloseSearchPress = () => bottomSheetRef.current?.close();
@@ -143,7 +143,7 @@ export default function ChooseLocation() {
           stackBehavior="push"
         >
           <BottomSheetView>
-            <View style={[styles.handleModalIndicatorStyle, { flexGrow: 1 }]} />
+            <View style={styles.handleModalIndicatorStyle} />
 
             <TouchableOpacity
               style={[styles.modalCloseButton, { marginRight: 16 }]}
@@ -198,7 +198,7 @@ export default function ChooseLocation() {
             <MapView
               // provider="google"
               ref={mapRef}
-              style={{ width: "100%", height: "100%", marginTop: 20 }}
+              style={{ width: "100%", height: "80%", marginTop: 20 }}
               initialRegion={{
                 latitude: 13.736834400006273,
                 longitude: 100.53314465311604,
@@ -210,6 +210,7 @@ export default function ChooseLocation() {
                 coordinate={pin}
                 draggable={true}
                 onDragEnd={onMarkerDragEnd}
+                image={require("@/assets/icons/map-marker.png")}
               >
                 <Callout>
                   <Text>My Destination</Text>
@@ -253,8 +254,13 @@ export default function ChooseLocation() {
                     </View> */}
                   </View>
                   <View style={menuStyle.header}>
-                    <Button title="Done" onPress={handleCloseSheet} />
+                    <View style={[styles.sheetView, { marginTop: 16 }]}>
+                      <Text style={menuStyle.textLocation}>
+                        {pin.latitude}, {pin.longitude}
+                      </Text>
+                    </View>
                   </View>
+
                   {/* <View style={searchContainerStyle}>
                     <Image
                       source={require("@/assets/icons/search.png")}
@@ -267,6 +273,9 @@ export default function ChooseLocation() {
                       onFocus={handleSearchFocus}
                     />
                  </View> */}
+                </View>
+                <View style={menuStyle.footer}>
+                  <ButtonPrimary text="Choose Location" press={handleSubmit} />
                 </View>
               </BottomSheet>
             </Portal>
@@ -350,5 +359,18 @@ const menuStyle = StyleSheet.create({
   cautionMessage: {
     fontFamily: "dm-sans-regular",
     color: theme.colors.textCaption,
+  },
+  footer: {
+    justifyContent: "flex-end",
+    flex: 1,
+    bottom: 44,
+    // backgroundColor: theme.colors.bluePrimary,
+    // height: 116,
+  },
+  textLocation: {
+    fontFamily: "dm-sans-regular",
+    fontSize: 16,
+    color: theme.colors.textPrimary,
+    marginHorizontal: 8,
   },
 });

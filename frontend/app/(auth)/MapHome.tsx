@@ -177,12 +177,6 @@ export default function MapHome() {
               style={{ width: 24, height: 24 }}
             />
             <Text style={styles.textHeader}>Home Location</Text>
-            {/* <View>
-              <Text style={styles.textTitle}>
-                {pin.latitude}
-                {pin.longitude}
-              </Text>
-            </View> */}
           </View>
           <View style={[styles.sheetView, { marginTop: 16 }]}>
             <Text style={menuStyles.textLocation}>
