@@ -182,7 +182,7 @@ def predict_times(arriving_time):
     predicted_travel_time = model_travel.predict([[arriving_time]])[0]
 
     # Calculate wake-up time
-    predicted_wake_up_time = arriving_time - predicted_preparation_time - predicted_travel_time
+    predicted_wake_up_time = arriving_time - predicted_preparation_time - predicted_travel_time - 10
     if predicted_wake_up_time >= arriving_time:
         predicted_wake_up_time -= 1440  # Subtract 24 hours in minutes
     
@@ -191,7 +191,7 @@ def predict_times(arriving_time):
     formatted_predicted_wake_up_time = '{:02d}:{:02d}'.format(predicted_wake_up_hours, predicted_wake_up_minutes)
 
     # Calculate predicted departure time
-    predicted_departure_time = arriving_time - predicted_travel_time 
+    predicted_departure_time = arriving_time - predicted_travel_time - 10
     predicted_departure_hours = int(predicted_departure_time // 60)
     predicted_departure_minutes = int(predicted_departure_time % 60)
     formatted_predicted_departure_time = '{:02d}:{:02d}'.format(predicted_departure_hours, predicted_departure_minutes)
