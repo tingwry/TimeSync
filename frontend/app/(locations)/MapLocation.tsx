@@ -18,8 +18,13 @@ import ButtonPrimary from "@/components/buttons/ButtonPrimary";
 import MapView from "react-native-maps";
 import { Marker, Callout } from "react-native-maps";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { useAuth } from "../context/authContext";
 
 export default function MapHome() {
+  const navigation = useNavigation();
+  const auth = useAuth();
+  const access = auth.authData?.access;
+
   const searchSnapPoints = useMemo(() => ["30%"], []);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const handleCollapseSearchPress = () => bottomSheetRef.current?.collapse();
@@ -41,7 +46,6 @@ export default function MapHome() {
     setFocus(false);
   };
 
-  const navigation = useNavigation();
 
   const [pin, setPin] = useState({
     latitude: 13.736834400006273,
@@ -66,12 +70,12 @@ export default function MapHome() {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(
-        "http://127.0.0.1:8000/app/location/create/",
-        {
-          method: "POST",
+      const baseUrl = process.env.BASE_URL;
+      const response = await fetch(`${baseUrl}/location/create/`, {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + access
           },
           body: JSON.stringify({
             loc_name: "School",
@@ -79,10 +83,10 @@ export default function MapHome() {
             longitude: pin.longitude,
             default_home: false,
             default_dest: false,
-            uid: 1,
+            // uid: 1,
           }),
-        }
-      );
+      });
+
       if (response.ok) {
         console.log("Success");
         navigation.goBack()
@@ -91,7 +95,7 @@ export default function MapHome() {
         console.log(response.status)
       }
     } catch (error) {
-      console.error("Error submitting:", error);
+      console.error("Map location - Error submitting:", error);
     }
   };
 

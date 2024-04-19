@@ -36,6 +36,8 @@ class ScheduleSerializer(serializers.ModelSerializer):
         return schedule
 
 class LocationSerializer(serializers.ModelSerializer):
+    uid = serializers.PrimaryKeyRelatedField(read_only=True)
+    
     class Meta:
         model = Location
         fields = '__all__'
