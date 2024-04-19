@@ -42,6 +42,10 @@ export default function Home() {
     hour12: false, // Set to false for 24-hour format
   });
 
+  const handleClickStop = () => {
+    router.push("/Home");
+  };
+
   return (
     <View style={styles.background}>
       <LinearGradient
@@ -60,7 +64,9 @@ export default function Home() {
             style={styles.buttonStyle}
           >
             <View>
-              <Text style={styles.buttonText}>Stop</Text>
+              <Text onPress={handleClickStop} style={styles.buttonText}>
+                Stop
+              </Text>
             </View>
           </LinearGradient>
         </Link>

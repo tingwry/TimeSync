@@ -58,44 +58,56 @@ export default function AlarmClock() {
     };
   }, []);
 
-  let date = new Date();
-  date.setSeconds(date.getSeconds() + 5);
+  useEffect(() => {
+    scheduleNotificationsHandler();
+  }, []);
+
+  // let date = new Date();
+  // date.setSeconds(date.getSeconds() + 5);
+
+  let dateFromDB = "2024-04-19";
+  // let date = new Date(dateFromDB);
+
+  let timeFromML = "15:36:00";
+  let dateTimeString = dateFromDB + " " + timeFromML;
+  let date = new Date(dateTimeString);
 
   async function scheduleNotificationsHandler() {
     console.log(notificationId);
-    if (notificationId === "none") {
-      var newHour = parseInt(hourr);
-      if (ampm === "pm") {
-        newHour = newHour + 12;
-      }
-      const identifier = await Notifications.scheduleNotificationAsync({
-        content: {
-          title: "TimeSync",
-          body: "Alarm! It's time to wake up.",
-          data: { url: "/src/AlarmPage" },
-          sound: "alarm-sound.mp4",
-        },
-        trigger: {
-          hour: newHour,
-          minute: parseInt(minutee),
-          repeats: true,
-        },
-      });
-      setAmpm("");
-      setHour("");
-      setMinute("");
-      console.log(date);
-      console.log(identifier);
-      setNotificationId(identifier);
-      storeData(identifier);
-    } else {
-      alert("Turn off alarm before starting a new one");
-      setAmpm("");
-      setHour("");
-      setMinute("");
-      console.log(notificationId);
-      console.log("not working");
-    }
+    // if (notificationId === "none") {
+    //   var newHour = parseInt(hourr);
+    //   if (ampm === "pm") {
+    //     newHour = newHour + 12;
+    //   }
+    const identifier = await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "TimeSync",
+        body: "Alarm! It's time to wake up.",
+        data: { url: "/src/AlarmPage" },
+        sound: "alarm-sound.mp4",
+      },
+      trigger: {
+        // hour: newHour,
+        // minute: parseInt(minutee),
+        // repeats: true,
+        date: date,
+      },
+    });
+    setAmpm("");
+    setHour("");
+    setMinute("");
+    console.log(date);
+    console.log(identifier);
+    setNotificationId(identifier);
+    storeData(identifier);
+    // } else {
+    //   alert("Turn off alarm before starting a new one");
+    //   setAmpm("");
+    //   setHour("");
+    //   setMinute("");
+    //   console.log(notificationId);
+    //   console.log("not working");
+    // }
   }
 
   async function turnOffAlarm() {
@@ -110,7 +122,6 @@ export default function AlarmClock() {
       console.log(notificationId);
     }
   }
-
   async function storeData(id: string) {
     try {
       const savedValues = id;
@@ -187,9 +198,9 @@ export default function AlarmClock() {
         value={ampm}
         onChangeText={(text) => setAmpm(text)}
       />
-      <Pressable onPress={scheduleNotificationsHandler}>
+      {/* <Pressable onPress={scheduleNotificationsHandler}>
         <Text>Turn on Alarm</Text>
-      </Pressable>
+      </Pressable> */}
       <Pressable onPress={turnOffAlarm}>
         <Text>Turn off Alarm</Text>
       </Pressable>

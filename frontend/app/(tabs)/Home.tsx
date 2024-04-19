@@ -5,6 +5,8 @@ import { useFonts } from "expo-font";
 import CardNoSchedule from "@/components/cards/CardNoSchedule";
 import CardUpcomingSchedule from "@/components/cards/CardUpcomingSchedule";
 import CardCountDownTimer from "@/components/cards/CardCountDownTimer";
+import PopUpCountdownTimer from "../src/PopUpCountDownTimer";
+import AlarmClock from "../src/AlarmClock";
 
 interface ScheduleItem {
   event_id: number;
@@ -59,6 +61,11 @@ export default function Home() {
         <Text style={styles.textTitle}>Hello, User</Text>
         <Text style={styles.textCaption}>Let's see what is up next!</Text>
         <Text style={styles.textHeader}>Upcoming Schedule</Text>
+      </View>
+
+      <View>
+        <AlarmClock />
+        <PopUpCountdownTimer />
       </View>
 
       <View>
