@@ -9,12 +9,12 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        user_info = UserInfo.objects.get(uid=user)
+        userinfo = UserInfo.objects.get(uid=user.uid_id)
 
         # Add custom claims
-        token['uid'] = user.uid
-        token['username'] = user_info.username
-        token['name'] = user_info.username
+        token['uid'] = userinfo.uid
+        token['username'] = userinfo.username
+        token['name'] = userinfo.name
         # ...
 
         return token
@@ -31,21 +31,19 @@ class EmailCheckSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('This email is already in use.')
         return value
 
-# ok a bit bugged on be
-class RegisterUserAuthSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserAuth
-        fields = ['email', 'password']
-        extra_kwargs = {'password': {'write_only': True}}
-    
-    def create(self, validated_data):
-        return UserAuth.objects.create_user(**validated_data)
-    
-# ok a bit bugged on be
-class RegisterUserInfoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserInfo
-        fields = ['username', 'name', 'phone_number']
+# ok
+class RegisterSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(max_length=100, write_only=True)
+    username = serializers.CharField(max_length=100)
+    name = serializers.CharField(max_length=100)
+    phone_number = serializers.CharField(max_length=24)
+
+    def validate_email(self, value):
+        # Check if email is already in use
+        if UserAuth.objects.filter(email=value).exists():
+            raise serializers.ValidationError('This email is already in use.')
+        return value
 
     def validate_username(self, value):
         # Check if username is already in use
@@ -54,50 +52,32 @@ class RegisterUserInfoSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
-        return UserInfo.objects.create(**validated_data)
-    
-# ok a bit bugged on be
-class RegisterSerializer(serializers.Serializer):
-    userauth = RegisterUserAuthSerializer()
-    userinfo = RegisterUserInfoSerializer()
+        print("validated_data")
+        print(validated_data)
+        userinfo_data = {
+            'username': validated_data['username'],
+            'name': validated_data['name'],
+            'phone_number': validated_data['phone_number']
+        }
 
-    # class Meta:
-    #     model = UserAuth
-    #     fields = ['userauth', 'userinfo']
+        userauth_data = {
+            'email': validated_data['email'],
+            'password': validated_data['password']
+        }
 
-    def create(self, validated_data):
-        userauth_data = validated_data.pop('userauth')
-        userinfo_data = validated_data.pop('userinfo')
+        userinfo_instance = UserInfo.objects.create(**userinfo_data)
+        userauth_instance = UserAuth.objects.create_user(uid=userinfo_instance, **userauth_data)
 
-        userauth_serializer = RegisterUserAuthSerializer(data=userauth_data)
-        userinfo_serializer = RegisterUserInfoSerializer(data=userinfo_data)
-
-        if userauth_serializer.is_valid() and userinfo_serializer.is_valid():
-            userauth_instance = userauth_serializer.save()
-            userinfo_instance = userinfo_serializer.save(uid=userauth_instance)
-            return {
-                'userauth': userauth_instance,
-                'userinfo': userinfo_instance
-            }
-        else:
-            raise serializers.ValidationError({
-                'userauth': userauth_serializer.errors,
-                'userinfo': userinfo_serializer.errors
-            })
+        return {
+            'userauth': userauth_instance,
+            'userinfo': userinfo_instance
+        }
         
 # ok
-class SignOutSerializer(serializers.Serializer):
-    refresh = serializers.CharField()
-
-    def validate(self, value):
-        self.token = value['refresh']
-        return value
-    
-    def save(self, **kwargs):
-        try:
-            RefreshToken(self.token).blacklist()
-        except TokenError:
-            self.fail('bad_token')
+class GetUserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserInfo
+        fields = ['username', 'name', 'phone_number']
 
 # ok
 class ResetPasswordSerializer(serializers.Serializer):
@@ -117,13 +97,20 @@ class ResetPasswordSerializer(serializers.Serializer):
         instance.set_password(validated_data['new_password'])
         instance.save()
         return instance
-    
-# ok
-class GetUserInfoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserInfo
-        fields = ['username', 'name', 'phone_number']
 
+# ok
+class SignOutSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+
+    def validate(self, value):
+        self.token = value['refresh']
+        return value
+    
+    def save(self, **kwargs):
+        try:
+            RefreshToken(self.token).blacklist()
+        except TokenError:
+            self.fail('Failed to blacklist token.')
 
 class DeleteAccountSerializer(serializers.ModelSerializer):
     class Meta: 
