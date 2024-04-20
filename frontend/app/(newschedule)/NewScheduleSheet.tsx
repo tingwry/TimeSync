@@ -71,8 +71,8 @@ export default function NewSchedule() {
       body: JSON.stringify({
         event_name: eventName,
         date: date,
-        start_time: "9:00",
-        end_time: "9:30",
+        start_time: startTime,
+        end_time: endTime,
         transportation_mode: transportationMode,
         extra_prep_time: 0,
         note: note,
@@ -151,7 +151,7 @@ export default function NewSchedule() {
                 >
                   {/* <TimeSheet title="Start Time" onTimeSelect={setStartTime}/>
                    */}
-                  <StartTimeSheet />
+                  <StartTimeSheet onStartTimeSelect={setStartTime}/>
                   <Text
                     style={[
                       styles.textDisplay,
@@ -165,7 +165,7 @@ export default function NewSchedule() {
                   >
                     to
                   </Text>
-                  <EndTimeSheet />
+                  <EndTimeSheet onEndTimeSelect={setEndTime}/>
                 </View>
                 <View style={styles.divLine} />
                 <View style={styles.sheetItem}>

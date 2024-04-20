@@ -10,18 +10,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "@/app/theme";
 import React from "react";
 
-export default function EndTimeSheet() {
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["60%"], []);
+export interface EndTimeSheetProps {
+  onEndTimeSelect: (startTime: string) => void;
+}
 
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-
-  const handleCloseModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.close();
-  }, []);
-
+export default function EndTimeSheet({onEndTimeSelect}: EndTimeSheetProps) {
   const currentDate = new Date();
   const formattedTime = currentDate.toLocaleTimeString([], {
     hour: "2-digit",
@@ -56,6 +49,18 @@ export default function EndTimeSheet() {
     ? styles.textDisplay
     : styles.textDisplayBlur;
 
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const snapPoints = useMemo(() => ["60%"], []);
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  const handleCloseModalPress = useCallback((endTime: string) => {
+    onEndTimeSelect(endTime);
+    bottomSheetModalRef.current?.close();
+  }, [onEndTimeSelect]);
+
   return (
     <GestureHandlerRootView style={styles.sheetStyle}>
       <TouchableOpacity
@@ -78,7 +83,7 @@ export default function EndTimeSheet() {
             <View style={styles.handleModalIndicatorStyle} />
             <TouchableOpacity
               style={[styles.modalCloseButton, { marginRight: 16 }]}
-              onPress={handleCloseModalPress}
+              onPress={() => handleCloseModalPress(selectedTime)}
               hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }} // Adjust hitSlop as needed
             >
               <Image
@@ -150,8 +155,8 @@ export default function EndTimeSheet() {
                   text="Select Time"
                   press={() => {
                     setIsSelected(true);
-                    handleCloseModalPress();
                     setSelectedTime(formattedSelctedTime);
+                    handleCloseModalPress(formattedSelctedTime);
                   }}
                 />
               </View>
