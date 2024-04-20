@@ -27,16 +27,16 @@ interface ScheduleItem {
 }
 
 export default function Home() {
-  const [fontsLoaded] = useFonts({
-    "dm-sans-medium": require("@/assets/fonts/DMSans-Medium.ttf"),
-    "dm-sans-extrabold": require("@/assets/fonts/DMSans-ExtraBold.ttf"),
-    "dm-sans-semibold": require("@/assets/fonts/DMSans-SemiBold.ttf"),
-    "dm-sans-regular": require("@/assets/fonts/DMSans-Regular.ttf"),
-    "dm-sans-bold": require("@/assets/fonts/DMSans-Bold.ttf"),
-  });
-  if (!fontsLoaded) {
-    return <Text>Loading...</Text>;
-  }
+  // const [fontsLoaded] = useFonts({
+  //   "dm-sans-medium": require("@/assets/fonts/DMSans-Medium.ttf"),
+  //   "dm-sans-extrabold": require("@/assets/fonts/DMSans-ExtraBold.ttf"),
+  //   "dm-sans-semibold": require("@/assets/fonts/DMSans-SemiBold.ttf"),
+  //   "dm-sans-regular": require("@/assets/fonts/DMSans-Regular.ttf"),
+  //   "dm-sans-bold": require("@/assets/fonts/DMSans-Bold.ttf"),
+  // });
+  // if (!fontsLoaded) {
+  //   return <Text>Loading...</Text>;
+  // }
 
   const navigation = useNavigation();
   const auth = useAuth();
@@ -50,14 +50,14 @@ export default function Home() {
       try {
         const baseUrl = process.env.BASE_URL;
         const response = await fetch(`${baseUrl}/schedule/view/`, {
-        // const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/", {
+          // const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/", {
           method: "GET",
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + access
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + access,
           },
         });
-        
+
         const data = await response.json();
         if (response.ok) {
           setScheduleNumber(data.length);
@@ -65,7 +65,6 @@ export default function Home() {
         } else {
           console.error(data);
         }
-        
       } catch (error) {
         console.error("View all schedule - Error fetching schedule:", error);
       }
@@ -94,7 +93,7 @@ export default function Home() {
 
       <View style={styles.container}>
         <View style={styles.monthContainer}>
-          <Text style={styles.textMonth}>March 2024</Text>
+          <Text style={styles.textMonth}>April 2024</Text>
           <Image
             source={require("@/assets/icons/chevron-down.png")}
             style={{ width: 24, height: 24 }}
@@ -105,7 +104,9 @@ export default function Home() {
           {schedule.map((item) => (
             <View style={styles.scheduleContainer}>
               <View style={styles.dateContainer}>
-                <Text style={styles.textDay}>WED</Text>
+                <Text style={styles.textDay}>
+                  {new Date(item.date).toString().substring(0, 3).toUpperCase()}
+                </Text>
                 <View style={styles.circle}>
                   <Text style={styles.textCircle}>{item.date.slice(-2)}</Text>
                 </View>
@@ -114,7 +115,8 @@ export default function Home() {
               <View style={styles.detailContainer}>
                 <View style={styles.detailView}>
                   <Text style={styles.textTime}>
-                    {item.start_time} - {item.end_time}
+                    {item.start_time.substring(0, 5)} -{" "}
+                    {item.end_time.substring(0, 5)}
                   </Text>
                   <Text style={styles.textTitle}>{item.event_name}</Text>
                   <Text style={styles.textLocation}>at School</Text>
@@ -216,7 +218,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     flexGrow: 1,
-    height: "100%"
+    height: "100%",
   },
   monthContainer: {
     flexDirection: "row",
@@ -235,6 +237,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     gap: 6,
     justifyContent: "center",
+    alignItems: "center",
   },
   textDay: {
     fontFamily: "dm-sans-medium",

@@ -11,11 +11,12 @@ import { useNavigation } from "expo-router";
 import { PortalProvider } from "@gorhom/portal";
 import CalendarSheet from "@/components/sheets/CalendarSheet";
 import LocationSheet from "@/components/sheets/LocationSheet";
-import TimeSheet from "@/components/sheets/TimeSheet";
 import ButtonPrimary from "@/components/buttons/ButtonPrimary";
 import TransportationSheet from "@/components/sheets/TransportationSheet";
 import PreparationSheet from "@/components/sheets/PreparationSheet";
 import AlarmNotiSheet from "@/components/sheets/AlarmNotiSheet";
+import StartTimeSheet from "@/components/sheets/StartTimeSheet";
+import EndTimeSheet from "@/components/sheets/EndTimeSheet";
 import { useAuth } from "../context/authContext";
 // import { API_URL } from "@env";
 
@@ -148,11 +149,9 @@ export default function NewSchedule() {
                     alignItems: "center",
                   }}
                 >
-                  <TimeSheet
-                    time={"09:00"}
-                    title="Start Time"
-                    onTimeSelect={setStartTime}
-                  />
+                  {/* <TimeSheet title="Start Time" onTimeSelect={setStartTime}/>
+                   */}
+                  <StartTimeSheet />
                   <Text
                     style={[
                       styles.textDisplay,
@@ -166,11 +165,7 @@ export default function NewSchedule() {
                   >
                     to
                   </Text>
-                  <TimeSheet
-                    time={"10:00"}
-                    title="End Time"
-                    onTimeSelect={setEndTime}
-                  />
+                  <EndTimeSheet />
                 </View>
                 <View style={styles.divLine} />
                 <View style={styles.sheetItem}>

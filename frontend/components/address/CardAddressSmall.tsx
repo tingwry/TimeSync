@@ -32,8 +32,8 @@ export default function CardAddressSmall(props: CardAddressSmallProps) {
       <View style={cardStyles.label}>
         <Image source={props.labelIcon} style={{ width: 20, height: 20 }} />
       </View>
+      <Text style={cardStyles.addressName}>{props.locationName}</Text>
       <View style={cardStyles.addressDetail}>
-        <Text style={cardStyles.addressName}>{props.locationName}</Text>
         {/* <Text style={cardStyles.addressLocation}>{props.locationLat}</Text>
         <Text style={cardStyles.addressLocation}>{props.locationLong}</Text> */}
       </View>
@@ -53,6 +53,7 @@ const cardStyles = StyleSheet.create({
     paddingHorizontal: 16,
     flexDirection: "row",
     marginRight: 8,
+    gap: 8,
   },
   label: {
     width: 32,
