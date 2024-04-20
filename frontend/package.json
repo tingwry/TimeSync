@@ -20,7 +20,7 @@
     "@react-native-community/geolocation": "^3.2.1",
     "@react-navigation/native": "^6.0.2",
     "expo": "~50.0.14",
-    "expo-av": "~13.10.5",
+    "expo-av": "~13.10.6",
     "expo-font": "~11.10.3",
     "expo-linear-gradient": "~12.7.2",
     "expo-linking": "~6.2.2",
@@ -44,7 +44,8 @@
     "react-native-sound": "^0.11.2",
     "react-native-svg": "14.1.0",
     "react-native-timer-picker": "^1.6.0",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "expo-asset": "~9.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

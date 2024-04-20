@@ -7,6 +7,7 @@ import CardUpcomingSchedule from "@/components/cards/CardUpcomingSchedule";
 import CardCountDownTimer from "@/components/cards/CardCountDownTimer";
 import PopUpCountdownTimer from "../src/PopUpCountDownTimer";
 import AlarmClock from "../src/AlarmClock";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface ScheduleItem {
   event_id: number;
@@ -54,6 +55,19 @@ export default function Home() {
     fetchSchedule();
   }, []);
 
+  const [startCountdown, setStartCountdown] = useState(false);
+
+  useEffect(() => {
+    // Check if the flag or state indicating to start the countdown is set
+    AsyncStorage.getItem("startCountdown").then((value) => {
+      if (value === "true") {
+        setStartCountdown(true);
+        // Clear the flag or state after reading it
+        AsyncStorage.removeItem("startCountdown");
+      }
+    });
+  }, []);
+
   return (
     <View style={styles.background}>
       <StatusBar barStyle="light-content" />
@@ -65,7 +79,7 @@ export default function Home() {
 
       <View>
         <AlarmClock />
-        <PopUpCountdownTimer />
+        {startCountdown ? <PopUpCountdownTimer /> : null}
       </View>
 
       <View>

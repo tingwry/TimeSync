@@ -12,6 +12,7 @@ import { theme } from "../theme";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { router, Link } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Home() {
   const [fontsLoaded] = useFonts({
@@ -44,6 +45,9 @@ export default function Home() {
 
   const handleClickStop = () => {
     router.push("/Home");
+    
+    // Store a flag or state indicating that the countdown should start in the Home screen
+    AsyncStorage.setItem('startCountdown', 'true');
   };
 
   return (

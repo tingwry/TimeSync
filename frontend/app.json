@@ -15,13 +15,22 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "buildNumber": "1",
+      "infoPlist": {
+      "UIBackgroundModes": ["audio"]
+      },
+      "bundleIdentifier": "com.fakeapp"
     },
     "android": {
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.fakeapp",
+      "permissions": ["WAKE_LOCK"],
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
