@@ -100,10 +100,11 @@ const screenWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   container: {
-    paddingLeft: 32,
-    paddingRight: 32,
+    // paddingLeft: 32,
+    // paddingRight: 32,
     marginTop: 16,
     marginBottom: 12,
+    // marginBottom: 40,
     width: "100%",
   },
 
@@ -156,6 +157,8 @@ const styles = StyleSheet.create({
 
     marginTop: 8,
     marginBottom: 0,
+    // marginTop: 85,
+    // position: "relative",
   },
   inputContainer: {
     fontSize: 16,
@@ -172,6 +175,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 12,
     justifyContent: "space-between",
+    
   },
   inputContainerFocus: {
     fontSize: 16,

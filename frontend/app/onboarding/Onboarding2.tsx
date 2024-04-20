@@ -41,7 +41,7 @@ export default function Onboard2() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => router.push("/onboarding/Onboarding3")}
+          onPress={() => router.push("/SignUp")}
           style={styles.backButton}
         >
           <Text style={styles.textButton}>Skip</Text>
@@ -129,9 +129,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   footer: {
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
     flex: 1,
-    bottom: 44,
   },
   indicatorContainer: {
     flexDirection: "row",
