@@ -125,18 +125,6 @@ export default function Home() {
                 longitude={long}
               />
             )}
-            {/* {schedule.map((scheduleItem) => (
-                <CardUpcomingSchedule
-                  key={scheduleItem.event_id}
-                  event_name={scheduleItem.event_name}
-                  date={scheduleItem.date}
-                  start_time={scheduleItem.start_time}
-                  end_time={scheduleItem.end_time}
-                  transportation_mode={scheduleItem.transportation_mode}
-                  extra_prep_time={scheduleItem.extra_prep_time}
-                  note={scheduleItem.note}
-                />
-              ))} */}
           </View>
         )}
       </View>

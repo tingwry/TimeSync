@@ -54,9 +54,17 @@ export default function NewSchedule() {
     console.log(req)
   }, [req])
 
+  const handleStartTimeSelect = (selectedTime: string) => {
+    setStartTime(selectedTime);
+    console.log('here')
+    console.log("start time", startTime);
+  };
+  const handleEndTimeSelect = useCallback((selectedTime: string) => {
+    setEndTime(selectedTime); 
+    console.log(endTime);
+  }, []);
+
   const handleClickPress = async () => {
-    // console.log(startTime)
-    // console.log(endTime)
     
     
     // const url = `http://127.0.0.1:8000/app/schedule/create/`;
@@ -151,7 +159,7 @@ export default function NewSchedule() {
                 >
                   {/* <TimeSheet title="Start Time" onTimeSelect={setStartTime}/>
                    */}
-                  <StartTimeSheet />
+                  <StartTimeSheet onStartTimeSelect={handleStartTimeSelect} />
                   <Text
                     style={[
                       styles.textDisplay,
@@ -165,7 +173,7 @@ export default function NewSchedule() {
                   >
                     to
                   </Text>
-                  <EndTimeSheet />
+                  <EndTimeSheet onEndTimeSelect={handleEndTimeSelect} />
                 </View>
                 <View style={styles.divLine} />
                 <View style={styles.sheetItem}>

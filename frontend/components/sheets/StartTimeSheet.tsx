@@ -16,7 +16,13 @@ import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "@/app/theme";
 import React from "react";
 
-export default function StartTimeSheet() {
+interface StartTimeSheetProps {
+  onStartTimeSelect: (formattedSelctedTime: string) => void;
+}
+
+export default function StartTimeSheet( {
+  onStartTimeSelect,
+}: StartTimeSheetProps) {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["60%"], []);
 
@@ -50,7 +56,10 @@ export default function StartTimeSheet() {
   const [selectedMinutes, setSelectedMinutes] = useState(initialMinutes);
 
   const [selectedTime, setSelectedTime] = useState(initialTime);
-  const formattedSelctedTime = `${selectedHours.padStart(2, "0")}:${selectedMinutes.padStart(2, "0")}`
+  const formattedSelctedTime = `${selectedHours.padStart(
+    2,
+    "0"
+  )}:${selectedMinutes.padStart(2, "0")}`;
 
   return (
     <GestureHandlerRootView style={styles.sheetStyle}>
@@ -99,7 +108,7 @@ export default function StartTimeSheet() {
                     justifyContent: "center",
                     marginTop: 32,
                     marginBottom: 24,
-                    flexDirection: "row"
+                    flexDirection: "row",
                   }}
                 >
                   <TimerPicker
@@ -150,6 +159,7 @@ export default function StartTimeSheet() {
                   press={() => {
                     handleCloseModalPress();
                     setSelectedTime(formattedSelctedTime);
+                    // console.log(formattedSelctedTime);
                   }}
                 />
               </View>

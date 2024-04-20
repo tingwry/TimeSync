@@ -9,19 +9,65 @@ import {
   Pressable,
 } from "react-native";
 import { theme } from "../theme";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useRouter, useNavigation } from "expo-router";
 import CardLocations from "@/components/address/CardLocations";
 import ButtonPrimary from "@/components/buttons/ButtonPrimary";
+import { useAuth } from "../context/authContext";
 
 export default function AddNewLocation() {
   const navigation = useNavigation();
   const router = useRouter();
 
+  const auth = useAuth();
+  const access = auth.authData?.access;
+  const user = auth.authData?.username;
+
   const [locationName, setLocationName] = useState("");
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
 
   const [isSelected, setSelected] = useState("Other");
   const [loactionChosen, setLocationChosen] = useState(false);
+
+  const req = {
+    loc_name: locationName,
+    latitude: latitude,
+    longitude: longitude,
+    default_home: false,
+    default_dest: false,
+  };
+
+  useEffect(() => {
+    console.log(req);
+  }, [req]);
+
+  const handleClickPress = async () => {
+    const baseUrl = process.env.BASE_URL;
+    let response = await fetch(`${baseUrl}/location/create/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + access,
+      },
+      body: JSON.stringify({
+        loc_name: locationName,
+        latitude: latitude,
+        longitude: longitude,
+        default_home: false,
+        default_dest: false,
+      }),
+    });
+    console.log(req);
+    let result = await response.json();
+
+    if (response.ok) {
+      console.log("Success");
+      navigation.goBack();
+    } else {
+      console.error(result);
+    }
+  };
 
   const [isFocused, setIsFocused] = useState(false);
   const inputContainerStyle = isFocused
@@ -148,7 +194,7 @@ export default function AddNewLocation() {
       <View style={styles.footer}>
         <ButtonPrimary
           text="Add New Location"
-          press={() => navigation.goBack()}
+          press={handleClickPress}
         />
         <Pressable onPress={() => navigation.goBack()}>
           <Text style={styles.cancelButton}>Cancel</Text>
