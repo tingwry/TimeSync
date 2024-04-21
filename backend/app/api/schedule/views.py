@@ -67,6 +67,7 @@ class ScheduleCreate(generics.CreateAPIView):
     permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
+        print(self.request.data);
         user = self.request.user
         userinfo = UserInfo.objects.get(uid=user.uid_id)
         serializer.save(uid=userinfo)
