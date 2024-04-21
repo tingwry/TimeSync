@@ -33,7 +33,20 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export default function AlarmClock() {
+interface AlarmClockProps {
+  wakeupTime: string;
+  departureTime: string;
+  setWakeupTime: (value: string) => void;
+  setDepartureTime: (value: string) => void;
+}
+
+
+export default function AlarmClock({
+  wakeupTime,
+  departureTime,
+  setWakeupTime,
+  setDepartureTime,
+}: AlarmClockProps) {
   // const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState<any>(false);
   const notificationListener = useRef<any>();
@@ -50,6 +63,9 @@ export default function AlarmClock() {
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [sound, setSound] = useState<Sound | null>(null);
+
+  // const [wakeupTime, setWakeupTime] = useState<string>("");
+  // const [departureTime, setDepartureTime] = useState<string>("");
 
   const auth = useAuth();
   const access = auth.authData?.access;
@@ -83,6 +99,10 @@ export default function AlarmClock() {
     if (response.ok) {
       console.log("Predict Success");
       console.log(result);
+      // console.log(result.wake_up_time);
+      // console.log(result.departure_time);
+      setWakeupTime(result.wake_up_time);
+      setDepartureTime(result.departure_time);
       return result;
     } else {
       console.error(result);
@@ -153,6 +173,8 @@ export default function AlarmClock() {
         console.error("AlarmClock - Error fetching schedule:", error);
       }
     };
+
+    
 
     fetchSchedule();
   }, []);
@@ -454,9 +476,9 @@ export default function AlarmClock() {
       {/* <Pressable onPress={scheduleNotificationsHandler}>
         <Text>Turn on Alarm</Text>
       </Pressable> */}
-      <Pressable onPress={turnOffAlarm}>
+      {/* <Pressable onPress={turnOffAlarm}>
         <Text>Turn off Alarm</Text>
-      </Pressable>
+      </Pressable> */}
       {/* <AlarmPageModal
         isVisible={showModal}
         onClose={() => setShowModal(false)}

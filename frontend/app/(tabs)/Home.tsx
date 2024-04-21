@@ -42,6 +42,12 @@ export default function Home() {
   const [location, setLocation] = useState("");
   const [lat, setLat] = useState(0);
   const [long, setLong] = useState(0);
+  const [locationName, setLocationName] = useState("");
+
+  const [wakeupTime, setWakeupTime] = useState<string>("");
+  const [departureTime, setDepartureTime] = useState<string>("");
+
+  console.log("MMMMLLLLL", wakeupTime, departureTime)
 
   const fetchSchedule = async () => {
     try {
@@ -57,9 +63,9 @@ export default function Home() {
 
       const data = await response.json();
       if (response.ok) {
-        console.log('schedule data');
+        console.log("schedule data");
         console.log(data);
-        setLocation(data.sched_destination)
+        setLocation(data.sched_destination);
         // console.log("sched location", location)
         setScheduleNumber(data.length);
         setSchedule(data);
@@ -76,25 +82,24 @@ export default function Home() {
     try {
       const baseUrl = process.env.BASE_URL;
       const response = await fetch(`${baseUrl}/location/viewsinglee/`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + access,
-          'Location-ID': location
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + access,
+          "Location-ID": location,
         },
       });
 
       const data = await response.json();
       if (response.ok) {
-        console.log('location data');
+        console.log("location data");
         console.log(data);
         setLat(data.latitude);
         setLong(data.longitude);
+        setLocationName(data.loc_name);
         console.log("lat, long", lat, long);
-
       } else {
         console.error(data);
-
       }
     } catch (error) {
       console.error("Home - Error fetching schedule:", error);
@@ -140,7 +145,6 @@ export default function Home() {
     }
   }, [location]);
 
-
   // useEffect(() => {
   //   // Check if location is available
   //   if (location) {
@@ -178,7 +182,12 @@ export default function Home() {
       </View>
 
       <View>
-        <AlarmClock />
+        <AlarmClock
+          wakeupTime={wakeupTime}
+          departureTime={departureTime}
+          setWakeupTime={setWakeupTime}
+          setDepartureTime={setDepartureTime}
+        />
         {startCountdown ? <PopUpCountdownTimer /> : null}
       </View>
 
@@ -198,9 +207,11 @@ export default function Home() {
                 note={schedule.note}
                 latitude={lat}
                 longitude={long}
+                loc_name={locationName}
+                wakeup_time={wakeupTime}
+                departure_time={departureTime}
               />
             )}
-
           </View>
         )}
       </View>
