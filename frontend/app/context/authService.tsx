@@ -74,8 +74,6 @@ const register = async (email: string, password: string, username: string, name:
 }
 
 const signIn = async (email: string, password: string): Promise<AuthData> => {
-    // console.log(`${process.env.BASE_URL}`)
-    // const url = "${process.env.BASE_URL}/auth/token/"
     const baseUrl = process.env.BASE_URL;
     const response = await fetch(`${baseUrl}/auth/token/`, {
         method: 'POST',
