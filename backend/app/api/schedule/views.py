@@ -30,7 +30,21 @@ class ScheduleViewRecent(generics.RetrieveAPIView):
     serializer_class = ScheduleSerializer
     permission_classes = (IsAuthenticated,)
 
-    # def get(self, request):
+    def get_object(self):
+        user = self.request.user
+
+        # Retrieve the most recent schedule based on the date
+        queryset = Schedule.objects.filter(uid=user.uid_id).order_by('-date')
+        return queryset.first()
+
+    # def retrieve(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     if instance:
+    #         serializer = self.get_serializer(instance)
+    #         return Response(serializer.data, status=status.HTTP_200_OK)
+    #     return Response({'message': 'data not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+        # def get(self, request):
     #     user = request.user
    
     #     # Retrieve the most recent schedule based on the date
@@ -44,20 +58,6 @@ class ScheduleViewRecent(generics.RetrieveAPIView):
     #     # print(most_recent_schedule)
     #     # return Response(most_recent_schedule, status=status.HTTP_200_OK)
     #     # return most_recent_schedule
-
-    def get_object(self):
-        user = self.request.user
-
-        # Retrieve the most recent schedule based on the date
-        queryset = Schedule.objects.filter(uid=user.uid_id).order_by('-date')
-        return queryset.first()
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        if instance:
-            serializer = self.get_serializer(instance)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response({'message': 'data not found'}, status=status.HTTP_404_NOT_FOUND)
     
 
 # create schedule

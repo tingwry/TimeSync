@@ -11,6 +11,7 @@ class LocationViewAll(generics.ListAPIView):
     serializer_class = LocationSerializer
     permission_classes = (IsAuthenticated,)
 
+    # get all locations associated with the user
     def get_queryset(self):
         user = self.request.user
         return Location.objects.filter(uid=user.uid_id)
@@ -45,14 +46,19 @@ class LocationCreate(generics.CreateAPIView):
 # view locations with default home
 class DefaultHomeLocationView(generics.ListAPIView):
     serializer_class = LocationSerializer
+    permission_classes = (IsAuthenticated,)
 
+    # get all locations with default home
     def get_queryset(self):
-        return Location.objects.filter(default_home=True, default_dest=False)
+        user = self.request.user
+        return Location.objects.filter(uid=user.uid_id, default_home=True, default_dest=False)
 
 
 # view locations with default destination
 class DefaultDestinationLocationView(generics.ListAPIView):
     serializer_class = LocationSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return Location.objects.filter(default_dest=True, default_home=False)
+        user = self.request.user
+        return Location.objects.filter(uid=user.uid_id, default_dest=True, default_home=False)

@@ -26,12 +26,14 @@ class EmailCheckSerializer(serializers.ModelSerializer):
         fields = ['email']
 
     def validate_email(self, value):
+        value = value.lower()
+
         # Check if email is already in use
         if UserAuth.objects.filter(email=value).exists():
             raise serializers.ValidationError('This email is already in use.')
         return value
 
-# ok
+
 class RegisterSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(max_length=100, write_only=True)
@@ -40,20 +42,22 @@ class RegisterSerializer(serializers.Serializer):
     phone_number = serializers.CharField(max_length=24)
 
     def validate_email(self, value):
+        value = value.lower()
+
         # Check if email is already in use
         if UserAuth.objects.filter(email=value).exists():
             raise serializers.ValidationError('This email is already in use.')
         return value
 
     def validate_username(self, value):
+        value = value.lower()
+
         # Check if username is already in use
         if UserInfo.objects.filter(username=value).exists():
             raise serializers.ValidationError('This username is already in use.')
         return value
 
     def create(self, validated_data):
-        print("validated_data")
-        print(validated_data)
         userinfo_data = {
             'username': validated_data['username'],
             'name': validated_data['name'],
@@ -74,10 +78,18 @@ class RegisterSerializer(serializers.Serializer):
         }
         
 # ok
-class GetUserInfoSerializer(serializers.ModelSerializer):
+class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInfo
         fields = ['username', 'name', 'phone_number']
+
+    def validate_username(self, value):
+        value = value.lower()
+
+        # Check if username is already in use
+        if UserInfo.objects.filter(username=value).exists():
+            raise serializers.ValidationError('This username is already in use.')
+        return value
 
 # ok
 class ResetPasswordSerializer(serializers.Serializer):
