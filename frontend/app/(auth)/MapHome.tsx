@@ -15,11 +15,19 @@ import { styles } from "@/components/sheets/SheetStyles";
 import { router, useNavigation } from "expo-router";
 import { useFonts } from "expo-font";
 import ButtonPrimary from "@/components/buttons/ButtonPrimary";
-import MapView from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { Marker, Callout } from "react-native-maps";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 export default function MapHome() {
+  // const [fontsLoaded] = useFonts({
+  //   "dm-sans-regular": require("@/assets/fonts/DMSans-Regular.ttf"),
+  //   "dm-sans-bold": require("@/assets/fonts/DMSans-Bold.ttf"),
+  // });
+  // if (!fontsLoaded) {
+  //   return <Text>Loading...</Text>;
+  // }
+
   const searchSnapPoints = useMemo(() => ["30%"], []);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const handleCollapseSearchPress = () => bottomSheetRef.current?.collapse();
@@ -85,10 +93,10 @@ export default function MapHome() {
       );
       if (response.ok) {
         console.log("Success");
-        navigation.goBack()
+        navigation.goBack();
       } else {
         console.error("Failed to post");
-        console.log(response.status)
+        console.log(response.status);
       }
     } catch (error) {
       console.error("Error submitting:", error);
@@ -111,11 +119,10 @@ export default function MapHome() {
         <Text style={menuStyles.textHeader}>Choose Location</Text>
       </View>
       <View style={menuStyles.container}>
-
         <MapView
-          // provider="google"
+          provider={PROVIDER_GOOGLE}
           ref={mapRef}
-          style={{ width: "100%", height: "100%", marginTop: 20 }}
+          style={{ width: "100%", height: "82%", marginTop: 20 }}
           initialRegion={{
             latitude: 13.736834400006273,
             longitude: 100.53314465311604,
@@ -124,7 +131,12 @@ export default function MapHome() {
           }}
         >
           {/* <Button onPress={handleSubmit} title="Submit" /> */}
-          <Marker coordinate={pin} draggable={true} onDragEnd={onMarkerDragEnd}>
+          <Marker
+            coordinate={pin}
+            draggable={true}
+            onDragEnd={onMarkerDragEnd}
+            image={require("@/assets/icons/map-marker.png")}
+          >
             <Callout>
               <Text>My Home</Text>
             </Callout>
@@ -132,7 +144,11 @@ export default function MapHome() {
         </MapView>
 
         {/* <Button onPress={() => goToPin()} title="Go Home" /> */}
+        {/* <View style={menuStyles.footer}>
+          <ButtonPrimary text="Set as Home" press={handleSubmit} />
+        </View> */}
       </View>
+
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={searchSnapPoints}
@@ -160,13 +176,12 @@ export default function MapHome() {
               source={require("@/assets/icons/location.png")}
               style={{ width: 24, height: 24 }}
             />
-            <Text style={styles.textHeader}>Location</Text>
-            {/* <View>
-                      <Text style={styles.textTitle}>{pin.latitude}{pin.longitude}</Text>
-                    </View> */}
+            <Text style={styles.textHeader}>Home Location</Text>
           </View>
-          <View style={styles.sheetView}>
-            <Text style={menuStyles.textLocation}>Choose Location</Text>
+          <View style={[styles.sheetView, { marginTop: 16 }]}>
+            <Text style={menuStyles.textLocation}>
+              {pin.latitude}, {pin.longitude}
+            </Text>
           </View>
         </View>
         <View style={menuStyles.footer}>
@@ -220,11 +235,13 @@ const menuStyles = StyleSheet.create({
     justifyContent: "flex-end",
     flex: 1,
     bottom: 44,
+    // backgroundColor: theme.colors.bluePrimary,
+    // height: 116,
   },
   textLocation: {
     fontFamily: "dm-sans-regular",
     fontSize: 16,
-    color: theme.colors.textCaption,
+    color: theme.colors.textPrimary,
     marginHorizontal: 8,
   },
   container: {
@@ -233,5 +250,5 @@ const menuStyles = StyleSheet.create({
     flex: 1,
     // justifyContent: "flex-end",
     // alignItems: "center",
-  }
+  },
 });

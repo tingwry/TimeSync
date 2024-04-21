@@ -11,11 +11,12 @@ import { useNavigation } from "expo-router";
 import { PortalProvider } from "@gorhom/portal";
 import CalendarSheet from "@/components/sheets/CalendarSheet";
 import LocationSheet from "@/components/sheets/LocationSheet";
-import TimeSheet from "@/components/sheets/TimeSheet";
 import ButtonPrimary from "@/components/buttons/ButtonPrimary";
 import TransportationSheet from "@/components/sheets/TransportationSheet";
 import PreparationSheet from "@/components/sheets/PreparationSheet";
 import AlarmNotiSheet from "@/components/sheets/AlarmNotiSheet";
+import StartTimeSheet from "@/components/sheets/StartTimeSheet";
+import EndTimeSheet from "@/components/sheets/EndTimeSheet";
 import { useAuth } from "../context/authContext";
 // import { API_URL } from "@env";
 
@@ -44,8 +45,8 @@ export default function NewSchedule() {
     extra_prep_time: extraPrepTime,
     note: note,
     // uid: 2,
-    sched_start: 1,
-    sched_destination: 2,
+    sched_start: 3,
+    sched_destination: 6,
     wake_up_aids: 1,
   }
 
@@ -59,6 +60,20 @@ export default function NewSchedule() {
     
     
     // const url = `http://127.0.0.1:8000/app/schedule/create/`;
+    const req = {
+      event_name: eventName,
+        date: date,
+        start_time: "9:00",
+        end_time: "9:30",
+        transportation_mode: transportationMode,
+        extra_prep_time: 0,
+        note: note,
+        // uid: 2,
+        sched_start: 3,
+        sched_destination: 6,
+        wake_up_aids: 1,
+    }
+    console.log(req)
     
     const baseUrl = process.env.BASE_URL;
     let response = await fetch(`${baseUrl}/schedule/create/`, {
@@ -70,14 +85,14 @@ export default function NewSchedule() {
       body: JSON.stringify({
         event_name: eventName,
         date: date,
-        start_time: "9:00",
-        end_time: "9:30",
+        start_time: startTime,
+        end_time: endTime,
         transportation_mode: transportationMode,
         extra_prep_time: 0,
         note: note,
         // uid: 2,
-        sched_start: 1,
-        sched_destination: 2,
+        sched_start: 3,
+        sched_destination: 6,
         wake_up_aids: 1,
       }),
     });
@@ -148,11 +163,9 @@ export default function NewSchedule() {
                     alignItems: "center",
                   }}
                 >
-                  <TimeSheet
-                    time={"09:00"}
-                    title="Start Time"
-                    onTimeSelect={setStartTime}
-                  />
+                  {/* <TimeSheet title="Start Time" onTimeSelect={setStartTime}/>
+                   */}
+                  <StartTimeSheet onStartTimeSelect={setStartTime}/>
                   <Text
                     style={[
                       styles.textDisplay,
@@ -166,11 +179,7 @@ export default function NewSchedule() {
                   >
                     to
                   </Text>
-                  <TimeSheet
-                    time={"10:00"}
-                    title="End Time"
-                    onTimeSelect={setEndTime}
-                  />
+                  <EndTimeSheet onEndTimeSelect={setEndTime}/>
                 </View>
                 <View style={styles.divLine} />
                 <View style={styles.sheetItem}>

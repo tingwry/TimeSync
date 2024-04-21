@@ -57,14 +57,44 @@ export default function Home() {
 
       const data = await response.json();
       if (response.ok) {
-        // console.log(data);
-        setLocation(data.sched_destination);
+        console.log('schedule data');
+        console.log(data);
+        setLocation(data.sched_destination)
         // console.log("sched location", location)
         setScheduleNumber(data.length);
         setSchedule(data);
       } else {
         console.error(data);
         // throw new Error("Failed to fetch schedule");
+      }
+    } catch (error) {
+      console.error("Home - Error fetching schedule:", error);
+    }
+  };
+
+  const fetchLocation = async () => {
+    try {
+      const baseUrl = process.env.BASE_URL;
+      const response = await fetch(`${baseUrl}/location/viewsinglee/`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + access,
+          'Location-ID': location
+        },
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log('location data');
+        console.log(data);
+        setLat(data.latitude);
+        setLong(data.longitude);
+        console.log("lat, long", lat, long);
+
+      } else {
+        console.error(data);
+
       }
     } catch (error) {
       console.error("Home - Error fetching schedule:", error);
@@ -103,6 +133,14 @@ export default function Home() {
     return () => clearInterval(interval); // Cleanup interval on unmount
   }, []);
 
+  useEffect(() => {
+    if (location) {
+      fetchLocation();
+      // fetchSchedule();
+    }
+  }, [location]);
+
+
   // useEffect(() => {
   //   // Check if location is available
   //   if (location) {
@@ -133,7 +171,8 @@ export default function Home() {
       <StatusBar barStyle="light-content" />
       <View style={styles.containerHome}>
         <Text style={styles.textTitle}>Hello, {user}</Text>
-        {/* <Button title="fetch" onPress={() => fetchSchedule} /> */}
+        {/* <Button title="fetch schedule" onPress={() => fetchSchedule} />
+        <Button title="fetch location" onPress={() => fetchLocation} /> */}
         <Text style={styles.textCaption}>Let's see what is up next!</Text>
         <Text style={styles.textHeader}>Upcoming Schedule</Text>
       </View>

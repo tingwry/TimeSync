@@ -8,7 +8,7 @@ from .serializers import (
     RegisterSerializer, 
     SignOutSerializer, 
     ResetPasswordSerializer, 
-    GetUserInfoSerializer, 
+    UserInfoSerializer, 
     DeleteAccountSerializer
 )
 from ...models import UserAuth, UserInfo
@@ -64,7 +64,7 @@ class RegisterView(APIView):
 
 # ok
 class GetUser(APIView):
-    serializer_class = GetUserInfoSerializer
+    serializer_class = UserInfoSerializer
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
@@ -78,6 +78,18 @@ class GetUser(APIView):
         }
         return Response(data, status=status.HTTP_200_OK)
 
+class EditInfo(generics.UpdateAPIView):
+    serializer_class = UserInfoSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def put(self, request):
+        user = request.user
+        userinfo = UserInfo.objects.get(uid=user.uid_id)
+        serializer = self.serializer_class(userinfo, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 # ok
 class ResetPasswordView(APIView):
     permission_classes = (IsAuthenticated,)

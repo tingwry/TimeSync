@@ -18,8 +18,13 @@ import ButtonPrimary from "@/components/buttons/ButtonPrimary";
 import MapView from "react-native-maps";
 import { Marker, Callout } from "react-native-maps";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { useAuth } from "../context/authContext";
 
 export default function MapHome() {
+  const navigation = useNavigation();
+  const auth = useAuth();
+  const access = auth.authData?.access;
+
   const searchSnapPoints = useMemo(() => ["30%"], []);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const handleCollapseSearchPress = () => bottomSheetRef.current?.collapse();
@@ -41,7 +46,6 @@ export default function MapHome() {
     setFocus(false);
   };
 
-  const navigation = useNavigation();
 
   const [pin, setPin] = useState({
     latitude: 13.736834400006273,
@@ -66,12 +70,12 @@ export default function MapHome() {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(
-        "http://127.0.0.1:8000/app/location/create/",
-        {
-          method: "POST",
+      const baseUrl = process.env.BASE_URL;
+      const response = await fetch(`${baseUrl}/location/create/`, {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + access
           },
           body: JSON.stringify({
             loc_name: "School",
@@ -79,19 +83,19 @@ export default function MapHome() {
             longitude: pin.longitude,
             default_home: false,
             default_dest: false,
-            uid: 1,
+            // uid: 1,
           }),
-        }
-      );
+      });
+
       if (response.ok) {
         console.log("Success");
-        navigation.goBack()
+        navigation.goBack();
       } else {
         console.error("Failed to post");
-        console.log(response.status)
+        console.log(response.status);
       }
     } catch (error) {
-      console.error("Error submitting:", error);
+      console.error("Map location - Error submitting:", error);
     }
   };
 
@@ -111,11 +115,10 @@ export default function MapHome() {
         <Text style={menuStyles.textHeader}>Choose Location</Text>
       </View>
       <View style={menuStyles.container}>
-
         <MapView
           // provider="google"
           ref={mapRef}
-          style={{ width: "100%", height: "100%", marginTop: 20 }}
+          style={{ width: "100%", height: "80%", marginTop: 20 }}
           initialRegion={{
             latitude: 13.736834400006273,
             longitude: 100.53314465311604,
@@ -124,7 +127,12 @@ export default function MapHome() {
           }}
         >
           {/* <Button onPress={handleSubmit} title="Submit" /> */}
-          <Marker coordinate={pin} draggable={true} onDragEnd={onMarkerDragEnd}>
+          <Marker
+            coordinate={pin}
+            draggable={true}
+            onDragEnd={onMarkerDragEnd}
+            image={require("@/assets/icons/map-marker.png")}
+          >
             <Callout>
               <Text>My Location</Text>
             </Callout>
@@ -161,12 +169,13 @@ export default function MapHome() {
               style={{ width: 24, height: 24 }}
             />
             <Text style={styles.textHeader}>Location</Text>
-            {/* <View>
-                      <Text style={styles.textTitle}>{pin.latitude}{pin.longitude}</Text>
-                    </View> */}
           </View>
-          <View style={styles.sheetView}>
-            <Text style={menuStyles.textLocation}>Choose Location</Text>
+          <View style={menuStyles.header}>
+            <View style={[styles.sheetView, { marginTop: 16 }]}>
+              <Text style={menuStyles.textLocation}>
+                {pin.latitude}, {pin.longitude}
+              </Text>
+            </View>
           </View>
         </View>
         <View style={menuStyles.footer}>
@@ -224,7 +233,7 @@ const menuStyles = StyleSheet.create({
   textLocation: {
     fontFamily: "dm-sans-regular",
     fontSize: 16,
-    color: theme.colors.textCaption,
+    color: theme.colors.textPrimary,
     marginHorizontal: 8,
   },
   container: {
@@ -233,5 +242,5 @@ const menuStyles = StyleSheet.create({
     flex: 1,
     // justifyContent: "flex-end",
     // alignItems: "center",
-  }
+  },
 });

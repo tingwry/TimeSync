@@ -212,7 +212,11 @@ class Schedule(models.Model):
 
     def __str__(self):
         return str(self.event_id)
-
+    
+    # class Meta:
+    #     indexes = [
+    #         models.Index(fields=['uid','date', 'start_time']),
+    #     ]
 
 class Location(models.Model):
     loc_id = models.AutoField(primary_key=True)
@@ -229,6 +233,15 @@ class Location(models.Model):
 
     def __str__(self):
         return str(self.loc_id)
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['uid', 'latitude', 'longitude']),
+        ]
+        indexes = [
+            models.Index(fields=['uid', 'default_home', 'default_dest']),
+        ]
+
 
 
 class PrepActivityTime(models.Model):

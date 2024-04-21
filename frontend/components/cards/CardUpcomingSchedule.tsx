@@ -11,7 +11,7 @@ import { theme } from "@/app/theme";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { useRouter } from "expo-router";
-import MapView from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 
 interface ScheduleDetailProps {
   event_name: string;
@@ -37,6 +37,8 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
   const navigation = useNavigation();
   const router = useRouter();
 
+  console.log(latitude, longitude)
+
   const handlePress = () => {
     console.warn("View all schedules");
     // navigation.navigate("(viewschedules)");
@@ -61,7 +63,7 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
           <View style={{ flexDirection: "column", gap: 0 }}>
             <Text style={styles.detailName}>{event_name}</Text>
             <Text style={styles.detailsCaption}>
-              {start_time} - {end_time}
+              {start_time.substring(0,5)} - {end_time.substring(0,5)}
             </Text>
           </View>
 
@@ -85,6 +87,7 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
           </View>
         </View>
         <MapView
+          provider={PROVIDER_GOOGLE}
           initialRegion={{
             latitude: latitude,
             longitude: longitude,
