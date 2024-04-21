@@ -44,10 +44,19 @@ export default function Home() {
   });
 
   const handleClickStop = () => {
-    router.push("/Home");
-    
     // Store a flag or state indicating that the countdown should start in the Home screen
-    AsyncStorage.setItem('startCountdown', 'true');
+    AsyncStorage.setItem("startCountdown", "true");
+
+    router.push("/Home");
+    // router.replace("/Home");
+
+    // AsyncStorage.getItem("startCountDown")
+    //   .then((startCountdownValue) => {
+    //     console.log(startCountdownValue);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error retrieving startCountdown value:", error);
+    //   });
   };
 
   return (

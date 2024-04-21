@@ -30,7 +30,7 @@ const PopUpCountdownTimer = () => {
   const MLtime = 25; // time calculated by ML from table userinfo
 
   const [time, setTime] = useState<number | null>(MLtime * 60); // 25 minutes in seconds
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(true);
   const [remainingTime, setRemainingTime] = useState<number | null>(null);
   const [exceed, setExceed] = useState(false);
 

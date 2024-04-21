@@ -44,10 +44,10 @@ export default function AlarmClock() {
   // let date = new Date();
   // date.setSeconds(date.getSeconds() + 5);
 
-  let dateFromDB = "2024-04-20";
+  let dateFromDB = "2024-04-21";
   // let date = new Date(dateFromDB);
 
-  let timeFromML = "15:35:00";
+  let timeFromML = "09:19:00";
   let dateTimeString = dateFromDB + " " + timeFromML;
   let date = new Date(dateTimeString);
 
@@ -78,6 +78,7 @@ export default function AlarmClock() {
 
     if (delayInMillis <= 0) {
       console.error("Scheduled time is in the past.");
+      // turnOffAlarm();
       return;
     }
 
@@ -168,38 +169,44 @@ export default function AlarmClock() {
 
   async function scheduleNotificationsHandler() {
     console.log(notificationId);
-    // if (notificationId === "none") {
-    //   var newHour = parseInt(hourr);
-    //   if (ampm === "pm") {
-    //     newHour = newHour + 12;
-    //   }
-    const identifier = await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "TimeSync",
-        body: "Alarm! It's time to wake up.",
-        data: { url: "/src/AlarmPage" },
-        // sound: "alarm-sound.mp4",
-      },
-      trigger: {
-        // hour: newHour,
-        // minute: parseInt(minutee),
-        // repeats: true,
-        date: date,
-      },
-    });
-    // setAmpm("");
-    // setHour("");
-    // setMinute("");
-    console.log(date);
-    console.log(identifier);
-    setNotificationId(identifier);
-    storeData(identifier);
+    // Get the current time
+    const currentTime = new Date();
 
+    // Calculate the delay in milliseconds until the scheduled time
+    const delayInMillis = date.getTime() - currentTime.getTime();
+
+    if (notificationId === "none" && delayInMillis > 0) {
+      //   var newHour = parseInt(hourr);
+      //   if (ampm === "pm") {
+      //     newHour = newHour + 12;
+      //   }
+      const identifier = await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "TimeSync",
+          body: "Alarm! It's time to wake up.",
+          data: { url: "/src/AlarmPage" },
+          // sound: "alarm-sound.mp4",
+        },
+        trigger: {
+          // hour: newHour,
+          // minute: parseInt(minutee),
+          // repeats: true,
+          date: date,
+        },
+      });
+      // setAmpm("");
+      // setHour("");
+      // setMinute("");
+      console.log(date);
+      console.log(identifier);
+      setNotificationId(identifier);
+      storeData(identifier);
+    }
     // } else {
     //   alert("Turn off alarm before starting a new one");
-    //   setAmpm("");
-    //   setHour("");
-    //   setMinute("");
+    //   // setAmpm("");
+    //   // setHour("");
+    //   // setMinute("");
     //   console.log(notificationId);
     //   console.log("not working");
     // }
@@ -213,7 +220,7 @@ export default function AlarmClock() {
       await setNotificationId(resetValue);
       storeData(resetValue);
     } else {
-      // alert("Alarm already turned off");
+      console.log("Alarm already turned off");
       console.log(notificationId);
     }
   }
@@ -252,7 +259,8 @@ export default function AlarmClock() {
       if (url) {
         router.push(url);
         console.log(url);
-        turnOffAlarm();
+
+        subscription.remove();
       }
     }
 

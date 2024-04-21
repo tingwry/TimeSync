@@ -60,6 +60,7 @@ export default function Home() {
   useEffect(() => {
     // Check if the flag or state indicating to start the countdown is set
     AsyncStorage.getItem("startCountdown").then((value) => {
+      // if (value) {
       if (value === "true") {
         setStartCountdown(true);
         // Clear the flag or state after reading it
