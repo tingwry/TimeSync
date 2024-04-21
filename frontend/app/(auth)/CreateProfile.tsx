@@ -4,7 +4,6 @@ import TextInputPrimary from '@/components/textinputs/TextInputPrimary'
 import ButtonPrimary from '@/components/buttons/ButtonPrimary';
 import { theme } from '../theme';
 import { Link, router, useLocalSearchParams } from 'expo-router';
-import { authService } from '../context/authService';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function CreateProfile() {
@@ -46,14 +45,12 @@ export default function CreateProfile() {
         if (validateForm()) {
             isLoading(true);
             const baseUrl = process.env.BASE_URL;
-            const response = await fetch(`${baseUrl}/auth/register/`, {
+            const response = await fetch(`${baseUrl}/auth/check-userinfo/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ 
-                    "email": email, 
-                    "password": password,
                     "username": username, 
                     "name": name, 
                     "phone_number": phoneNumber 
@@ -61,11 +58,9 @@ export default function CreateProfile() {
             });
 
             isLoading(false);
-            const data = await response.json();
             if (response.ok) {
-                const uid = data.uid;
                 router.replace({ 
-                    params: { uid },
+                    params: { email, password, username, name, phoneNumber },
                     pathname: '/Terms',
                 });
             } else {
@@ -90,7 +85,6 @@ export default function CreateProfile() {
                     console.log('Something went wrong')
                     console.log(errorData)
                 }
-                // {"userinfo": {"username": ["user info with this username already exists."]}}
             }
         }
     }
@@ -125,7 +119,7 @@ export default function CreateProfile() {
         </Text>
       </View>
       <View style={styles.footer}>
-        <ButtonPrimary text="Create Accont" press={submit} />
+        <ButtonPrimary text="Continue" press={submit} />
       </View>
     </LinearGradient>
   );

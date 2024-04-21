@@ -1,18 +1,13 @@
 import {
   View,
   Text,
-  Button,
-  TextInput,
-  SafeAreaView,
   StyleSheet,
-  Pressable,
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
 import { useAuth } from "../context/authContext";
 import { Link, router } from "expo-router";
 import ButtonPrimary from "@/components/buttons/ButtonPrimary";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import TextInputPrimary from "@/components/textinputs/TextInputPrimary";
 import { theme } from "../theme";
 import ButtonGoogle from "@/components/buttons/ButtonGoogle";
@@ -23,6 +18,7 @@ import PasswordInput from "@/components/textinputs/PasswordInput";
 export default function SignInScreen() {
   const [loading, isLoading] = useState(false);
   const auth = useAuth();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
