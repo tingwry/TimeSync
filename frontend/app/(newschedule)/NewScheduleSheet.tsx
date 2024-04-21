@@ -88,8 +88,8 @@ export default function NewSchedule() {
         extra_prep_time: 0,
         note: note,
         // uid: 2,
-        sched_start: 1,
-        sched_destination: 2,
+        sched_start: 3,
+        sched_destination: 4,
         wake_up_aids: 1,
       }),
     });
