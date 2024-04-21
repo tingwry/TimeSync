@@ -1,11 +1,9 @@
-import { Redirect, Link } from "expo-router";
+import { Redirect, Link, useRouter } from "expo-router";
 import { StyleSheet, Text, View, Image, StatusBar, Button, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useFonts } from "expo-font";
 import { theme } from "../theme";
-import ButtonPrimary from "@/components/buttons/ButtonPrimaryLink";
 import React from "react";
-import { router } from "expo-router";
 
 export default function Onboard1() {
   const [fontsLoaded] = useFonts({
@@ -17,17 +15,16 @@ export default function Onboard1() {
     return <Text>Loading...</Text>;
   }
 
+  const router = useRouter();
+  setTimeout(() => {
+    router.push("/Home");
+  }, 2000)
+
   return (
-    // <TouchableOpacity onPress={() => router.push("/onboarding/Onboarding1")} style={styles.btnOutline}>
-    //       <Image source={require('@/assets/icons/chevron-left.png')} style={styles.btnIconArrowLeft} />
-    //       <Text style={styles.smallmore}>More</Text>
-    //     </TouchableOpacity>
+
     <LinearGradient colors={["#182640", "#263D66"]} style={styles.container}>
       <StatusBar barStyle="light-content" />
-      {/* <TouchableOpacity onPress={() => router.push("/onboarding/Onboarding3")} style={styles.btnOutline}>
-          <Text style={styles.skip}>Skip</Text>
-          <Image source={require('@/assets/icons/chevron-right.png')} style={styles.btnIconArrowRight} />
-        </TouchableOpacity> */}
+
         <View>
       <Image
         source={require("@/assets/images/loadpic.png")}

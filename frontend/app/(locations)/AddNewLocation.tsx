@@ -14,13 +14,13 @@ import { useRouter, useNavigation } from "expo-router";
 import CardLocations from "@/components/address/CardLocations";
 import ButtonPrimary from "@/components/buttons/ButtonPrimary";
 
-export default function LocationHome() {
+export default function AddNewLocation() {
   const navigation = useNavigation();
   const router = useRouter();
 
-  const [locationName, setLocationName] = useState("Home");
+  const [locationName, setLocationName] = useState("");
 
-  const [isSelected, setSelected] = useState("Home");
+  const [isSelected, setSelected] = useState("Other");
   const [loactionChosen, setLocationChosen] = useState(false);
 
   const [isFocused, setIsFocused] = useState(false);
@@ -41,7 +41,7 @@ export default function LocationHome() {
           />
           <Text style={styles.textButton}>Back</Text>
         </TouchableOpacity>
-        <Text style={styles.textHeader}>Home Location</Text>
+        <Text style={styles.textHeader}>New Location</Text>
       </View>
       <View style={styles.container}>
         <Text style={styles.textTitle}>Location Name</Text>
@@ -58,36 +58,48 @@ export default function LocationHome() {
         </View>
 
         <Text style={styles.textTitle}>Location</Text>
-        <CardLocations
-          locationName="Home"
-          locationDetail="RHYTHM Rangnam"
-          labelIcon={require("@/assets/icons/home.png")}
-          navigateTo={() => router.push("/MapLocation")}
-        />
+        <TouchableOpacity
+          style={cardStyles.cardStyle}
+          onPress={() => router.push("/MapLocation")}
+        >
+          <View style={cardStyles.label}>
+            <Image
+              source={require("@/assets/icons/location.png")}
+              style={{ width: 20, height: 20 }}
+            />
+          </View>
+          <View style={cardStyles.addressDetail}>
+            <Text style={cardStyles.addressName}>Choose Location</Text>
+          </View>
+          <Image
+            source={require("@/assets/icons/chevron-right.png")}
+            style={{ width: 24, height: 24 }}
+          />
+        </TouchableOpacity>
 
-        <Text style={[styles.textTitle, {marginTop: 24}]}>Set Location as</Text>
+        <Text style={styles.textTitle}>Set Location as</Text>
         <ScrollView
           horizontal={true}
-          style={labelStyles.horizontalCardScroll}
+          style={[labelStyles.horizontalCardScroll, { marginHorizontal: -32 }]}
           showsHorizontalScrollIndicator={false}
           contentInset={{ right: 64, left: 0, bottom: 0, top: 0 }}
         >
           <TouchableOpacity
             style={
-              isSelected === "Home"
+              isSelected === "Other"
                 ? [labelStyles.backgroundFocus, { width: 108 }]
                 : [labelStyles.backgroundDefault, { width: 108 }]
             }
-            onPress={() => setSelected("Home")}
+            onPress={() => setSelected("Other")}
           >
             <View style={labelStyles.detail}>
               <View style={labelStyles.label}>
                 <Image
-                  source={require("@/assets/icons/home.png")}
+                  source={require("@/assets/icons/location.png")}
                   style={{ width: 20, height: 20 }}
                 />
               </View>
-              <Text style={labelStyles.textLabel}>Home</Text>
+              <Text style={labelStyles.textLabel}>Other</Text>
             </View>
           </TouchableOpacity>
 
@@ -131,29 +143,16 @@ export default function LocationHome() {
               <Text style={labelStyles.textLabel}>Workplace</Text>
             </View>
           </TouchableOpacity>
-
-          <TouchableOpacity
-            style={
-              isSelected === "Other"
-                ? [labelStyles.backgroundFocus, { width: 108 }]
-                : [labelStyles.backgroundDefault, { width: 108 }]
-            }
-            onPress={() => setSelected("Other")}
-          >
-            <View style={labelStyles.detail}>
-              <View style={labelStyles.label}>
-                <Image
-                  source={require("@/assets/icons/location.png")}
-                  style={{ width: 20, height: 20 }}
-                />
-              </View>
-              <Text style={labelStyles.textLabel}>Other</Text>
-            </View>
-          </TouchableOpacity>
         </ScrollView>
       </View>
       <View style={styles.footer}>
-        <ButtonPrimary text="Save Changes" press={() => navigation.goBack()}/>
+        <ButtonPrimary
+          text="Add New Location"
+          press={() => navigation.goBack()}
+        />
+        <Pressable onPress={() => navigation.goBack()}>
+          <Text style={styles.cancelButton}>Cancel</Text>
+        </Pressable>
       </View>
     </View>
   );
@@ -334,7 +333,5 @@ const labelStyles = StyleSheet.create({
   horizontalCardScroll: {
     paddingVertical: 8,
     paddingHorizontal: 32,
-    marginHorizontal: -32,
-    paddingBottom: 16
   },
 });

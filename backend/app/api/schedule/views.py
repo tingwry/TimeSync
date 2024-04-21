@@ -11,13 +11,23 @@ class ScheduleViewAll(generics.ListAPIView):
     serializer_class = ScheduleSerializer
     permission_classes = (IsAuthenticated,)
 
-    def get_queryset(self):
-        user = self.request.user
-        current_datetime = timezone.now()
+    def get(self, request):
+        user = request.user
+        # Retrieve all schedules associated with the user
+        schedules = Schedule.objects.filter(uid=user.uid_id)
+        serializer = ScheduleSerializer(schedules, many=True)
+        # print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        # print("serializer.errors")
+        # print(serializer.errors)
+        # return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
-        # Retrieve all schedules associated with the user that are greater than or equal to the current datetime
-        queryset = Schedule.objects.filter(uid=user.uid_id, date__gte=current_datetime).order_by('date', 'start_time')
-        return queryset
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     current_datetime = timezone.now()
+
+    #     # Retrieve all schedules associated with the user that are greater than or equal to the current datetime
+    #     queryset = Schedule.objects.filter(uid=user.uid_id, date__gte=current_datetime).order_by('date', 'start_time')
 
 #view single schedule
 class ScheduleViewSingle(generics.RetrieveAPIView):

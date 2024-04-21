@@ -7,6 +7,7 @@ export default function StackLayout() {
     <Stack screenOptions={screenOptions}>
       <Stack.Screen name="LocationHome" options={{ headerShown: false }} />
       <Stack.Screen name="MapLocation" options={{ headerShown: false }} />
+      <Stack.Screen name="AddNewLocation" options={{ headerShown: false }} />
     </Stack>
   );
 }

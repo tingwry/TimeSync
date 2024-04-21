@@ -89,10 +89,10 @@ export default function MapHome() {
 
       if (response.ok) {
         console.log("Success");
-        navigation.goBack()
+        navigation.goBack();
       } else {
         console.error("Failed to post");
-        console.log(response.status)
+        console.log(response.status);
       }
     } catch (error) {
       console.error("Map location - Error submitting:", error);
@@ -115,11 +115,10 @@ export default function MapHome() {
         <Text style={menuStyles.textHeader}>Choose Location</Text>
       </View>
       <View style={menuStyles.container}>
-
         <MapView
           // provider="google"
           ref={mapRef}
-          style={{ width: "100%", height: "100%", marginTop: 20 }}
+          style={{ width: "100%", height: "80%", marginTop: 20 }}
           initialRegion={{
             latitude: 13.736834400006273,
             longitude: 100.53314465311604,
@@ -128,7 +127,12 @@ export default function MapHome() {
           }}
         >
           {/* <Button onPress={handleSubmit} title="Submit" /> */}
-          <Marker coordinate={pin} draggable={true} onDragEnd={onMarkerDragEnd}>
+          <Marker
+            coordinate={pin}
+            draggable={true}
+            onDragEnd={onMarkerDragEnd}
+            image={require("@/assets/icons/map-marker.png")}
+          >
             <Callout>
               <Text>My Location</Text>
             </Callout>
@@ -165,12 +169,13 @@ export default function MapHome() {
               style={{ width: 24, height: 24 }}
             />
             <Text style={styles.textHeader}>Location</Text>
-            {/* <View>
-                      <Text style={styles.textTitle}>{pin.latitude}{pin.longitude}</Text>
-                    </View> */}
           </View>
-          <View style={styles.sheetView}>
-            <Text style={menuStyles.textLocation}>Choose Location</Text>
+          <View style={menuStyles.header}>
+            <View style={[styles.sheetView, { marginTop: 16 }]}>
+              <Text style={menuStyles.textLocation}>
+                {pin.latitude}, {pin.longitude}
+              </Text>
+            </View>
           </View>
         </View>
         <View style={menuStyles.footer}>
@@ -228,7 +233,7 @@ const menuStyles = StyleSheet.create({
   textLocation: {
     fontFamily: "dm-sans-regular",
     fontSize: 16,
-    color: theme.colors.textCaption,
+    color: theme.colors.textPrimary,
     marginHorizontal: 8,
   },
   container: {
@@ -237,5 +242,5 @@ const menuStyles = StyleSheet.create({
     flex: 1,
     // justifyContent: "flex-end",
     // alignItems: "center",
-  }
+  },
 });
