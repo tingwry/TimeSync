@@ -115,8 +115,8 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
             longitude: long,
             // latitude: 13.736834400006273,
             // longitude: 100.53314465311604,
-            latitudeDelta: 0.00922,
-            longitudeDelta: 0.000421,
+            latitudeDelta: 0.000000922,
+            longitudeDelta: 0.0000000421,
           }}
           style={{
             width: "45%",

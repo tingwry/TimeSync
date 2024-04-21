@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
 } from "@gorhom/bottom-sheet";
 
-export interface CardAddressSmallProps {
+interface CardAddressSmallProps {
   loc_id: number;
   locationName: string;
-  // locationLat: number;
-  // locationLong: number;
+  locationLat: number; // Add locationLat to the interface
+  locationLong: number;
   labelIcon: any;
   onPress: (loc_id: number) => void;
 }

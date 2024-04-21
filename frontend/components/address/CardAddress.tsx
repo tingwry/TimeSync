@@ -11,40 +11,53 @@ import { Portal } from "@gorhom/portal";
 import CardAddressSmall from "./CardAddressSmall";
 import ChooseLocation from "./ChooseLocationSheet";
 import React, { useState, useEffect } from "react";
-
+import { useAuth } from "@/app/context/authContext";
 
 interface LocationItem {
   loc_id: number;
   loc_name: string;
-  // latitude: number;
-  // longitude: number;
+  latitude: number;
+  longitude: number;
 }
 
-export default function CardAddress() {
+export default function CardAddress(props: any) {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["38%"], []);
+  const auth = useAuth();
+  const access = auth.authData?.access;
+  const user = auth.authData?.username;
 
   const [locations, setLocations] = useState<LocationItem[]>([]);
+  const [newLoc, setNewLoc] = useState(0);
+  const [selectedLocation, setSelectedLocation] = useState<LocationItem | null>(null);
+
+  const fetchLocation = async () => {
+    try {
+      const baseUrl = process.env.BASE_URL;
+      const response = await fetch(`${baseUrl}/location/default-home/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + access,
+          // "Location-ID": String(newLoc),
+        },
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // console.log("location data");
+        // console.log(data);
+        setLocations(data);
+      } else {
+        console.error(data);
+      }
+    } catch (error) {
+      console.error("Home - Error fetching location:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchLocations = async () => {
-      try {
-        const response = await fetch(
-          `http://127.0.0.1:8000/app/location/view/`
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch location");
-        }
-        const data = await response.json();
-        setLocations(data);
-       
-      } catch (error) {
-        console.error("Error fetching locations:", error);
-      }
-    };
-
-    fetchLocations();
+    fetchLocation();
   }, []);
 
   const handlePresentModalPress = useCallback(() => {
@@ -56,8 +69,40 @@ export default function CardAddress() {
   }, []);
 
   const handleLocationPress = (loc_id: number) => {
-    console.log("Selected location ID:", loc_id);
+    setNewLoc(loc_id);
+    console.log("select new", loc_id)
+    handleCloseModalPress();
   };
+
+  useEffect(() => {
+    const fetchSelectedLocation = async () => {
+      try {
+        const baseUrl = process.env.BASE_URL;
+        const response = await fetch(`${baseUrl}/location/viewsinglee/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + access,
+            "Location-ID": String(newLoc),
+          },
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          // console.log(data)
+          setSelectedLocation(data);
+        } else {
+          console.error(data);
+        }
+      } catch (error) {
+        console.error("Error fetching selected location:", error);
+      }
+    };
+
+    if (newLoc !== 0) {
+      fetchSelectedLocation();
+    }
+  }, [newLoc, access]);
 
   return (
     <GestureHandlerRootView>
@@ -69,11 +114,12 @@ export default function CardAddress() {
           />
         </View>
         <View style={cardStyles.addressDetail}>
-          <Text style={cardStyles.addressName}>School</Text>
+          <Text style={cardStyles.addressName}>{newLoc === 0 ? props.loc_name : selectedLocation?.loc_name}</Text>
           <Text style={cardStyles.addressLocation}>
-            Faculty of Engineering, Chulalongkorn University
+            {newLoc === 0 ? `${props.latitude}, ${props.longitude}` : `${selectedLocation?.latitude}, ${selectedLocation?.longitude}`}
           </Text>
         </View>
+
         <Image
           source={require("@/assets/icons/chevron-right.png")}
           style={{ width: 24, height: 24 }}
@@ -116,24 +162,22 @@ export default function CardAddress() {
                 showsHorizontalScrollIndicator={false}
                 contentInset={{ right: 64, left: 0, bottom: 0, top: 0 }}
               >
-                {locations.map((location: { loc_id: number, loc_name: string }) => (
-                //   <TouchableOpacity
-                //   style={cardStyles.cardStyle}
-                //   onPress={handleCloseModalPress}
-                // >
+                {locations.map((location: LocationItem) => (
                   <CardAddressSmall
+                    key={location.loc_id}
                     loc_id={location.loc_id}
                     locationName={location.loc_name}
-                    // locationLat={location.latitude}
-                    // locationLong={location.longitude}
+                    locationLat={location.latitude}
+                    locationLong={location.longitude}
                     labelIcon={
-                      location.loc_name === "Home" ? require("@/assets/icons/home.png") :
-                      location.loc_name === "School" ? require("@/assets/icons/school.png") :
-                      require("@/assets/icons/location.png")
+                      location.loc_name === "Home"
+                        ? require("@/assets/icons/home.png")
+                        : location.loc_name === "School"
+                        ? require("@/assets/icons/school.png")
+                        : require("@/assets/icons/location.png")
                     }
-                    onPress={handleLocationPress} 
+                    onPress={handleLocationPress}
                   />
-                  // </TouchableOpacity>
                 ))}
               </ScrollView>
               <ChooseLocation />

@@ -47,7 +47,7 @@ export default function Home() {
   const [wakeupTime, setWakeupTime] = useState<string>("");
   const [departureTime, setDepartureTime] = useState<string>("");
 
-  console.log("MMMMLLLLL", wakeupTime, departureTime)
+  // console.log("MMMMLLLLL", wakeupTime, departureTime)
 
   const fetchSchedule = async () => {
     try {
