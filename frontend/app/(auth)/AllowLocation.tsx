@@ -30,9 +30,6 @@ export default function AllowLocation() {
           Let us access your locations for more precise calculations and a
           better experiences.
         </Text>
-        <Text>
-          <Link href="/Terms">Terms</Link>
-        </Text>
       </View>
 
       <View style={styles.footer}>
