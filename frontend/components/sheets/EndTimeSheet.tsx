@@ -10,22 +10,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "@/app/theme";
 import React from "react";
 
-interface EndTimeSheetProps {
-  onEndTimeSelect: (selectedTime: string) => void;
+export interface EndTimeSheetProps {
+  onEndTimeSelect: (startTime: string) => void;
 }
 
-export default function EndTimeSheet({ onEndTimeSelect }: EndTimeSheetProps) {
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["60%"], []);
-
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-
-  const handleCloseModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.close();
-  }, []);
-
+export default function EndTimeSheet({onEndTimeSelect}: EndTimeSheetProps) {
   const currentDate = new Date();
   const formattedTime = currentDate.toLocaleTimeString([], {
     hour: "2-digit",
@@ -58,6 +47,18 @@ export default function EndTimeSheet({ onEndTimeSelect }: EndTimeSheetProps) {
   const [isSelected, setIsSelected] = useState(false);
   const textDisplayStyle = isSelected ? styles.textDisplay : styles.textDisplayBlur;
 
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const snapPoints = useMemo(() => ["60%"], []);
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  const handleCloseModalPress = useCallback((endTime: string) => {
+    onEndTimeSelect(endTime);
+    bottomSheetModalRef.current?.close();
+  }, [onEndTimeSelect]);
+
   return (
     <GestureHandlerRootView style={styles.sheetStyle}>
       <TouchableOpacity
@@ -80,7 +81,7 @@ export default function EndTimeSheet({ onEndTimeSelect }: EndTimeSheetProps) {
             <View style={styles.handleModalIndicatorStyle} />
             <TouchableOpacity
               style={[styles.modalCloseButton, { marginRight: 16 }]}
-              onPress={handleCloseModalPress}
+              onPress={() => handleCloseModalPress(selectedTime)}
               hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }} // Adjust hitSlop as needed
             >
               <Image
@@ -152,9 +153,8 @@ export default function EndTimeSheet({ onEndTimeSelect }: EndTimeSheetProps) {
                   text="Select Time"
                   press={() => {
                     setIsSelected(true);
-                    handleCloseModalPress();
                     setSelectedTime(formattedSelctedTime);
-                    onEndTimeSelect(formattedSelctedTime); // Call the prop function here
+                    handleCloseModalPress(formattedSelctedTime);
                   }}
                 />
               </View>

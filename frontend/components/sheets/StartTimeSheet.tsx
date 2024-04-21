@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
@@ -16,23 +10,15 @@ import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "@/app/theme";
 import React from "react";
 
-interface StartTimeSheetProps {
-  onStartTimeSelect: (formattedSelctedTime: string) => void;
+export interface StartTimeSheetProps {
+  onStartTimeSelect: (startTime: string) => void;
 }
 
-export default function StartTimeSheet( {
+export default function StartTimeSheet({
   onStartTimeSelect,
 }: StartTimeSheetProps) {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["60%"], []);
-
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-
-  const handleCloseModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.close();
-  }, []);
 
   const currentDate = new Date();
   const formattedTime = currentDate.toLocaleTimeString([], {
@@ -61,6 +47,18 @@ export default function StartTimeSheet( {
     "0"
   )}:${selectedMinutes.padStart(2, "0")}`;
 
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  const handleCloseModalPress = useCallback(
+    (stratTime: string) => {
+      onStartTimeSelect(stratTime);
+      bottomSheetModalRef.current?.close();
+    },
+    [onStartTimeSelect]
+  );
+
   return (
     <GestureHandlerRootView style={styles.sheetStyle}>
       <TouchableOpacity
@@ -85,7 +83,7 @@ export default function StartTimeSheet( {
             <View style={styles.handleModalIndicatorStyle} />
             <TouchableOpacity
               style={[styles.modalCloseButton, { marginRight: 16 }]}
-              onPress={handleCloseModalPress}
+              onPress={() => handleCloseModalPress(selectedTime)}
               hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }} // Adjust hitSlop as needed
             >
               <Image
@@ -157,9 +155,8 @@ export default function StartTimeSheet( {
                 <ButtonPrimary
                   text="Select Time"
                   press={() => {
-                    handleCloseModalPress();
                     setSelectedTime(formattedSelctedTime);
-                    // console.log(formattedSelctedTime);
+                    handleCloseModalPress(formattedSelctedTime);
                   }}
                 />
               </View>

@@ -16,7 +16,7 @@ class ScheduleViewAll(generics.ListAPIView):
         # Retrieve all schedules associated with the user
         schedules = Schedule.objects.filter(uid=user.uid_id)
         serializer = ScheduleSerializer(schedules, many=True)
-        print(serializer.data)
+        # print(serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
         # print("serializer.errors")
         # print(serializer.errors)
@@ -55,7 +55,9 @@ class ScheduleCreate(generics.CreateAPIView):
     serializer_class = ScheduleSerializer
     permission_classes = (IsAuthenticated,)
 
-    def post(self, request, *args, **kwargs):     
+    def post(self, request, *args, **kwargs):  
+        print('create schedule')
+        print(request.data)   
         serializer = ScheduleSerializer(data=request.data)
         if serializer.is_valid():
             user = request.user
