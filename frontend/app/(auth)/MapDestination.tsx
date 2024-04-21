@@ -93,7 +93,6 @@ export default function MapDestination() {
           longitude: pin.longitude,
           default_home: false,
           default_dest: true,
-          uid: 1,
         }),
       });
       router.push({

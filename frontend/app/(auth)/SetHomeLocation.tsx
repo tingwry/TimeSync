@@ -3,8 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "../theme";
 import React, { useState, useEffect } from "react";
 import ButtonPrimary from "@/components/buttons/ButtonPrimary";
-import { useRouter } from "expo-router";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { Marker, Callout } from "react-native-maps";
 

@@ -87,7 +87,6 @@ export default function MapHome() {
           longitude: pin.longitude,
           default_home: true,
           default_dest: false,
-          uid: 1,
         }),
       });
 

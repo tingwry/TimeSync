@@ -80,7 +80,7 @@ export default function SetDestinationLocation() {
       </View>
 
       <View style={styles.footer}>
-        <Link href="/SignIn">Next</Link>
+        <Link href="/Home">Next</Link>
         <View style={styles.indicatorContainer}>
           <Pressable
             style={styles.indicatorFocus}
@@ -94,7 +94,7 @@ export default function SetDestinationLocation() {
           <View style={styles.indicatorFocus} />
         </View>
         <ButtonPrimary
-          text={isLatLngValid ? "Finish Sign Up" : "Choose Location"}
+          text={isLatLngValid ? "Finish Setting Up" : "Choose Location"}
           press={() => {
             if (isLatLngValid) {
               router.push("/onboarding/Loading");

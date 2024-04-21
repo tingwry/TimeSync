@@ -40,10 +40,11 @@ class LocationCreate(generics.CreateAPIView):
     permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
+
         print(self.request)
         user = self.request.user
-        user_info = UserInfo.objects.get(uid=user.uid)
-        serializer.save(uid=user_info)
+        userinfo = UserInfo.objects.get(uid=user.uid_id)
+        serializer.save(uid=userinfo)
 
 # view locations with default home
 class DefaultHomeLocationView(generics.ListAPIView):

@@ -1,16 +1,14 @@
 import { View, Text, StyleSheet, Image } from "react-native";
-import React, { useEffect } from "react";
+import React from "react";
 import { theme } from "../theme";
-import { Link, router, useLocalSearchParams } from "expo-router";
+import { Link, router } from "expo-router";
 import ButtonPrimary from "@/components/buttons/ButtonPrimary";
 import { LinearGradient } from "expo-linear-gradient";
 
 export default function AllowLocation() {
-  const { uid } = useLocalSearchParams<{ uid: string }>();
   const submit = async () => {
     console.log("Allow access: submit");
     router.push({ 
-      params: { uid },
       pathname: '/SetHomeLocation',
     });
   }
