@@ -3,10 +3,18 @@ import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "../theme";
 import React from "react";
 import ButtonPrimary from "@/components/buttons/ButtonPrimary";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
 export default function SetHomeLocation() {
   const router = useRouter();
+  const { uid } = useLocalSearchParams<{ uid: string }>();
+  const submit = async () => {
+    console.log("Allow access: submit");
+    router.push({ 
+      params: { uid },
+      pathname: '/SetHomeLocation',
+    });
+  }
   return (
     <LinearGradient colors={["#182640", "#263D66"]} style={styles.container}>
       <View style={styles.header}>

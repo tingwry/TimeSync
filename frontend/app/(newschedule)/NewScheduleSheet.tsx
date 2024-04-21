@@ -36,39 +36,16 @@ export default function NewSchedule() {
   const [extraPrepTime, setExtraPrepTime] = useState(0);
   const [note, setNote] = useState("");
 
-  const req = {
-    event_name: eventName,
-    date: date,
-    start_time: startTime,
-    end_time: endTime,
-    transportation_mode: transportationMode,
-    extra_prep_time: extraPrepTime,
-    note: note,
-    // uid: 2,
-    sched_start: 3,
-    sched_destination: 6,
-    wake_up_aids: 1,
-  }
-
-  useEffect(() => {
-    console.log(req)
-  }, [req])
-
   const handleClickPress = async () => {
-    // console.log(startTime)
-    // console.log(endTime)
-    
-    
-    // const url = `http://127.0.0.1:8000/app/schedule/create/`;
+    const formattedEndTime = endTime === "" ? null : endTime;
     const req = {
-      event_name: eventName,
+        event_name: eventName,
         date: date,
-        start_time: "9:00",
-        end_time: "9:30",
+        start_time: startTime,
+        end_time: formattedEndTime,
         transportation_mode: transportationMode,
-        extra_prep_time: 0,
+        extra_prep_time: extraPrepTime,
         note: note,
-        // uid: 2,
         sched_start: 3,
         sched_destination: 6,
         wake_up_aids: 1,
@@ -86,11 +63,10 @@ export default function NewSchedule() {
         event_name: eventName,
         date: date,
         start_time: startTime,
-        end_time: endTime,
+        end_time: formattedEndTime,
         transportation_mode: transportationMode,
-        extra_prep_time: 0,
+        extra_prep_time: extraPrepTime,
         note: note,
-        // uid: 2,
         sched_start: 3,
         sched_destination: 6,
         wake_up_aids: 1,

@@ -58,8 +58,9 @@ class RegisterView(APIView):
         print(request.data)
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
+            user_data = serializer.save()
+            uid = user_data['userinfo'].uid
+            return Response({'uid': uid}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # ok

@@ -22,9 +22,15 @@ const CardSchedule: React.FC<ScheduleDetailProps> = ({
     <View>
       <View style={styles.background}>
         <View>
-          <Text style={styles.textCaption}>
+          {end_time != null
+          ? (<Text style={styles.textCaption}>
             {start_time} - {end_time}
-          </Text>
+          </Text>) 
+          : (<Text style={styles.textCaption}>
+            {start_time}
+          </Text>)
+          }
+          
           <Text style={styles.textTitle}>{event_name}</Text>
           <Image
             source={require("@/assets/icons/icon=book.png")}
