@@ -30,7 +30,7 @@ export default function Onboard1() {
       <StatusBar barStyle="light-content" />
       <View style={styles.navigationTop}>
         <TouchableOpacity
-          onPress={() => router.push("/onboarding/Onboarding3")}
+          onPress={() => router.push("/SignUp")}
           style={styles.backButton}
         >
           <Text style={styles.textButton}>Skip</Text>
@@ -76,7 +76,7 @@ export default function Onboard1() {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: theme.colors.bluePrimary,
+    // backgroundColor: theme.colors.bluePrimary,
     gap: 16,
     paddingTop: 68,
     paddingHorizontal: 24,
@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
   footer: {
     justifyContent: 'flex-end',
     flex: 1,
+    bottom: 44,
   },
   indicatorContainer: {
     flexDirection: "row",

@@ -1,5 +1,5 @@
 import { View, Text, Image, Pressable, ScrollView, Button } from "react-native";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   GestureHandlerRootView,
   TextInput,
@@ -16,56 +16,81 @@ import ButtonPrimary from "@/components/buttons/ButtonPrimary";
 import TransportationSheet from "@/components/sheets/TransportationSheet";
 import PreparationSheet from "@/components/sheets/PreparationSheet";
 import AlarmNotiSheet from "@/components/sheets/AlarmNotiSheet";
+import { useAuth } from "../context/authContext";
 // import { API_URL } from "@env";
 
 export default function NewSchedule() {
   const navigation = useNavigation();
+  const auth = useAuth();
+  const access = auth.authData?.access;
+
+  const currentDate = new Date();
+  const defaultDate = currentDate.toISOString().split("T")[0];
 
   const [eventName, setEventName] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(defaultDate);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [transportationMode, setTransportationMode] = useState("");
+  const [transportationMode, setTransportationMode] = useState("car");
   const [extraPrepTime, setExtraPrepTime] = useState(0);
   const [note, setNote] = useState("");
 
-  const handleTransportationModeSelect = useCallback((mode: string) => {
-    console.log("Selected Transportation Mode:", mode);
-    setTransportationMode(mode);
-  }, [setTransportationMode]); 
+  const req = {
+    event_name: eventName,
+    date: date,
+    start_time: startTime,
+    end_time: endTime,
+    transportation_mode: transportationMode,
+    extra_prep_time: extraPrepTime,
+    note: note,
+    // uid: 2,
+    sched_start: 1,
+    sched_destination: 2,
+    wake_up_aids: 1,
+  }
+
+  useEffect(() => {
+    console.log(req)
+  }, [req])
 
   const handleClickPress = async () => {
-    console.warn(eventName, note);
-
-    const url = `http://127.0.0.1:8000/app/schedule/create/`;
-
-    let response = await fetch(url, {
+    // console.log(startTime)
+    // console.log(endTime)
+    
+    
+    // const url = `http://127.0.0.1:8000/app/schedule/create/`;
+    
+    const baseUrl = process.env.BASE_URL;
+    let response = await fetch(`${baseUrl}/schedule/create/`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + access
       },
       body: JSON.stringify({
         event_name: eventName,
-        date: "2024-04-12",
-        start_time: "05:21:00",
-        end_time: "15:21:00",
-        transportation_mode: "car",
+        date: date,
+        start_time: "9:00",
+        end_time: "9:30",
+        transportation_mode: transportationMode,
         extra_prep_time: 0,
         note: note,
-        uid: 1,
+        // uid: 2,
         sched_start: 1,
-        sched_destination: 1,
-        wake_up_aids: 1
-      })
+        sched_destination: 2,
+        wake_up_aids: 1,
+      }),
     });
+    console.log(req)
     let result = await response.json();
 
-    if (result) {
-      console.warn("Success");
-      // console.log(result);
+    if (response.ok) {
+      console.log("Success");
+      navigation.goBack();
+    } else {
+      console.error(result);
     }
-
-    navigation.goBack();
+    
   };
 
   return (
@@ -123,7 +148,11 @@ export default function NewSchedule() {
                     alignItems: "center",
                   }}
                 >
-                  <TimeSheet time={"09:00"} title="Start Time" onTimeSelect={setStartTime}/>
+                  <TimeSheet
+                    time={"09:00"}
+                    title="Start Time"
+                    onTimeSelect={setStartTime}
+                  />
                   <Text
                     style={[
                       styles.textDisplay,
@@ -137,7 +166,11 @@ export default function NewSchedule() {
                   >
                     to
                   </Text>
-                  <TimeSheet time={"10:00"} title="End Time" onTimeSelect={setEndTime}/>
+                  <TimeSheet
+                    time={"10:00"}
+                    title="End Time"
+                    onTimeSelect={setEndTime}
+                  />
                 </View>
                 <View style={styles.divLine} />
                 <View style={styles.sheetItem}>
@@ -158,7 +191,11 @@ export default function NewSchedule() {
                   <Text style={styles.textHeader}>Transportation Mode</Text>
                 </View>
                 <ScrollView>
-                  <TransportationSheet onTransportationModeSelect={handleTransportationModeSelect}/>
+                  <TransportationSheet
+                    onTransportationModeSelect={(mode: string) => {
+                      setTransportationMode(mode);
+                    }}
+                  />
                 </ScrollView>
                 <View style={styles.sheetItem}>
                   <Image

@@ -5,16 +5,47 @@ import {
   ScrollView,
 } from "react-native-gesture-handler";
 import { styles } from "../sheets/SheetStyles";
-import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
+import { BottomSheetModal, BottomSheetView, TouchableOpacity } from "@gorhom/bottom-sheet";
 import { useRef, useMemo, useCallback } from "react";
 import { Portal } from "@gorhom/portal";
 import CardAddressSmall from "./CardAddressSmall";
 import ChooseLocation from "./ChooseLocationSheet";
-import React from "react";
+import React, { useState, useEffect } from "react";
+
+
+interface LocationItem {
+  loc_id: number;
+  loc_name: string;
+  // latitude: number;
+  // longitude: number;
+}
 
 export default function CardAddress() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["38%"], []);
+
+  const [locations, setLocations] = useState<LocationItem[]>([]);
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const response = await fetch(
+          `http://127.0.0.1:8000/app/location/view/`
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch location");
+        }
+        const data = await response.json();
+        setLocations(data);
+       
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+      }
+    };
+
+    fetchLocations();
+  }, []);
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -23,6 +54,10 @@ export default function CardAddress() {
   const handleCloseModalPress = useCallback(() => {
     bottomSheetModalRef.current?.close();
   }, []);
+
+  const handleLocationPress = (loc_id: number) => {
+    console.log("Selected location ID:", loc_id);
+  };
 
   return (
     <GestureHandlerRootView>
@@ -81,21 +116,25 @@ export default function CardAddress() {
                 showsHorizontalScrollIndicator={false}
                 contentInset={{ right: 64, left: 0, bottom: 0, top: 0 }}
               >
-                <CardAddressSmall
-                  locationName="Home"
-                  locationDetail="123 ABC Road"
-                  labelIcon={require("@/assets/icons/home.png")}
-                />
-                <CardAddressSmall
-                  locationName="School"
-                  locationDetail="Faculty of Engineering, Chulalongkorn Uni..."
-                  labelIcon={require("@/assets/icons/school.png")}
-                />
-                <CardAddressSmall
-                  locationName="School"
-                  locationDetail="Faculty of Engineering, Chulalongkorn Uni..."
-                  labelIcon={require("@/assets/icons/school.png")}
-                />
+                {locations.map((location: {loc_id: number, loc_name: string }) => (
+                  <TouchableOpacity
+                  style={cardStyles.cardStyle}
+                  onPress={handleCloseModalPress}
+                >
+                  <CardAddressSmall
+                    loc_id={location.loc_id}
+                    locationName={location.loc_name}
+                    // locationLat={location.latitude}
+                    // locationLong={location.longitude}
+                    labelIcon={
+                      location.loc_name === "Home" ? require("@/assets/icons/home.png") :
+                      location.loc_name === "School" ? require("@/assets/icons/school.png") :
+                      require("@/assets/icons/search.png")
+                    }
+                    onPress={handleLocationPress} 
+                  />
+                  </TouchableOpacity>
+                ))}
               </ScrollView>
               <ChooseLocation />
               <View style={[styles.divLine, { marginHorizontal: 32 }]} />

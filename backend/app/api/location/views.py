@@ -19,3 +19,17 @@ class LocationCreate(generics.CreateAPIView):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
 
+# view locations with default home
+class DefaultHomeLocationView(generics.ListAPIView):
+    serializer_class = LocationSerializer
+
+    def get_queryset(self):
+        return Location.objects.filter(default_home=True, default_dest=False)
+
+
+# view locations with default destination
+class DefaultDestinationLocationView(generics.ListAPIView):
+    serializer_class = LocationSerializer
+
+    def get_queryset(self):
+        return Location.objects.filter(default_dest=True, default_home=False)

@@ -122,39 +122,13 @@ transportation_mode_choices = [
 ]
 
 
-class UserAuthManager(BaseUserManager):
-    def create_user(self, email, password=None, **extra_fields):
-        if not email:
-            raise ValueError('The Email field must be set')
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-
-        # if extra_fields.get('is_staff') is not True:
-        #     raise ValueError('Superuser must have is_staff=True.')
-        # if extra_fields.get('is_superuser') is not True:
-        #     raise ValueError('Superuser must have is_superuser=True.')
-        if not email:
-            raise ValueError('The Email field must be set')
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-
 class UserInfo(models.Model):
+    # uid = models.OneToOneField(
+    #     UserAuth, on_delete=models.CASCADE, primary_key=True, related_name='userinfo')
     uid = models.AutoField(primary_key=True)
-    # user_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=100)
-    alarm_sound = models.CharField(max_length=100)
+    alarm_sound = models.CharField(max_length=100, default='default')
     sched_reminder = models.BooleanField(default=True)
     departure_time = models.BooleanField(default=True)
     new_friends = models.BooleanField(default=True)
@@ -163,17 +137,42 @@ class UserInfo(models.Model):
     total_prep_time = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.username
+        return (str(self.uid))
+    
+class UserAuthManager(BaseUserManager):
+    def create_user(self, email=None, password=None, google_id=None, **extra_fields):
+        if email:
+            email = self.normalize_email(email)
+        else:
+            raise ValueError('Email field must be set')
+        
+        user = self.model(
+            email=email,
+            google_id=google_id,
+            **extra_fields
+        )
 
+        if password:
+            user.set_password(password)
+        else:
+            user.set_unusable_password()
 
-# class UserAuth(models.Model):
+        user.save(using=self._db)
+        return user
+    
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        return self.create_user(email, password, **extra_fields)
+    
 class UserAuth(AbstractUser):
-    uid = models.AutoField(primary_key=True)
-    # user_id = models.OneToOneField(
-    #     UserInfo, on_delete=models.CASCADE, primary_key=True)
-
+    uid = models.OneToOneField(
+        UserInfo, on_delete=models.CASCADE, primary_key=True)
+    # uid = models.AutoField(primary_key=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
+    google_id = models.CharField(max_length=100, blank=True, null=True)
 
     first_name = None
     last_name = None
@@ -183,13 +182,12 @@ class UserAuth(AbstractUser):
     REQUIRED_FIELDS = ['password']
 
     def __str__(self):
-        return self.email
+        return str(self.uid)
 
     objects = UserAuthManager()
 
 
 class Schedule(models.Model):
-    # event_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     event_id = models.AutoField(primary_key=True)
     event_name = models.CharField(max_length=100)
     date = models.DateField()
@@ -198,7 +196,7 @@ class Schedule(models.Model):
     transportation_mode = models.CharField(
         max_length=20, choices=transportation_mode_choices)
     extra_prep_time = models.IntegerField()
-    note = models.TextField()
+    note = models.TextField(blank=True, null=True)
 
     uid = models.ForeignKey(
         UserInfo, on_delete=models.CASCADE, related_name='schedules')
@@ -213,7 +211,7 @@ class Schedule(models.Model):
     # prep_activities = models.ManyToManyField('PrepActivityTime')
 
     def __str__(self):
-        return self.event_name
+        return str(self.event_id)
 
 
 class Location(models.Model):
@@ -230,7 +228,7 @@ class Location(models.Model):
     #     UserInfo, on_delete=models.CASCADE, related_name='locations')
 
     def __str__(self):
-        return self.loc_name
+        return str(self.loc_id)
 
 
 class PrepActivityTime(models.Model):
@@ -249,12 +247,18 @@ class PrepActivityTime(models.Model):
 class TotalPrepTime(models.Model):
     iteration = models.AutoField(primary_key=True)
     # iteration = models.IntegerField()
+class TotalPrepTime(models.Model):
+    iteration = models.AutoField(primary_key=True)
+    # iteration = models.IntegerField()
     prep_time = models.IntegerField()
 
     uid = models.ForeignKey(
         UserInfo, on_delete=models.CASCADE, related_name='total_prep_times')
     # user_id = models.ForeignKey(
     #     UserInfo, on_delete=models.CASCADE, related_name='total_prep_times')
+
+    # class Meta:
+    #     unique_together = (('iteration', 'user_id'),)
 
     def __str__(self):
         return f"Iteration {self.iteration} - Total Prep Time: {self.prep_time}"

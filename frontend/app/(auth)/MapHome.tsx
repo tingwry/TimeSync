@@ -74,10 +74,10 @@ export default function MapHome() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            loc_name: "School",
+            loc_name: "Home",
             latitude: pin.latitude,
             longitude: pin.longitude,
-            default_home: false,
+            default_home: true,
             default_dest: false,
             uid: 1,
           }),
@@ -126,7 +126,7 @@ export default function MapHome() {
           {/* <Button onPress={handleSubmit} title="Submit" /> */}
           <Marker coordinate={pin} draggable={true} onDragEnd={onMarkerDragEnd}>
             <Callout>
-              <Text>My Location</Text>
+              <Text>My Home</Text>
             </Callout>
           </Marker>
         </MapView>
@@ -170,7 +170,7 @@ export default function MapHome() {
           </View>
         </View>
         <View style={menuStyles.footer}>
-          <ButtonPrimary text="Set as New Location" press={handleSubmit} />
+          <ButtonPrimary text="Set as Home" press={handleSubmit} />
         </View>
       </BottomSheet>
     </GestureHandlerRootView>

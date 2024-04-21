@@ -41,7 +41,7 @@ export default function Onboard2() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => router.push("/onboarding/Onboarding3")}
+          onPress={() => router.push("/SignUp")}
           style={styles.backButton}
         >
           <Text style={styles.textButton}>Skip</Text>

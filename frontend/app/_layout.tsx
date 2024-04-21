@@ -10,7 +10,8 @@ export default function StackLayout() {
                 <Stack.Screen name="onboarding" options={{ headerShown: false }} />
                 <Stack.Screen name="(auth)" options={{ headerShown: false }} />
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                <Stack.Screen name="(viewschedules)" options={{ headerShown: true }} />
+                <Stack.Screen name="(viewschedules)" options={{ headerShown: false }} />
+                <Stack.Screen name="(locations)" options={{ headerShown: false }} />
                 <Stack.Screen
                   name="(newschedule)"
                   options={{

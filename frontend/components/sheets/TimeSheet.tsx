@@ -26,14 +26,22 @@ export interface TimeSheetProps {
 export default function TimeSheet(props: TimeSheetProps) {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["60%"], []);
+  const [selectedTime, setSelectedTime] = useState<string>(props.time);
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
 
   const handleCloseModalPress = useCallback(() => {
+    props.onTimeSelect(selectedTime);
+    console.log(selectedTime);
     bottomSheetModalRef.current?.close();
+  }, [props.onTimeSelect, selectedTime]); 
+
+  const handleTimeChange = useCallback((time: string) => {
+    setSelectedTime(time); // Update selected time
   }, []);
+
 
   return (
     <GestureHandlerRootView style={styles.sheetStyle}>
@@ -41,7 +49,7 @@ export default function TimeSheet(props: TimeSheetProps) {
         onPress={handlePresentModalPress}
         style={styles.pressableMenu}
       >
-        <Text style={[styles.textDisplay, { fontSize: 24 }]}>{props.time}</Text>
+        <Text style={[styles.textDisplay, { fontSize: 24 }]}>{selectedTime}</Text>
       </TouchableOpacity>
 
       <Portal>
@@ -74,7 +82,8 @@ export default function TimeSheet(props: TimeSheetProps) {
                 <Text style={styles.textHeader}>{props.title}</Text>
               </View>
               <View style={timeStyle.timePicker}>
-                <TimePickerView />
+                <TimePickerView 
+                />
               </View>
               <View style={styles.modalFooter}>
                 <ButtonPrimary text="Select Time" press={handleCloseModalPress}/>
