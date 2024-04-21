@@ -37,6 +37,8 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
   const navigation = useNavigation();
   const router = useRouter();
 
+  console.log(latitude, longitude)
+
   const handlePress = () => {
     console.warn("View all schedules");
     // navigation.navigate("(viewschedules)");
