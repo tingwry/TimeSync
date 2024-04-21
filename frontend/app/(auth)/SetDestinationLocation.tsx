@@ -8,13 +8,15 @@ import { useLocalSearchParams } from "expo-router";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { Marker, Callout } from "react-native-maps";
 
-
 export default function SetDestinationLocation() {
   const router = useRouter();
   const [lat, setLat] = useState<number>(0);
   const [long, setLong] = useState<number>(0);
 
-  const { latitude, longitude } = useLocalSearchParams<{ latitude: string, longitude: string }>();
+  const { latitude, longitude } = useLocalSearchParams<{
+    latitude: string;
+    longitude: string;
+  }>();
 
   useEffect(() => {
     if (latitude && longitude) {
@@ -54,7 +56,12 @@ export default function SetDestinationLocation() {
         {isLatLngValid && (
           <MapView
             // provider={PROVIDER_GOOGLE}
-            style={{ width: "100%", height: 350, marginTop: 30, borderRadius: 20 }}
+            style={{
+              width: "100%",
+              height: 350,
+              marginTop: 30,
+              borderRadius: 20,
+            }}
             initialRegion={{
               latitude: lat,
               longitude: long,
@@ -62,12 +69,13 @@ export default function SetDestinationLocation() {
               // longitude: 100.53314465311604,
               latitudeDelta: 0.00922,
               longitudeDelta: 0.000421,
-            }} >
-              <Marker
-                coordinate={{ latitude: lat, longitude: long }}
-                image={require("@/assets/icons/map-marker.png")}
-              />
-            </MapView>
+            }}
+          >
+            <Marker
+              coordinate={{ latitude: lat, longitude: long }}
+              image={require("@/assets/icons/map-marker.png")}
+            />
+          </MapView>
         )}
       </View>
 
@@ -86,8 +94,14 @@ export default function SetDestinationLocation() {
           <View style={styles.indicatorFocus} />
         </View>
         <ButtonPrimary
-          text="Choose Location"
-          press={() => router.push("/MapDestination")}
+          text={isLatLngValid ? "Finish Sign Up" : "Choose Location"}
+          press={() => {
+            if (isLatLngValid) {
+              router.push("/onboarding/Loading");
+            } else {
+              router.push("/MapDestination");
+            }
+          }}
         />
       </View>
     </LinearGradient>
