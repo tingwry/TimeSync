@@ -33,6 +33,19 @@ class EmailCheckSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('This email is already in use.')
         return value
 
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserInfo
+        fields = ['username', 'name', 'phone_number']
+
+    def validate_username(self, value):
+        value = value.lower()
+
+        # Check if username is already in use
+        if UserInfo.objects.filter(username=value).exists():
+            raise serializers.ValidationError('This username is already in use.')
+        return value
+
 
 class RegisterSerializer(serializers.Serializer):
     email = serializers.EmailField()

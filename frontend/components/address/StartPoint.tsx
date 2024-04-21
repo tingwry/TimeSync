@@ -11,39 +11,50 @@ import { Portal } from "@gorhom/portal";
 import CardAddressSmall from "./CardAddressSmall";
 import ChooseLocation from "./ChooseLocationSheet";
 import React, { useState, useEffect } from "react";
+import { useAuth } from "@/app/context/authContext";
 
 interface LocationItem {
   loc_id: number;
   loc_name: string;
-  // latitude: number;
-  // longitude: number;
+  latitude: number;
+  longitude: number;
 }
 
 export default function StartPoint() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["38%"], []);
+  const auth = useAuth();
+  const access = auth.authData?.access;
 
   const [locations, setLocations] = useState<LocationItem[]>([]);
 
-  useEffect(() => {
-    const fetchLocations = async () => {
-      try {
-        const response = await fetch(
-          `http://127.0.0.1:8000/app/location/view/`
-        );
+  const fetchLocation = async () => {
+    try {
+      const baseUrl = process.env.BASE_URL;
+      const response = await fetch(`${baseUrl}/location/view/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + access,
+          // "Location-ID": location,
+        },
+      });
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch location");
-        }
-        const data = await response.json();
+      const data = await response.json();
+      if (response.ok) {
+        console.log("location data");
+        console.log(data);
         setLocations(data);
-       
-      } catch (error) {
-        console.error("Error fetching locations:", error);
+      } else {
+        console.error(data);
       }
-    };
+    } catch (error) {
+      console.error("Home - Error fetching location:", error);
+    }
+  };
 
-    fetchLocations();
+  useEffect(() => {
+    fetchLocation();
   }, []);
 
   const handlePresentModalPress = useCallback(() => {
@@ -53,6 +64,11 @@ export default function StartPoint() {
   const handleCloseModalPress = useCallback(() => {
     bottomSheetModalRef.current?.close();
   }, []);
+
+  const handleLocationPress = (loc_id: number) => {
+    console.log("Selected location ID:", loc_id);
+    handleCloseModalPress();
+  };
 
   return (
     <GestureHandlerRootView style={menuStyle.menu}>
@@ -107,17 +123,21 @@ export default function StartPoint() {
                 showsHorizontalScrollIndicator={false}
                 contentInset={{ right: 64, left: 0, bottom: 0, top: 0 }}
               >
-                {locations.map((location: { loc_name: string }) => (
+                {locations.map((location: LocationItem) => (
                   <CardAddressSmall
-                    // key={location.loc_id}
+                    key={location.loc_id}
+                    loc_id={location.loc_id}
                     locationName={location.loc_name}
-                    // locationLat={location.latitude}
-                    // locationLong={location.longitude}
+                    locationLat={location.latitude}
+                    locationLong={location.longitude}
                     labelIcon={
-                      location.loc_name === "Home" ? require("@/assets/icons/home.png") :
-                      location.loc_name === "School" ? require("@/assets/icons/school.png") :
-                      require("@/assets/icons/search.png")
+                      location.loc_name === "Home"
+                        ? require("@/assets/icons/home.png")
+                        : location.loc_name === "School"
+                        ? require("@/assets/icons/school.png")
+                        : require("@/assets/icons/location.png")
                     }
+                    onPress={handleLocationPress}
                   />
                 ))}
               </ScrollView>

@@ -45,9 +45,7 @@ export default function EndTimeSheet({onEndTimeSelect}: EndTimeSheetProps) {
   )}:${selectedMinutes.padStart(2, "0")}`;
 
   const [isSelected, setIsSelected] = useState(false);
-  const textDisplayStyle = isSelected
-    ? styles.textDisplay
-    : styles.textDisplayBlur;
+  const textDisplayStyle = isSelected ? styles.textDisplay : styles.textDisplayBlur;
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["60%"], []);
@@ -97,7 +95,7 @@ export default function EndTimeSheet({onEndTimeSelect}: EndTimeSheetProps) {
                   source={require("@/assets/icons/clock.png")}
                   style={{ width: 24, height: 24 }}
                 />
-                <Text style={styles.textHeader}>Start Time</Text>
+                <Text style={styles.textHeader}>End Time</Text>
               </View>
               <View style={timeStyle.timePicker}>
                 <View

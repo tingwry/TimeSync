@@ -11,23 +11,25 @@ class ScheduleViewAll(generics.ListAPIView):
     serializer_class = ScheduleSerializer
     permission_classes = (IsAuthenticated,)
 
-    def get(self, request):
-        user = request.user
-        # Retrieve all schedules associated with the user
-        schedules = Schedule.objects.filter(uid=user.uid_id)
-        serializer = ScheduleSerializer(schedules, many=True)
-        # print(serializer.data)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-        # print("serializer.errors")
-        # print(serializer.errors)
-        # return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+    # def get(self, request):
+    #     user = request.user
+    #     # Retrieve all schedules associated with the user
+    #     schedules = Schedule.objects.filter(uid=user.uid_id)
+    #     serializer = ScheduleSerializer(schedules, many=True)
+    #     # print(serializer.data)
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
+    #     # print("serializer.errors")
+    #     # print(serializer.errors)
+    #     # return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     current_datetime = timezone.now()
+    def get_queryset(self):
+        user = self.request.user
+        current_datetime = timezone.now()
 
-    #     # Retrieve all schedules associated with the user that are greater than or equal to the current datetime
-    #     queryset = Schedule.objects.filter(uid=user.uid_id, date__gte=current_datetime).order_by('date', 'start_time')
+        # Retrieve all schedules associated with the user that are greater than or equal to the current datetime
+        # queryset = Schedule.objects.filter(uid=user.uid_id, date__gte=current_datetime).order_by('date', 'start_time')
+        queryset = Schedule.objects.filter(uid=user.uid_id).order_by('date', 'start_time')
+        return queryset
 
 #view single schedule
 class ScheduleViewSingle(generics.RetrieveAPIView):
@@ -76,11 +78,20 @@ class ScheduleCreate(generics.CreateAPIView):
     serializer_class = ScheduleSerializer
     permission_classes = (IsAuthenticated,)
 
-    def perform_create(self, serializer):
-        print(self.request.data);
-        user = self.request.user
-        userinfo = UserInfo.objects.get(uid=user.uid_id)
-        serializer.save(uid=userinfo)
+    def post(self, request, *args, **kwargs):  
+        print('create schedule')
+        print(request.data)
+
+        serializer = ScheduleSerializer(data=request.data)
+        if serializer.is_valid():
+            user = request.user
+            userinfo = UserInfo.objects.get(uid=user.uid_id)
+            serializer.save(uid=userinfo)  # Save schedule with associated user
+            Response(status=status.HTTP_200_OK)
+            # return Response(serializer.data)
+        
+        return Response(serializer.errors)
+        # return Response(request.data)
     
 
 # delete schedule

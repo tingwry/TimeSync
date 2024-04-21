@@ -15,9 +15,11 @@ import { Link, useNavigation, useRouter } from "expo-router";
 import { theme } from "../theme";
 import { router } from "expo-router";
 import { AuthContext, useAuth } from "../context/authContext";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function AccountPage() {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const auth = useAuth();
   const access = auth.authData?.access;
 
@@ -63,10 +65,14 @@ export default function AccountPage() {
       pathname: '/SignIn',
     });
   }
-
+  
   useEffect(() => {
-    getData();
-  }, []);
+    if (isFocused) {
+      // Perform actions you want when the screen is focused.
+      // This could be fetching data, re-rendering components, or any other refresh logic.
+      getData();
+    }
+  }, [isFocused]);
 
   return (
     <View style={styles.background}>

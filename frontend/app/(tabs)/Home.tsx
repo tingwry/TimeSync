@@ -9,6 +9,7 @@ import PopUpCountdownTimer from "../src/PopUpCountDownTimer";
 import AlarmClock from "../src/AlarmClock";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../context/authContext";
+import { useIsFocused } from "@react-navigation/native";
 
 interface ScheduleItem {
   event_id: number;
@@ -33,6 +34,8 @@ export default function Home() {
     return <Text>Loading...</Text>;
   }
 
+  const isFocused = useIsFocused();
+
   const auth = useAuth();
   const access = auth.authData?.access;
   const user = auth.authData?.username;
@@ -42,12 +45,17 @@ export default function Home() {
   const [location, setLocation] = useState("");
   const [lat, setLat] = useState(0);
   const [long, setLong] = useState(0);
+  const [locationName, setLocationName] = useState("");
+
+  const [wakeupTime, setWakeupTime] = useState<string>("");
+  const [departureTime, setDepartureTime] = useState<string>("");
+
+  // console.log("MMMMLLLLL", wakeupTime, departureTime)
 
   const fetchSchedule = async () => {
     try {
       const baseUrl = process.env.BASE_URL;
       const response = await fetch(`${baseUrl}/schedule/recent/`, {
-        // const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -57,9 +65,9 @@ export default function Home() {
 
       const data = await response.json();
       if (response.ok) {
-        console.log('schedule data');
+        console.log("schedule data");
         console.log(data);
-        setLocation(data.sched_destination)
+        setLocation(data.sched_destination);
         // console.log("sched location", location)
         setScheduleNumber(data.length);
         setSchedule(data);
@@ -76,25 +84,24 @@ export default function Home() {
     try {
       const baseUrl = process.env.BASE_URL;
       const response = await fetch(`${baseUrl}/location/viewsinglee/`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + access,
-          'Location-ID': location
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + access,
+          "Location-ID": location,
         },
       });
 
       const data = await response.json();
       if (response.ok) {
-        console.log('location data');
+        console.log("location data");
         console.log(data);
         setLat(data.latitude);
         setLong(data.longitude);
+        setLocationName(data.loc_name);
         console.log("lat, long", lat, long);
-
       } else {
         console.error(data);
-
       }
     } catch (error) {
       console.error("Home - Error fetching schedule:", error);
@@ -102,8 +109,12 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchSchedule();
-  }, []);
+    if (isFocused) {
+      // Perform actions you want when the screen is focused.
+      // This could be fetching data, re-rendering components, or any other refresh logic.
+      fetchSchedule();
+    }
+  }, [isFocused]);
 
   const [startCountdown, setStartCountdown] = useState(false);
 
@@ -139,7 +150,6 @@ export default function Home() {
       // fetchSchedule();
     }
   }, [location]);
-
 
   // useEffect(() => {
   //   // Check if location is available
@@ -178,7 +188,12 @@ export default function Home() {
       </View>
 
       <View>
-        <AlarmClock />
+        <AlarmClock
+          wakeupTime={wakeupTime}
+          departureTime={departureTime}
+          setWakeupTime={setWakeupTime}
+          setDepartureTime={setDepartureTime}
+        />
         {startCountdown ? <PopUpCountdownTimer /> : null}
       </View>
 
@@ -198,20 +213,11 @@ export default function Home() {
                 note={schedule.note}
                 latitude={lat}
                 longitude={long}
+                loc_name={locationName}
+                wakeup_time={wakeupTime}
+                departure_time={departureTime}
               />
             )}
-            {/* {schedule.map((scheduleItem) => (
-                <CardUpcomingSchedule
-                  key={scheduleItem.event_id}
-                  event_name={scheduleItem.event_name}
-                  date={scheduleItem.date}
-                  start_time={scheduleItem.start_time}
-                  end_time={scheduleItem.end_time}
-                  transportation_mode={scheduleItem.transportation_mode}
-                  extra_prep_time={scheduleItem.extra_prep_time}
-                  note={scheduleItem.note}
-                />
-              ))} */}
           </View>
         )}
       </View>

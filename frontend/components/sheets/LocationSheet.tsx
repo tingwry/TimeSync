@@ -1,4 +1,11 @@
-import { View, Text, Image, Pressable, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
@@ -8,16 +15,54 @@ import CardAddress from "../address/CardAddress";
 import { BottomSheetProvider } from "@gorhom/bottom-sheet/lib/typescript/contexts";
 import StartPoint from "../address/StartPoint";
 import { theme } from "@/app/theme";
-import React from "react";
+import React, { useEffect } from "react";
 
 import MapView from "react-native-maps";
 import { Marker, Callout } from "react-native-maps";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-
+import { useAuth } from "@/app/context/authContext";
 
 export default function LocationSheet() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["40%"], []);
+  const auth = useAuth();
+  const access = auth.authData?.access;
+  const user = auth.authData?.username;
+
+  const [locationName, setLocationName] = useState("School");
+  const [lat, setLat] = useState(0);
+  const [long, setLong] = useState(0);
+
+  const fetchLocation = async () => {
+    try {
+      const baseUrl = process.env.BASE_URL;
+      const response = await fetch(`${baseUrl}/location/default-dest/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + access,
+          // "Location-ID": location,
+        },
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // console.log("location data");
+        // console.log(data);
+        setLocationName(data[0].loc_name);
+        setLat(data[0].latitude);
+        setLong(data[0].longitude);
+      } else {
+        console.error(data);
+      }
+    } catch (error) {
+      console.error("Home - Error fetching location:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLocation();
+  }, []);
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -39,7 +84,9 @@ export default function LocationSheet() {
             style={{ width: 20, height: 20 }}
           />
         </View>
-        <Text style={[styles.textDisplay, { fontSize: 20 }]}>School</Text>
+        <Text style={[styles.textDisplay, { fontSize: 20 }]}>
+          {locationName}
+        </Text>
         <Image
           source={require("@/assets/icons/chevron-right.png")}
           style={styles.chevronStyle}
@@ -75,7 +122,11 @@ export default function LocationSheet() {
                 />
                 <Text style={styles.textHeader}>Location</Text>
               </View>
-              <CardAddress />
+              <CardAddress
+                loc_name={locationName}
+                latitude={lat}
+                longitude={long}
+              />
               <StartPoint />
               <View style={styles.divLine} />
               <View style={menuStyle.caution}>

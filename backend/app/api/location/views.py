@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from ...models import UserInfo, Location
 from ...serializers import LocationSerializer
+from rest_framework.permissions import IsAuthenticated
 
 # view all schedule
 class LocationViewAll(generics.ListAPIView):
@@ -39,6 +40,8 @@ class LocationCreate(generics.CreateAPIView):
     permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
+
+        print(self.request)
         user = self.request.user
         userinfo = UserInfo.objects.get(uid=user.uid_id)
         serializer.save(uid=userinfo)

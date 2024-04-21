@@ -19,12 +19,17 @@ import ButtonPrimary from "@/components/buttons/ButtonPrimary";
 import MapView from "react-native-maps";
 import { Marker, Callout } from "react-native-maps";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { useAuth } from "../context/authContext";
+import { isEnabled } from "react-native/Libraries/Performance/Systrace";
 
 export default function MapDestination() {
   // const [fontsLoaded] = useFonts({
   //   "dm-sans-regular": require("@/assets/fonts/DMSans-Regular.ttf"),
   //   "dm-sans-bold": require("@/assets/fonts/DMSans-Bold.ttf"),
   // });
+
+  const auth = useAuth();
+  const access = auth.authData?.access;
 
   const searchSnapPoints = useMemo(() => ["34%"], []);
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -69,31 +74,44 @@ export default function MapDestination() {
     );
 
     setPin({ latitude: validLatitude, longitude: validLongitude });
-    console.log("End", { latitude: validLatitude, longitude: validLongitude });
   };
+  console.log("Pin:", pin.latitude, pin.longitude);
+  console.log(isSelected)
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(
-        "http://127.0.0.1:8000/app/location/create/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            loc_name: "School",
-            latitude: pin.latitude,
-            longitude: pin.longitude,
-            default_home: false,
-            default_dest: true,
-            uid: 1,
-          }),
-        }
-      );
+      const baseUrl = process.env.BASE_URL;
+      const response = await fetch(`${baseUrl}/location/create/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + access,
+        },
+        body: JSON.stringify({
+          loc_name: isSelected,
+          latitude: pin.latitude,
+          longitude: pin.longitude,
+          default_home: false,
+          default_dest: true,
+        }),
+      });
+      router.push({
+        pathname: "/SetDestinationLocation",
+        params: {
+          latitude: pin.latitude,
+          longitude: pin.longitude,
+        },
+      });
+
       if (response.ok) {
         console.log("Success");
-        navigation.goBack();
+        router.push({
+          pathname: "/SetDestinationLocation",
+          params: {
+            latitude: pin.latitude,
+            longitude: pin.longitude,
+          },
+        });
       } else {
         console.error("Failed to post");
         console.log(response.status);

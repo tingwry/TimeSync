@@ -52,14 +52,22 @@ class EmailCheckView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class UserInfoView(APIView):
+    def post(self, request):
+        serializer = UserInfoSerializer(data=request.data)
+        if serializer.is_valid():
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 # ok   
 class RegisterView(APIView):
     def post(self, request):
         print(request.data)
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
+            user_data = serializer.save()
+            uid = user_data['userinfo'].uid
+            return Response({'uid': uid}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # ok

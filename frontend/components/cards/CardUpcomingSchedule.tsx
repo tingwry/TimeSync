@@ -9,9 +9,10 @@ import {
 } from "react-native";
 import { theme } from "@/app/theme";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import { Marker, Callout } from "react-native-maps";
 
 interface ScheduleDetailProps {
   event_name: string;
@@ -23,6 +24,9 @@ interface ScheduleDetailProps {
   note: string;
   latitude: number;
   longitude: number;
+  loc_name: string;
+  wakeup_time: string;
+  departure_time: string;
 }
 
 const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
@@ -32,28 +36,40 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
   end_time,
   transportation_mode,
   latitude,
-  longitude
+  longitude,
+  loc_name,
+  wakeup_time,
+  departure_time,
 }) => {
   const navigation = useNavigation();
   const router = useRouter();
 
-  console.log(latitude, longitude)
+  const [lat, setLat] = useState<number>(0);
+  const [long, setLong] = useState<number>(0);
+
+  useEffect(() => {
+    if (latitude && longitude) {
+      setLat(Number(latitude));
+      setLong(Number(longitude));
+    }
+  }, [latitude, longitude]);
+
+  console.log(lat, long)
 
   const handlePress = () => {
-    console.warn("View all schedules");
-    // navigation.navigate("(viewschedules)");
     router.push("/ViewAllSchedule");
   };
+
   return (
     <View style={{ paddingHorizontal: 24 }}>
       <View style={styles.alarmContainer}>
         <View style={{ gap: 4 }}>
           <Text style={styles.alarmCaption}>Alarm for</Text>
-          <Text style={styles.alarmDate}>Tomorrow</Text>
+          <Text style={styles.alarmDate}>Next Schedule</Text>
         </View>
 
         <View>
-          <Text style={styles.textTime}>07:00</Text>
+          <Text style={styles.textTime}>{wakeup_time}</Text>
         </View>
       </View>
 
@@ -62,9 +78,15 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
           <Text style={styles.detailsCaption}>Tomorrow's schedule</Text>
           <View style={{ flexDirection: "column", gap: 0 }}>
             <Text style={styles.detailName}>{event_name}</Text>
-            <Text style={styles.detailsCaption}>
-              {start_time.substring(0,5)} - {end_time.substring(0,5)}
-            </Text>
+            {/* <Text style={styles.detailsCaption}> */}
+            {end_time != null ? (
+              <Text style={styles.detailsCaption}>
+                {start_time.substring(0, 5)} - {end_time.substring(0, 5)}
+              </Text>
+            ) : (
+              <Text style={styles.detailsCaption}>{start_time}</Text>
+            )}
+            {/* </Text> */}
           </View>
 
           <View style={styles.detailsLocation}>
@@ -72,7 +94,7 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
               source={require("@/assets/icons/location.png")}
               style={{ width: 16, height: 16 }}
             />
-            <Text style={styles.textLocation}>School</Text>
+            <Text style={styles.textLocation}>{loc_name}</Text>
           </View>
           <View>
             <View style={styles.detailsDepart}>
@@ -83,24 +105,39 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
               <Text style={styles.textLocation}>Depart by</Text>
             </View>
 
-            <Text style={styles.textDepart}>08:00</Text>
+            <Text style={styles.textDepart}>{departure_time}</Text>
           </View>
         </View>
-        <MapView
-          provider={PROVIDER_GOOGLE}
+        {/* <MapView
+          // provider={PROVIDER_GOOGLE}
           initialRegion={{
-            latitude: latitude,
-            longitude: longitude,
-            latitudeDelta: 0.00000000000000000001,
-            longitudeDelta: 0.00000000000000001,
+            latitude: lat,
+            longitude: long,
+            // latitude: 13.736834400006273,
+            // longitude: 100.53314465311604,
+            latitudeDelta: 0.000000922,
+            longitudeDelta: 0.0000000421,
           }}
           style={{
             width: "45%",
             height: "100%",
-            backgroundColor: "white",
+            // backgroundColor: "white",
             borderRadius: 4,
           }}
-        />
+        >
+          <Marker
+            coordinate={{ latitude: lat, longitude: long }}
+            image={require("@/assets/icons/map-marker.png")}
+          />
+        </MapView> */}
+        <View style={{
+            width: "45%",
+            height: 152,
+            // backgroundColor: "white",
+            borderRadius: 4,
+          }} >
+            <Image source={require("@/assets/images/map-mini.png")} style={{height: 152, width: 142}}></Image>
+          </View>
       </View>
 
       <TouchableOpacity onPress={handlePress} style={styles.button}>

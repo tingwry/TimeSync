@@ -18,6 +18,7 @@ import ButtonPrimary from "@/components/buttons/ButtonPrimary";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { Marker, Callout } from "react-native-maps";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { useAuth } from "../context/authContext";
 
 export default function MapHome() {
   // const [fontsLoaded] = useFonts({
@@ -27,6 +28,10 @@ export default function MapHome() {
   // if (!fontsLoaded) {
   //   return <Text>Loading...</Text>;
   // }
+
+  const auth = useAuth();
+  const access = auth.authData?.access;
+  const navigation = useNavigation();
 
   const searchSnapPoints = useMemo(() => ["30%"], []);
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -39,17 +44,10 @@ export default function MapHome() {
     ? styles.searchContainerFocus
     : styles.searchContainer;
 
-  //   const handleSearchFocus = () => {
-  //     handleExpandSearchPress();
-  //     setFocus(true);
-  //   };
-
   const handleSearchCollapse = () => {
     handleCollapseSearchPress();
     setFocus(false);
   };
-
-  const navigation = useNavigation();
 
   const [pin, setPin] = useState({
     latitude: 13.736834400006273,
@@ -69,31 +67,47 @@ export default function MapHome() {
     );
 
     setPin({ latitude: validLatitude, longitude: validLongitude });
-    console.log("End", { latitude: validLatitude, longitude: validLongitude });
   };
+
+  // Inside your render function or JSX
+  console.log("Pin:", pin.latitude, pin.longitude);
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(
-        "http://127.0.0.1:8000/app/location/create/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            loc_name: "Home",
-            latitude: pin.latitude,
-            longitude: pin.longitude,
-            default_home: true,
-            default_dest: false,
-            uid: 1,
-          }),
-        }
-      );
+      const baseUrl = process.env.BASE_URL;
+      const response = await fetch(`${baseUrl}/location/create/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + access,
+        },
+        body: JSON.stringify({
+          loc_name: "Home",
+          latitude: pin.latitude,
+          longitude: pin.longitude,
+          default_home: true,
+          default_dest: false,
+        }),
+      });
+
+      router.push({
+        pathname: "/SetHomeLocation",
+        params: {
+          latitude: pin.latitude,
+          longitude: pin.longitude,
+        },
+      });
+
       if (response.ok) {
         console.log("Success");
-        navigation.goBack();
+        // navigation.goBack();
+        router.push({
+          pathname: "/SetHomeLocation",
+          params: {
+            latitude: pin.latitude,
+            longitude: pin.longitude,
+          },
+        });
       } else {
         console.error("Failed to post");
         console.log(response.status);
@@ -120,7 +134,7 @@ export default function MapHome() {
       </View>
       <View style={menuStyles.container}>
         <MapView
-          provider={PROVIDER_GOOGLE}
+          // provider={PROVIDER_GOOGLE}
           ref={mapRef}
           style={{ width: "100%", height: "82%", marginTop: 20 }}
           initialRegion={{
@@ -130,7 +144,6 @@ export default function MapHome() {
             longitudeDelta: 0.0421,
           }}
         >
-          {/* <Button onPress={handleSubmit} title="Submit" /> */}
           <Marker
             coordinate={pin}
             draggable={true}
@@ -142,11 +155,6 @@ export default function MapHome() {
             </Callout>
           </Marker>
         </MapView>
-
-        {/* <Button onPress={() => goToPin()} title="Go Home" /> */}
-        {/* <View style={menuStyles.footer}>
-          <ButtonPrimary text="Set as Home" press={handleSubmit} />
-        </View> */}
       </View>
 
       <BottomSheet

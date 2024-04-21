@@ -6,6 +6,12 @@ import ButtonPrimary from "@/components/buttons/ButtonPrimary";
 import { LinearGradient } from "expo-linear-gradient";
 
 export default function AllowLocation() {
+  const submit = async () => {
+    console.log("Allow access: submit");
+    router.push({ 
+      pathname: '/SetHomeLocation',
+    });
+  }
   return (
     <LinearGradient colors={["#182640", "#263D66"]} style={styles.container}>
       <View style={styles.contentView}>
@@ -32,9 +38,7 @@ export default function AllowLocation() {
       <View style={styles.footer}>
         <ButtonPrimary
           text="Allow Access to Location Service"
-          press={() => {
-            router.replace("/SetHomeLocation");
-          }}
+          press={submit}
         />
       </View>
     </LinearGradient>

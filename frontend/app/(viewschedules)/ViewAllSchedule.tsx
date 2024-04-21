@@ -114,10 +114,15 @@ export default function Home() {
 
               <View style={styles.detailContainer}>
                 <View style={styles.detailView}>
-                  <Text style={styles.textTime}>
+                  {item.end_time != null ?
+                  (<Text style={styles.textTime}>
                     {item.start_time.substring(0, 5)} -{" "}
                     {item.end_time.substring(0, 5)}
-                  </Text>
+                  </Text>) : (<Text style={styles.textTime}>
+                    {item.start_time.substring(0, 5)}
+                  </Text>)
+                  }
+                  
                   <Text style={styles.textTitle}>{item.event_name}</Text>
                   <Text style={styles.textLocation}>at School</Text>
                 </View>
