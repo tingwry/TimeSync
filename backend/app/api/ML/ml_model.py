@@ -42,7 +42,7 @@
 #     model_prep.fit(X_train_prep, y_train_prep)
 #     with open('prep_model.pkl', 'wb') as travel_file:
 #         pickle.dump(model_travel, travel_file)
-    
+
 #     # Model training for travel time
 #     model_travel = RandomForestRegressor(random_state=42)  # Adjust parameters
 #     model_travel.fit(X_train_travel, y_train_travel)
@@ -76,7 +76,7 @@
 #     if predicted_wake_up_time >= arriving_time:
 #         predicted_wake_up_time -= 1440  # Subtract1 24 hours in minutes
 #     # Calculate predicted departure time
-#     predicted_departure_time = arriving_time - predicted_travel_time 
+#     predicted_departure_time = arriving_time - predicted_travel_time
 
 #     return predicted_wake_up_time, predicted_departure_time
 
@@ -139,7 +139,7 @@
 #     if predicted_wake_up_time >= arriving_time:
 #         predicted_wake_up_time -= 1440  # Subtract 24 hours in minutes
 #     # Calculate predicted departure time
-#     predicted_departure_time = arriving_time - predicted_travel_time 
+#     predicted_departure_time = arriving_time - predicted_travel_time
 
 #     return predicted_wake_up_time, predicted_departure_time
 
@@ -161,15 +161,22 @@ def predict_times(arriving_time):
     })
 
     # Convert ArrivingTime to minutes since midnight
-    df['ArrivingTime'] = pd.to_datetime(df['ArrivingTime']).dt.hour * 60 + pd.to_datetime(df['ArrivingTime']).dt.minute
+    df['ArrivingTime'] = pd.to_datetime(
+        df['ArrivingTime']).dt.hour * 60 + pd.to_datetime(df['ArrivingTime']).dt.minute
 
+    # Features and target variables
+    X = df[['ArrivingTime']]
+    y_prep = df['PreparationTime']
+    y_travel = df['TravelTime']
     # Features and target variables
     X = df[['ArrivingTime']]
     y_prep = df['PreparationTime']
     y_travel = df['TravelTime']
 
     # Model training
+    # Model training
     model_prep = RandomForestRegressor(random_state=42)  # Adjust parameters
+    model_prep.fit(X, y_prep)
     model_prep.fit(X, y_prep)
 
     model_travel = RandomForestRegressor(random_state=42)  # Adjust parameters
@@ -178,6 +185,8 @@ def predict_times(arriving_time):
     arriving_time = pd.to_datetime(arriving_time).hour * 60 + pd.to_datetime(arriving_time).minute
 
     # Prediction for preparation time and travel time
+    predicted_preparation_time = model_prep.predict([[arriving_time]])[0]
+    predicted_travel_time = model_travel.predict([[arriving_time]])[0]
     predicted_preparation_time = model_prep.predict([[arriving_time]])[0]
     predicted_travel_time = model_travel.predict([[arriving_time]])[0]
 

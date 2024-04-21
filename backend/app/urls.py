@@ -12,5 +12,6 @@ urlpatterns = [
     path('auth/', include('app.api.auth.urls'), name='auth'),
     path('schedule/', include('app.api.schedule.urls')),
     path('location/', include('app.api.location.urls')),
+    path('preptime/', include('app.api.preptime.urls')),
     path('ML/', include('app.api.ML.urls'), name='ML' )
 ]

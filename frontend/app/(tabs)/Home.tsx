@@ -5,6 +5,9 @@ import { useFonts } from "expo-font";
 import CardNoSchedule from "@/components/cards/CardNoSchedule";
 import CardUpcomingSchedule from "@/components/cards/CardUpcomingSchedule";
 import CardCountDownTimer from "@/components/cards/CardCountDownTimer";
+import PopUpCountdownTimer from "../src/PopUpCountDownTimer";
+import AlarmClock from "../src/AlarmClock";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../context/authContext";
 
 interface ScheduleItem {
@@ -44,17 +47,18 @@ export default function Home() {
     try {
       const baseUrl = process.env.BASE_URL;
       const response = await fetch(`${baseUrl}/schedule/recent/`, {
-      // const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/", {
-        method: 'GET',
+        // const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/", {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': 'Bearer ' + access
+          Authorization: "Bearer " + access,
         },
       });
 
       const data = await response.json();
       if (response.ok) {
-        // console.log(data);
+        console.log('schedule data');
+        console.log(data);
         setLocation(data.sched_destination)
         // console.log("sched location", location)
         setScheduleNumber(data.length);
@@ -68,9 +72,74 @@ export default function Home() {
     }
   };
 
+  const fetchLocation = async () => {
+    try {
+      const baseUrl = process.env.BASE_URL;
+      const response = await fetch(`${baseUrl}/location/viewsinglee/`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + access,
+          'Location-ID': location
+        },
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log('location data');
+        console.log(data);
+        setLat(data.latitude);
+        setLong(data.longitude);
+        console.log("lat, long", lat, long);
+
+      } else {
+        console.error(data);
+
+      }
+    } catch (error) {
+      console.error("Home - Error fetching schedule:", error);
+    }
+  };
+
   useEffect(() => {
     fetchSchedule();
   }, []);
+
+  const [startCountdown, setStartCountdown] = useState(false);
+
+  // useEffect(() => {
+  //   // Check if the flag or state indicating to start the countdown is set
+  //   AsyncStorage.getItem("startCountdown").then((value) => {
+  //     // if (value) {
+  //     if (value === "true") {
+  //       setStartCountdown(true);
+  //       // Clear the flag or state after reading it
+  //       AsyncStorage.removeItem("startCountdown");
+  //     }
+  //   });
+  // }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      AsyncStorage.getItem("startCountdown").then((value) => {
+        if (value === "true") {
+          setStartCountdown(true);
+          // Clear the flag or state after reading it
+          AsyncStorage.removeItem("startCountdown");
+        }
+      });
+    }, 1000); // Run every second
+
+    return () => clearInterval(interval); // Cleanup interval on unmount
+  }, []);
+
+  useEffect(() => {
+    if (location) {
+      fetchLocation();
+      // fetchSchedule();
+    }
+  }, [location]);
+
 
   // useEffect(() => {
   //   // Check if location is available
@@ -92,7 +161,7 @@ export default function Home() {
   //         console.error("Error fetching schedule:", error);
   //       }
   //     };
-  
+
   //     fetchSchedule();
   //   }
   // }, [location]); // Add location as a dependency
@@ -102,9 +171,15 @@ export default function Home() {
       <StatusBar barStyle="light-content" />
       <View style={styles.containerHome}>
         <Text style={styles.textTitle}>Hello, {user}</Text>
-        {/* <Button title="fetch" onPress={() => fetchSchedule} /> */}
+        {/* <Button title="fetch schedule" onPress={() => fetchSchedule} />
+        <Button title="fetch location" onPress={() => fetchLocation} /> */}
         <Text style={styles.textCaption}>Let's see what is up next!</Text>
         <Text style={styles.textHeader}>Upcoming Schedule</Text>
+      </View>
+
+      <View>
+        <AlarmClock />
+        {startCountdown ? <PopUpCountdownTimer /> : null}
       </View>
 
       <View>

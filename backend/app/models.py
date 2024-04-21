@@ -10,7 +10,7 @@
 #     ('metro', 'Metro'),
 #     ('walk', 'Walk')
 # ]
-    
+
 # class UserInfo(models.Model):
 #     user_id = models.AutoField(primary_key=True)
 #     username = models.CharField(max_length=100, unique=True)
@@ -121,6 +121,7 @@ transportation_mode_choices = [
     ('walk', 'Walk')
 ]
 
+
 class UserInfo(models.Model):
     # uid = models.OneToOneField(
     #     UserAuth, on_delete=models.CASCADE, primary_key=True, related_name='userinfo')
@@ -185,6 +186,7 @@ class UserAuth(AbstractUser):
 
     objects = UserAuthManager()
 
+
 class Schedule(models.Model):
     event_id = models.AutoField(primary_key=True)
     event_name = models.CharField(max_length=100)
@@ -210,7 +212,11 @@ class Schedule(models.Model):
 
     def __str__(self):
         return str(self.event_id)
-
+    
+    # class Meta:
+    #     indexes = [
+    #         models.Index(fields=['uid','date', 'start_time']),
+    #     ]
 
 class Location(models.Model):
     loc_id = models.AutoField(primary_key=True)
@@ -227,6 +233,15 @@ class Location(models.Model):
 
     def __str__(self):
         return str(self.loc_id)
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['uid', 'latitude', 'longitude']),
+        ]
+        indexes = [
+            models.Index(fields=['uid', 'default_home', 'default_dest']),
+        ]
+
 
 
 class PrepActivityTime(models.Model):
@@ -245,6 +260,9 @@ class PrepActivityTime(models.Model):
 class TotalPrepTime(models.Model):
     iteration = models.AutoField(primary_key=True)
     # iteration = models.IntegerField()
+class TotalPrepTime(models.Model):
+    iteration = models.AutoField(primary_key=True)
+    # iteration = models.IntegerField()
     prep_time = models.IntegerField()
 
     uid = models.ForeignKey(
@@ -257,5 +275,5 @@ class TotalPrepTime(models.Model):
 
     def __str__(self):
         return f"Iteration {self.iteration} - Total Prep Time: {self.prep_time}"
-    
-    object = models.Manager()
+
+    objects = models.Manager()

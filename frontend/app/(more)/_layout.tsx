@@ -6,6 +6,8 @@ export default function StackLayout() {
     return (
         <Stack screenOptions={screenOptions}>
             <Stack.Screen name="Account" options={{ headerShown: false }} />
+            <Stack.Screen name="EditAccount" options={{ headerShown: false }} />
+            <Stack.Screen name="EditUsername" options={{ headerShown: false }} />
             <Stack.Screen name="ResetPassword" options={{ headerShown: false }} />
             <Stack.Screen name="Locations" options={{ headerShown: false }} />
             <Stack.Screen name="Preparation" options={{ headerShown: false }} />

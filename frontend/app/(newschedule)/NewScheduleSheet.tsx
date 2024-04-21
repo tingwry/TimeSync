@@ -71,7 +71,6 @@ export default function NewSchedule() {
 
   const handleClickPress = async () => {
     // const url = `http://127.0.0.1:8000/app/schedule/create/`;
-
     const baseUrl = process.env.BASE_URL;
     let response = await fetch(`${baseUrl}/schedule/create/`, {
       method: "POST",

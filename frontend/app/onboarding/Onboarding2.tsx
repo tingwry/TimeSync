@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
   footer: {
     justifyContent: 'flex-end',
     flex: 1,
+    bottom: 44,
   },
   indicatorContainer: {
     flexDirection: "row",

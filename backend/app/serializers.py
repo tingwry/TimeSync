@@ -1,10 +1,12 @@
-from .models import UserAuth, UserInfo, Schedule, Location
+from .models import UserAuth, UserInfo, Schedule, Location, TotalPrepTime
 from rest_framework import serializers
+
 
 class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInfo
         fields = '__all__'
+
 
 class ScheduleSerializer(serializers.ModelSerializer):
     uid = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -36,6 +38,14 @@ class ScheduleSerializer(serializers.ModelSerializer):
         return schedule
 
 class LocationSerializer(serializers.ModelSerializer):
+    uid = serializers.PrimaryKeyRelatedField(read_only=True)
+    
     class Meta:
         model = Location
+        fields = '__all__'
+
+
+class TotalPrepTimeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TotalPrepTime
         fields = '__all__'
