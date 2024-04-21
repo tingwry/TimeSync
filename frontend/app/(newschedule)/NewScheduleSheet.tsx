@@ -35,42 +35,22 @@ export default function NewSchedule() {
   const [extraPrepTime, setExtraPrepTime] = useState(0);
   const [note, setNote] = useState("");
 
-  const req = {
-    event_name: eventName,
-    date: date,
-    start_time: startTime,
-    end_time: endTime,
-    transportation_mode: transportationMode,
-    extra_prep_time: extraPrepTime,
-    note: note,
-    // uid: 2,
-    sched_start: 3,
-    sched_destination: 4,
-    wake_up_aids: 1,
-  };
-
-  useEffect(() => {
-    // console.log(req)
-  }, [req]);
-
-  // const handleStart = (sTime: any) => {
-  //   console.log(sTime);
-  //   setStartTime(sTime);
-    
-  // };
-
-  // const handleEnd = (eTime: any) => {
-  //   console.log(eTime);
-  //   setEndTime(eTime);
-  // }
-
-  // const handleDate = (date: any) => {
-  //   console.log(typeof date);
-  //   setDate(date);
-  // }
-
   const handleClickPress = async () => {
-    // const url = `http://127.0.0.1:8000/app/schedule/create/`;
+    const formattedEndTime = endTime === "" ? null : endTime;
+    const req = {
+        event_name: eventName,
+        date: date,
+        start_time: startTime,
+        end_time: formattedEndTime,
+        transportation_mode: transportationMode,
+        extra_prep_time: extraPrepTime,
+        note: note,
+        sched_start: 3,
+        sched_destination: 6,
+        wake_up_aids: 1,
+    }
+    console.log(req)
+    
     const baseUrl = process.env.BASE_URL;
     let response = await fetch(`${baseUrl}/schedule/create/`, {
       method: "POST",
@@ -82,11 +62,10 @@ export default function NewSchedule() {
         event_name: eventName,
         date: date,
         start_time: startTime,
-        end_time: endTime,
+        end_time: formattedEndTime,
         transportation_mode: transportationMode,
-        extra_prep_time: 0,
+        extra_prep_time: extraPrepTime,
         note: note,
-        // uid: 2,
         sched_start: 3,
         sched_destination: 4,
         wake_up_aids: 1,

@@ -63,9 +63,16 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
           <Text style={styles.detailsCaption}>Tomorrow's schedule</Text>
           <View style={{ flexDirection: "column", gap: 0 }}>
             <Text style={styles.detailName}>{event_name}</Text>
-            <Text style={styles.detailsCaption}>
-              {start_time.substring(0,5)} - {end_time.substring(0,5)}
-            </Text>
+            {/* <Text style={styles.detailsCaption}> */}
+              {end_time != null ?
+                  (<Text style={styles.detailsCaption}>
+                    {start_time.substring(0, 5)} -{" "}
+                    {end_time.substring(0, 5)}
+                    </Text>) : (<Text style={styles.detailsCaption}>
+                    {start_time}
+                    </Text>)
+                  }
+            {/* </Text> */}
           </View>
 
           <View style={styles.detailsLocation}>

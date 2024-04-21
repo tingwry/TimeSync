@@ -61,8 +61,11 @@ export default function CreateProfile() {
             });
 
             isLoading(false);
+            const data = await response.json();
             if (response.ok) {
+                const uid = data.uid;
                 router.replace({ 
+                    params: { uid },
                     pathname: '/Terms',
                 });
             } else {

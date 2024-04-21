@@ -1,15 +1,19 @@
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { theme } from "../theme";
-import { Link, router } from "expo-router";
+import { Link, router, useLocalSearchParams } from "expo-router";
 import ButtonPrimary from "@/components/buttons/ButtonPrimary";
 import { LinearGradient } from "expo-linear-gradient";
 
 export default function Terms() {
+  const { uid } = useLocalSearchParams<{ uid: string }>();
   const submit = async () => {
     console.log("Terms: submit");
-    router.push("/AllowLocation");
-  };
+    router.push({ 
+      params: { uid },
+      pathname: '/AllowLocation',
+    });
+  }
   return (
     <LinearGradient colors={["#182640", "#263D66"]} style={styles.container}>
       <Text style={styles.textHeader}>Terms & Conditions</Text>
