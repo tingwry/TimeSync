@@ -9,6 +9,7 @@ import PopUpCountdownTimer from "../src/PopUpCountDownTimer";
 import AlarmClock from "../src/AlarmClock";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../context/authContext";
+import { useIsFocused } from "@react-navigation/native";
 
 interface ScheduleItem {
   event_id: number;
@@ -33,6 +34,8 @@ export default function Home() {
     return <Text>Loading...</Text>;
   }
 
+  const isFocused = useIsFocused();
+
   const auth = useAuth();
   const access = auth.authData?.access;
   const user = auth.authData?.username;
@@ -47,7 +50,6 @@ export default function Home() {
     try {
       const baseUrl = process.env.BASE_URL;
       const response = await fetch(`${baseUrl}/schedule/recent/`, {
-        // const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -102,8 +104,12 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchSchedule();
-  }, []);
+    if (isFocused) {
+      // Perform actions you want when the screen is focused.
+      // This could be fetching data, re-rendering components, or any other refresh logic.
+      fetchSchedule();
+    }
+  }, [isFocused]);
 
   const [startCountdown, setStartCountdown] = useState(false);
 
