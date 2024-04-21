@@ -54,7 +54,7 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
     }
   }, [latitude, longitude]);
 
-  console.log(lat, long)
+  // console.log(lat, long)
 
   const handlePress = () => {
     router.push("/ViewAllSchedule");

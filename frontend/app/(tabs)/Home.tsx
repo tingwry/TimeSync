@@ -41,7 +41,7 @@ export default function Home() {
   const user = auth.authData?.username;
 
   const [schedule, setSchedule] = useState<ScheduleItem | null>(null);
-  const [scheduleNumber, setScheduleNumber] = useState(0);
+  const [scheduleRecent, setScheduleRecent] = useState(false);
   const [location, setLocation] = useState("");
   const [lat, setLat] = useState(0);
   const [long, setLong] = useState(0);
@@ -65,11 +65,14 @@ export default function Home() {
 
       const data = await response.json();
       if (response.ok) {
-        console.log("schedule data");
+        // console.log("schedule data");
         console.log(data);
+        if (data.date === null) {
+          setScheduleRecent(false);
+        } else {
+          setScheduleRecent(true);
+        }
         setLocation(data.sched_destination);
-        // console.log("sched location", location)
-        setScheduleNumber(data.length);
         setSchedule(data);
       } else {
         console.error(data);
@@ -94,12 +97,12 @@ export default function Home() {
 
       const data = await response.json();
       if (response.ok) {
-        console.log("location data");
-        console.log(data);
+        // console.log("location data");
+        // console.log(data);
         setLat(data.latitude);
         setLong(data.longitude);
         setLocationName(data.loc_name);
-        console.log("lat, long", lat, long);
+        // console.log("lat, long", lat, long);
       } else {
         console.error(data);
       }
@@ -151,31 +154,6 @@ export default function Home() {
     }
   }, [location]);
 
-  // useEffect(() => {
-  //   // Check if location is available
-  //   if (location) {
-  //     const fetchSchedule = async () => {
-  //       try {
-  //         const response2 = await fetch(
-  //           `http://127.0.0.1:8000/app/location/view/${location}/`
-  //         );
-  //         if (!response2.ok) {
-  //           throw new Error("Failed to fetch location");
-  //         }
-  //         const data2 = await response2.json();
-  //         // console.log(data2);
-  //         setLat(data2.latitude);
-  //         setLong(data2.longitude);
-  //         console.log("lat, long", lat, long);
-  //       } catch (error) {
-  //         console.error("Error fetching schedule:", error);
-  //       }
-  //     };
-
-  //     fetchSchedule();
-  //   }
-  // }, [location]); // Add location as a dependency
-
   return (
     <View style={styles.background}>
       <StatusBar barStyle="light-content" />
@@ -198,7 +176,7 @@ export default function Home() {
       </View>
 
       <View>
-        {scheduleNumber === 0 ? (
+        {scheduleRecent === false ? (
           <CardNoSchedule />
         ) : (
           <View>
