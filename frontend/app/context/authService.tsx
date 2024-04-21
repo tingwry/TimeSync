@@ -122,7 +122,8 @@ const refreshToken = async (refresh: string): Promise<AuthData> => {
 const signOut = async (access?: string, refresh? : string) => {
     if (refresh) {
         const baseUrl = process.env.BASE_URL;
-        const response = await fetch(`${baseUrl}/auth/sign-out/`, {
+        // const response = await fetch(`${baseUrl}/auth/sign-out/`, {
+        const response = await fetch(`${baseUrl}/auth/token/blacklist/`, {   
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -30,7 +30,6 @@ export default function AccountPage() {
   const [signOutModalVisible, setSignOutModalVisible] = useState(false);
 
   let getData = async () => {
-    // console.log(`${process.env.BASE_URL}/auth/sign-out/`);
     const baseUrl = process.env.BASE_URL;
     const response = await fetch(`${baseUrl}/auth/get-user/`, {
         method: 'GET',
@@ -123,45 +122,27 @@ export default function AccountPage() {
       </Modal>
 
       <View style={styles.container}>
-        <View style={styles.sectionInfo}>
+        <TouchableOpacity style={styles.sectionInfo} onPress={() => {router.push('/(more)/EditAccount')}}>
           <Text style={styles.textTitle}>Name</Text>
-          <TextInput
-            style={styles.textInfo}
-            onChangeText={(name) => setName(name)}
-            value={name}
-          />
-        </View>
+          <Text style={styles.textInfo}>{name}</Text>
+        </TouchableOpacity>
         <View style={styles.divLine} />
 
-        <View style={styles.sectionInfo}>
+        <TouchableOpacity style={styles.sectionInfo} onPress={() => {router.push('/(more)/EditUsername')}}>
           <Text style={styles.textTitle}>Username</Text>
-          <TextInput
-            style={styles.textInfo}
-            onChangeText={(username) => setUsername(username)}
-            value={username}
-          />
-        </View>
+          <Text style={styles.textInfo}>{username}</Text>
+        </TouchableOpacity>
         <View style={styles.divLine} />
 
         <View style={styles.sectionInfo}>
           <Text style={styles.textTitle}>Phone</Text>
-          <TextInput
-            style={styles.textInfo}
-            onChangeText={(phone) => setPhone(phone)}
-            value={phone}
-          />
+          <Text style={styles.textInfo}>{phone}</Text>
         </View>
         <View style={styles.divLine} />
 
         <View style={styles.sectionInfo}>
           <Text style={styles.textTitle}>Email</Text>
-          <Text
-            style={styles.textInfo}
-            // onChangeText={(email) => setEmail(email)}
-            // value={email}
-          >
-            {email}
-            </Text>
+          <Text style={styles.textInfo}>{email}</Text>
         </View>
         <View style={styles.divLine} />
 
