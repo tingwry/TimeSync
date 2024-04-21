@@ -65,7 +65,7 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
       <View style={styles.alarmContainer}>
         <View style={{ gap: 4 }}>
           <Text style={styles.alarmCaption}>Alarm for</Text>
-          <Text style={styles.alarmDate}>Tomorrow</Text>
+          <Text style={styles.alarmDate}>Next Schedule</Text>
         </View>
 
         <View>
@@ -108,7 +108,7 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
             <Text style={styles.textDepart}>{departure_time}</Text>
           </View>
         </View>
-        <MapView
+        {/* <MapView
           // provider={PROVIDER_GOOGLE}
           initialRegion={{
             latitude: lat,
@@ -129,7 +129,15 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
             coordinate={{ latitude: lat, longitude: long }}
             image={require("@/assets/icons/map-marker.png")}
           />
-        </MapView>
+        </MapView> */}
+        <View style={{
+            width: "45%",
+            height: 152,
+            // backgroundColor: "white",
+            borderRadius: 4,
+          }} >
+            <Image source={require("@/assets/images/map-mini.png")} style={{height: 152, width: 142}}></Image>
+          </View>
       </View>
 
       <TouchableOpacity onPress={handlePress} style={styles.button}>
