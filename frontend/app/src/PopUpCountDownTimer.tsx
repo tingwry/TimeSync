@@ -29,14 +29,13 @@ const PopUpCountdownTimer = () => {
     return <Text>Loading...</Text>;
   }
 
-  const MLtime = 25; // time calculated by ML from table userinfo
-
-  const [time, setTime] = useState<number | null>(MLtime * 60); // 25 minutes in seconds
+  const [MLTime, setMLTime] = useState<number | null>(null);
+  const [time, setTime] = useState<number | null>(null);
   const [modalVisible, setModalVisible] = useState(true);
   const [remainingTime, setRemainingTime] = useState<number | null>(null);
   const [exceed, setExceed] = useState(false);
 
-  const [actualPrepTime, setActualPrepTime] = useState<number>(0);
+  // const [actualPrepTime, setActualPrepTime] = useState<number | null>(null);
 
   const navigation = useNavigation();
   const auth = useAuth();
@@ -50,6 +49,7 @@ const PopUpCountdownTimer = () => {
   useEffect(() => {
     AsyncStorage.getItem("CalculatedPrepTime").then((value) => {
       if (value !== null) {
+        setMLTime(parseInt(value, 10) * 60); // Parse string to integer
         setTime(parseInt(value, 10) * 60); // Parse string to integer
         // Now, prepTime is a number
       } else {
@@ -96,36 +96,55 @@ const PopUpCountdownTimer = () => {
 
   const stopCountdown = async () => {
     setModalVisible(false);
-    console.log(time);
-    console.log(remainingTime);
-    setTime(null);
+    console.log("MLTime: ", MLTime);
+    console.log("time:", time);
+    console.log("remainingTime: ", remainingTime);
 
-    if (exceed && remainingTime) {
-      setActualPrepTime(MLtime + remainingTime);
-    } else if (!exceed && remainingTime) {
-      setActualPrepTime(MLtime - remainingTime);
+    let actualPrepTime = null;
+
+    if (exceed && remainingTime && MLTime) {
+      actualPrepTime = MLTime + remainingTime;
+      if (actualPrepTime) {
+        console.log("actual prep time exceed: ", actualPrepTime);
+      } else {
+        console.log("actual prep time is null");
+      }
+    } else if (!exceed && remainingTime && MLTime) {
+      console.log(MLTime, "and", remainingTime);
+      actualPrepTime = MLTime - remainingTime;
+      if (actualPrepTime) {
+        console.log("actual prep time not exceed: ", actualPrepTime);
+      } else {
+        console.log("actual prep time is null");
+      }
     }
 
-    const baseUrl = process.env.BASE_URL;
-    let response = await fetch(`${baseUrl}/preptime/create/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + access,
-      },
-      body: JSON.stringify({
-        // uid: 1,
-        prep_time: actualPrepTime,
-      }),
-    });
-    // console.log(req)
-    let result = await response.json();
+    setTime(null);
+    setMLTime(null);
 
-    if (response.ok) {
-      console.log("Success");
-      navigation.goBack();
+    if (actualPrepTime) {
+      const baseUrl = process.env.BASE_URL;
+      let response = await fetch(`${baseUrl}/preptime/create/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + access,
+        },
+        body: JSON.stringify({
+          prep_time: Math.round(actualPrepTime / 60),
+        }),
+      });
+      // console.log(req)
+      let result = await response.json();
+
+      if (response.ok) {
+        console.log("Create Total Prep Time Success");
+        // navigation.goBack();
+      } else {
+        console.error("Create Total Prep Time Failed: ", result);
+      }
     } else {
-      console.error(result);
+      console.error("Create Total Prep Time Failed: actual prep time is null");
     }
   };
 

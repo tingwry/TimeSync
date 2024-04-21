@@ -260,9 +260,6 @@ class PrepActivityTime(models.Model):
 class TotalPrepTime(models.Model):
     iteration = models.AutoField(primary_key=True)
     # iteration = models.IntegerField()
-class TotalPrepTime(models.Model):
-    iteration = models.AutoField(primary_key=True)
-    # iteration = models.IntegerField()
     prep_time = models.IntegerField()
 
     uid = models.ForeignKey(

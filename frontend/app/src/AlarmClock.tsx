@@ -346,6 +346,10 @@ export default function AlarmClock() {
   async function turnOffAlarm() {
     console.log(notificationId);
     if (notificationId !== "none") {
+      if (isPlaying && sound) {
+        await sound.stopAsync();
+      }
+
       await Notifications.cancelScheduledNotificationAsync(notificationId);
       const resetValue = "none";
       await setNotificationId(resetValue);
