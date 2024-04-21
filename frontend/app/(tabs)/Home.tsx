@@ -47,18 +47,18 @@ export default function Home() {
     try {
       const baseUrl = process.env.BASE_URL;
       const response = await fetch(`${baseUrl}/schedule/recent/`, {
-      // const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/", {
-        method: 'GET',
+        // const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/", {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': 'Bearer ' + access
+          Authorization: "Bearer " + access,
         },
       });
 
       const data = await response.json();
       if (response.ok) {
         // console.log(data);
-        setLocation(data.sched_destination)
+        setLocation(data.sched_destination);
         // console.log("sched location", location)
         setScheduleNumber(data.length);
         setSchedule(data);
@@ -77,16 +77,30 @@ export default function Home() {
 
   const [startCountdown, setStartCountdown] = useState(false);
 
+  // useEffect(() => {
+  //   // Check if the flag or state indicating to start the countdown is set
+  //   AsyncStorage.getItem("startCountdown").then((value) => {
+  //     // if (value) {
+  //     if (value === "true") {
+  //       setStartCountdown(true);
+  //       // Clear the flag or state after reading it
+  //       AsyncStorage.removeItem("startCountdown");
+  //     }
+  //   });
+  // }, []);
+
   useEffect(() => {
-    // Check if the flag or state indicating to start the countdown is set
-    AsyncStorage.getItem("startCountdown").then((value) => {
-      // if (value) {
-      if (value === "true") {
-        setStartCountdown(true);
-        // Clear the flag or state after reading it
-        AsyncStorage.removeItem("startCountdown");
-      }
-    });
+    const interval = setInterval(() => {
+      AsyncStorage.getItem("startCountdown").then((value) => {
+        if (value === "true") {
+          setStartCountdown(true);
+          // Clear the flag or state after reading it
+          AsyncStorage.removeItem("startCountdown");
+        }
+      });
+    }, 1000); // Run every second
+
+    return () => clearInterval(interval); // Cleanup interval on unmount
   }, []);
 
   // useEffect(() => {
@@ -109,7 +123,7 @@ export default function Home() {
   //         console.error("Error fetching schedule:", error);
   //       }
   //     };
-  
+
   //     fetchSchedule();
   //   }
   // }, [location]); // Add location as a dependency
