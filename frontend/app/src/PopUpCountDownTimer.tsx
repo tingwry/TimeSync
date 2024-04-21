@@ -16,6 +16,7 @@ import { isAbsolute } from "path";
 import CardCountDownTimer from "@/components/cards/CardCountDownTimer";
 import { useNavigation } from "expo-router";
 import { useAuth } from "../context/authContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const PopUpCountdownTimer = () => {
   const [fontsLoaded] = useFonts({
@@ -41,11 +42,22 @@ const PopUpCountdownTimer = () => {
   const auth = useAuth();
   const access = auth.authData?.access;
 
-
   // const req = {
   //   // uid: 1,
   //   prep_time: actualPrepTime,
   // }
+
+  useEffect(() => {
+    AsyncStorage.getItem("CalculatedPrepTime").then((value) => {
+      if (value !== null) {
+        setTime(parseInt(value, 10) * 60); // Parse string to integer
+        // Now, prepTime is a number
+      } else {
+        // Handle the case where the value is null (e.g., set a default value)
+        console.error("Value is null");
+      }
+    });
+  }, []);
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -88,36 +100,34 @@ const PopUpCountdownTimer = () => {
     console.log(remainingTime);
     setTime(null);
 
-
     if (exceed && remainingTime) {
       setActualPrepTime(MLtime + remainingTime);
     } else if (!exceed && remainingTime) {
       setActualPrepTime(MLtime - remainingTime);
     }
-      
-      const baseUrl = process.env.BASE_URL;
-      let response = await fetch(`${baseUrl}/preptime/create/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + access
-        },
-        body: JSON.stringify({
-          // uid: 1,
-          prep_time: actualPrepTime,
-        }),
-      });
-      // console.log(req)
-      let result = await response.json();
-  
-      if (response.ok) {
-        console.log("Success");
-        navigation.goBack();
-      } else {
-        console.error(result);
-      }
-      
-    };
+
+    const baseUrl = process.env.BASE_URL;
+    let response = await fetch(`${baseUrl}/preptime/create/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + access,
+      },
+      body: JSON.stringify({
+        // uid: 1,
+        prep_time: actualPrepTime,
+      }),
+    });
+    // console.log(req)
+    let result = await response.json();
+
+    if (response.ok) {
+      console.log("Success");
+      navigation.goBack();
+    } else {
+      console.error(result);
+    }
+  };
 
   return (
     <View style={styles.container}>

@@ -46,6 +46,7 @@ export default function AlarmClock() {
 
   const [alarmCreated, setAlarmCreated] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [calculatedPrepTime, setCalculatedPrepTime] = useState<number>(0);
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [sound, setSound] = useState<Sound | null>(null);
@@ -128,6 +129,18 @@ export default function AlarmClock() {
             let fullDate = new Date(dateTimeString);
             setDate(fullDate);
             console.log(date);
+
+            const departTimeML = timeFromMLResponse.departure_time;
+            let departDateTimeString = dateFromDB + " " + departTimeML;
+            let fullDepartDate = new Date(departDateTimeString);
+
+            const durationInMillis =
+              fullDepartDate.getTime() - fullDate.getTime();
+            const durationInMinutes = Math.floor(
+              durationInMillis / (1000 * 60)
+            );
+
+            setCalculatedPrepTime(durationInMinutes);
 
             scheduleNotificationsHandler();
             playAudio();
@@ -425,6 +438,8 @@ export default function AlarmClock() {
 
     // Store a flag indicating that the countdown should start in the Home screen
     AsyncStorage.setItem("startCountdown", "true");
+
+    AsyncStorage.setItem("CalculatedPrepTime", calculatedPrepTime.toString());
   };
 
   // Format the current time
