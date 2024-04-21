@@ -44,6 +44,8 @@ export default function Home() {
   });
 
   const handleClickStop = () => {
+    // await AsyncStorage.setItem("turnOff", "true");
+
     // Store a flag or state indicating that the countdown should start in the Home screen
     AsyncStorage.setItem("startCountdown", "true");
 

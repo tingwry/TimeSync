@@ -15,6 +15,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { isAbsolute } from "path";
 import CardCountDownTimer from "@/components/cards/CardCountDownTimer";
 import { useNavigation } from "expo-router";
+import { useAuth } from "../context/authContext";
 
 const PopUpCountdownTimer = () => {
   const [fontsLoaded] = useFonts({
@@ -34,7 +35,17 @@ const PopUpCountdownTimer = () => {
   const [remainingTime, setRemainingTime] = useState<number | null>(null);
   const [exceed, setExceed] = useState(false);
 
+  const [actualPrepTime, setActualPrepTime] = useState<number>(0);
+
   const navigation = useNavigation();
+  const auth = useAuth();
+  const access = auth.authData?.access;
+
+
+  // const req = {
+  //   // uid: 1,
+  //   prep_time: actualPrepTime,
+  // }
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -77,33 +88,36 @@ const PopUpCountdownTimer = () => {
     console.log(remainingTime);
     setTime(null);
 
-    let actualPrepTime;
 
     if (exceed && remainingTime) {
-      actualPrepTime = MLtime + remainingTime;
+      setActualPrepTime(MLtime + remainingTime);
     } else if (!exceed && remainingTime) {
-      actualPrepTime = MLtime - remainingTime;
+      setActualPrepTime(MLtime - remainingTime);
     }
-
-    const url = `http://127.0.0.1:8000/app/preptime/create/`;
-
-    let response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        uid: 1,
-        prep_time: actualPrepTime,
-      }),
-    });
-    let result = await response.json();
-
-    if (result) {
-      console.warn("Success");
-      // console.log(result);
-    }
-  };
+      
+      const baseUrl = process.env.BASE_URL;
+      let response = await fetch(`${baseUrl}/preptime/create/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + access
+        },
+        body: JSON.stringify({
+          // uid: 1,
+          prep_time: actualPrepTime,
+        }),
+      });
+      // console.log(req)
+      let result = await response.json();
+  
+      if (response.ok) {
+        console.log("Success");
+        navigation.goBack();
+      } else {
+        console.error(result);
+      }
+      
+    };
 
   return (
     <View style={styles.container}>
