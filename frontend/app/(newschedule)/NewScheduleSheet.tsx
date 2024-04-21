@@ -18,7 +18,6 @@ import AlarmNotiSheet from "@/components/sheets/AlarmNotiSheet";
 import StartTimeSheet from "@/components/sheets/StartTimeSheet";
 import EndTimeSheet from "@/components/sheets/EndTimeSheet";
 import { useAuth } from "../context/authContext";
-// import { API_URL } from "@env";
 
 export default function NewSchedule() {
   const navigation = useNavigation();
@@ -45,36 +44,40 @@ export default function NewSchedule() {
     extra_prep_time: extraPrepTime,
     note: note,
     // uid: 2,
-    sched_start: 1,
-    sched_destination: 2,
+    sched_start: 3,
+    sched_destination: 4,
     wake_up_aids: 1,
-  }
+  };
 
   useEffect(() => {
-    console.log(req)
-  }, [req])
+    // console.log(req)
+  }, [req]);
 
-  const handleStartTimeSelect = (selectedTime: string) => {
-    setStartTime(selectedTime);
-    console.log('here')
-    console.log("start time", startTime);
-  };
-  const handleEndTimeSelect = useCallback((selectedTime: string) => {
-    setEndTime(selectedTime); 
-    console.log(endTime);
-  }, []);
+  // const handleStart = (sTime: any) => {
+  //   console.log(sTime);
+  //   setStartTime(sTime);
+    
+  // };
+
+  // const handleEnd = (eTime: any) => {
+  //   console.log(eTime);
+  //   setEndTime(eTime);
+  // }
+
+  // const handleDate = (date: any) => {
+  //   console.log(typeof date);
+  //   setDate(date);
+  // }
 
   const handleClickPress = async () => {
-    
-    
     // const url = `http://127.0.0.1:8000/app/schedule/create/`;
-    
+
     const baseUrl = process.env.BASE_URL;
     let response = await fetch(`${baseUrl}/schedule/create/`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + access
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + access,
       },
       body: JSON.stringify({
         event_name: eventName,
@@ -90,7 +93,7 @@ export default function NewSchedule() {
         wake_up_aids: 1,
       }),
     });
-    console.log(req)
+    console.log(req);
     let result = await response.json();
 
     if (response.ok) {
@@ -99,7 +102,6 @@ export default function NewSchedule() {
     } else {
       console.error(result);
     }
-    
   };
 
   return (
@@ -157,9 +159,7 @@ export default function NewSchedule() {
                     alignItems: "center",
                   }}
                 >
-                  {/* <TimeSheet title="Start Time" onTimeSelect={setStartTime}/>
-                   */}
-                  <StartTimeSheet onStartTimeSelect={setStartTime}/>
+                  <StartTimeSheet onStartTimeSelect={setStartTime} />
                   <Text
                     style={[
                       styles.textDisplay,
@@ -173,7 +173,7 @@ export default function NewSchedule() {
                   >
                     to
                   </Text>
-                  <EndTimeSheet onEndTimeSelect={setEndTime}/>
+                  <EndTimeSheet onEndTimeSelect={setEndTime} />
                 </View>
                 <View style={styles.divLine} />
                 <View style={styles.sheetItem}>

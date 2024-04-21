@@ -57,7 +57,8 @@ class ScheduleCreate(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):  
         print('create schedule')
-        print(request.data)   
+        print(request.data)
+
         serializer = ScheduleSerializer(data=request.data)
         if serializer.is_valid():
             user = request.user

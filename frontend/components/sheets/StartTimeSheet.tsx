@@ -52,8 +52,8 @@ export default function StartTimeSheet({
   }, []);
 
   const handleCloseModalPress = useCallback(
-    (stratTime: string) => {
-      onStartTimeSelect(stratTime);
+    (startTime: string) => {
+      onStartTimeSelect(startTime);
       bottomSheetModalRef.current?.close();
     },
     [onStartTimeSelect]

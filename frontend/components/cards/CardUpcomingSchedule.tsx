@@ -37,11 +37,14 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
   const navigation = useNavigation();
   const router = useRouter();
 
+  console.log("latitude", latitude);
+
   const handlePress = () => {
-    console.warn("View all schedules");
+    // console.warn("View all schedules");
     // navigation.navigate("(viewschedules)");
     router.push("/ViewAllSchedule");
   };
+
   return (
     <View style={{ paddingHorizontal: 24 }}>
       <View style={styles.alarmContainer}>
