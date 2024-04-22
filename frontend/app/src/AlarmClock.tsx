@@ -108,83 +108,83 @@ export default function AlarmClock({
     }
   };
 
-  // useEffect(() => {
-  //   const fetchSchedule = async () => {
-  //     try {
-  //       const baseUrl = process.env.BASE_URL;
-  //       const response = await fetch(`${baseUrl}/schedule/view/`, {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: "Bearer " + access,
-  //         },
-  //       });
+  useEffect(() => {
+    const fetchSchedule = async () => {
+      try {
+        const baseUrl = process.env.BASE_URL;
+        const response = await fetch(`${baseUrl}/schedule/view/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + access,
+          },
+        });
 
-  //       const data = await response.json();
-  //       console.log(scheduleIds);
+        const data = await response.json();
+        console.log(scheduleIds);
 
-  //       if (response.ok) {
-  //         for (const event of data) {
-  //           console.log(event);
-  //           if (!scheduleIds.includes(event.event_id)) {
-  //             setScheduleIds((prevScheduleIds) => [
-  //               ...prevScheduleIds,
-  //               event.event_id,
-  //             ]);
-  //           }
+        if (response.ok) {
+          for (const event of data) {
+            console.log(event);
+            if (!scheduleIds.includes(event.event_id)) {
+              setScheduleIds((prevScheduleIds) => [
+                ...prevScheduleIds,
+                event.event_id,
+              ]);
+            }
 
-  //           console.log(scheduleIds);
-  //           // let date = new Date();
-  //           // date.setSeconds(date.getSeconds() + 5);
+            console.log(scheduleIds);
+            // let date = new Date();
+            // date.setSeconds(date.getSeconds() + 5);
 
-  //           // let dateFromDB = "2024-04-21";
-  //           let dateFromDB = event.date;
-  //           // let timeFromML = "09:19:00";
-  //           // console.log(event.start_time.Type)
-  //           const timeFromMLResponse = await predictMLTime(event.start_time);
-  //           const timeFromML = timeFromMLResponse.wake_up_time;
-  //           let dateTimeString = dateFromDB + " " + timeFromML;
+            // let dateFromDB = "2024-04-21";
+            let dateFromDB = event.date;
+            // let timeFromML = "09:19:00";
+            // console.log(event.start_time.Type)
+            const timeFromMLResponse = await predictMLTime(event.start_time);
+            const timeFromML = timeFromMLResponse.wake_up_time;
+            let dateTimeString = dateFromDB + " " + timeFromML;
 
-  //           let fullDate = new Date(dateTimeString);
-  //           setDate(fullDate);
-  //           console.log(date);
+            let fullDate = new Date(dateTimeString);
+            setDate(fullDate);
+            console.log(date);
 
-  //           const departTimeML = timeFromMLResponse.departure_time;
-  //           let departDateTimeString = dateFromDB + " " + departTimeML;
-  //           let fullDepartDate = new Date(departDateTimeString);
+            const departTimeML = timeFromMLResponse.departure_time;
+            let departDateTimeString = dateFromDB + " " + departTimeML;
+            let fullDepartDate = new Date(departDateTimeString);
 
-  //           const durationInMillis =
-  //             fullDepartDate.getTime() - fullDate.getTime();
-  //           const durationInMinutes = Math.floor(
-  //             durationInMillis / (1000 * 60)
-  //           );
+            const durationInMillis =
+              fullDepartDate.getTime() - fullDate.getTime();
+            const durationInMinutes = Math.floor(
+              durationInMillis / (1000 * 60)
+            );
 
-  //           setCalculatedPrepTime(durationInMinutes);
+            setCalculatedPrepTime(durationInMinutes);
 
-  //           scheduleNotificationsHandler();
-  //           playAudio();
-  //           // }
-  //         }
-  //       } else {
-  //         console.error(data);
-  //       }
-  //     } catch (error) {
-  //       console.error("AlarmClock - Error fetching schedule:", error);
-  //     }
-  //   };
+            scheduleNotificationsHandler();
+            playAudio();
+            // }
+          }
+        } else {
+          console.error(data);
+        }
+      } catch (error) {
+        console.error("AlarmClock - Error fetching schedule:", error);
+      }
+    };
 
-  //   fetchSchedule();
-  // }, []);
+    fetchSchedule();
+  }, []);
 
   // let date = new Date();
   // date.setSeconds(date.getSeconds() + 5);
 
-  let dateFromDB = "2024-04-22";
-  let timeFromML = "04:04:00";
+  // let dateFromDB = "2024-04-22";
+  // let timeFromML = "04:04:00";
 
-  let dateTimeString = dateFromDB + " " + timeFromML;
+  // let dateTimeString = dateFromDB + " " + timeFromML;
 
-  let fullDate = new Date(dateTimeString);
+  // let fullDate = new Date(dateTimeString);
   // setDate(fullDate);
 
   // Prepare the audio
@@ -210,8 +210,8 @@ export default function AlarmClock({
     const currentTime = new Date();
 
     // Calculate the delay in milliseconds until the scheduled time
-    if (fullDate) {
-      const delayInMillis = fullDate.getTime() - currentTime.getTime();
+    if (date) {
+      const delayInMillis = date.getTime() - currentTime.getTime();
       // const delayInMillis = currentTime.getTime() - date.getTime();
       console.log("date.getTime() is ", date);
       console.log("currentTime.getTime() is ", currentTime);
@@ -331,9 +331,9 @@ export default function AlarmClock({
     // Get the current time
     const currentTime = new Date();
 
-    if (fullDate) {
+    if (date) {
       // Calculate the delay in milliseconds until the scheduled time
-      const delayInMillis = fullDate.getTime() - currentTime.getTime();
+      const delayInMillis = date.getTime() - currentTime.getTime();
       // const delayInMillis = currentTime.getTime() - date.getTime();
 
       if (delayInMillis <= 0) {
@@ -358,14 +358,14 @@ export default function AlarmClock({
             // hour: newHour,
             // minute: parseInt(minutee),
             // repeats: true,
-            date: fullDate,
+            date: date,
           },
         });
         console.log("created an alarm");
         // setAmpm("");
         // setHour("");
         // setMinute("");
-        console.log(fullDate);
+        console.log(date);
         console.log(identifier);
         setNotificationId(identifier);
         storeData(identifier);
@@ -520,6 +520,7 @@ export default function AlarmClock({
           >
             <Text style={styles.textTitle}>Alarm</Text>
             <Text style={styles.timer}>{formattedTime}</Text>
+            {/* <Text style={styles.timer}>08:10</Text> */}
             <Pressable onPress={handleClickStop}>
               <LinearGradient
                 colors={["#CF7B04", "#EDA33C"]}

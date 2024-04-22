@@ -66,7 +66,7 @@ export default function CreateProfile() {
             isLoading(false);
             if (response.ok) {
                 router.replace({ 
-                    params: { email, password, username, name, cleanedPhoneNumber },
+                    params: { email, password, username, name, phoneNumber },
                     pathname: '/Terms',
                 });
             } else {

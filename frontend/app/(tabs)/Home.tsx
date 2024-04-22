@@ -38,7 +38,7 @@ export default function Home() {
 
   const auth = useAuth();
   const access = auth.authData?.access;
-  const user = auth.authData?.username;
+  const user = auth.authData?.name;
 
   const [schedule, setSchedule] = useState<ScheduleItem | null>(null);
   const [scheduleRecent, setScheduleRecent] = useState(false);

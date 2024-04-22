@@ -69,7 +69,9 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
         </View>
 
         <View>
-          <Text style={styles.textTime}>{wakeup_time}</Text>
+          {/* <Text style={styles.textTime}>{wakeup_time}</Text>
+           */}
+           <Text style={styles.textTime}>08:14</Text>
         </View>
       </View>
 
@@ -105,7 +107,8 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
               <Text style={styles.textLocation}>Depart by</Text>
             </View>
 
-            <Text style={styles.textDepart}>{departure_time}</Text>
+            {/* <Text style={styles.textDepart}>{departure_time}</Text> */}
+            <Text style={styles.textDepart}>08:42</Text>
           </View>
         </View>
         {/* <MapView
@@ -132,11 +135,11 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
         </MapView> */}
         <View style={{
             width: "45%",
-            height: 152,
+            height: 160,
             // backgroundColor: "white",
-            borderRadius: 4,
+            borderRadius: 8,
           }} >
-            <Image source={require("@/assets/images/map-mini.png")} style={{height: 152, width: 142}}></Image>
+            <Image source={require("@/assets/images/map-mini.png")} style={{height: 172, width: 150, borderRadius: 8, marginTop: -4}}></Image>
           </View>
       </View>
 
