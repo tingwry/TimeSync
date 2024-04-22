@@ -59,7 +59,7 @@ export default function CreateProfile() {
                 body: JSON.stringify({ 
                     "username": username, 
                     "name": name, 
-                    "phone_number": cleanedPhoneNumber 
+                    "phone_number": cleanedPhoneNumber
                 }),
             });
 

@@ -8,7 +8,7 @@ import { useAuth } from "../context/authContext";
 
 export default function Terms() {
   const [loading, isLoading] = useState(false);
-  const { email, password, username, name, phoneNumber } = useLocalSearchParams<{ email: string, password: string, username: string, name: string, phoneNumber: string }>();
+  const { email, password, username, name, cleanedPhoneNumber } = useLocalSearchParams<{ email: string, password: string, username: string, name: string, phoneNumber: string }>();
   const [agree, setAgree] = useState(false);
   const auth = useAuth();
   
@@ -26,7 +26,7 @@ export default function Terms() {
                 "password": password,
                 "username": username, 
                 "name": name, 
-                "phone_number": phoneNumber 
+                "phone_number": cleanedPhoneNumber 
             }),
         });
 
