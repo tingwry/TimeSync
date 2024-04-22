@@ -152,12 +152,13 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 
+
 def predict_times(arriving_time):
     # Define your dataset
     df = pd.DataFrame({
         'PreparationTime': [40, 30, 25, 30, 25, 15, 28],
         'TravelTime': [10, 7, 5, 7, 9, 5, 9],
-        'ArrivingTime': ['11:55', '8:51', '9:19', '11:03', '12:50','8:56', '15:59']
+        'ArrivingTime': ['11:55', '8:51', '9:19', '11:03', '12:50', '8:56', '15:59']
     })
 
     # Convert ArrivingTime to minutes since midnight
@@ -182,7 +183,8 @@ def predict_times(arriving_time):
     model_travel = RandomForestRegressor(random_state=42)  # Adjust parameters
     model_travel.fit(X, y_travel)
 
-    arriving_time = pd.to_datetime(arriving_time).hour * 60 + pd.to_datetime(arriving_time).minute
+    arriving_time = pd.to_datetime(
+        arriving_time).hour * 60 + pd.to_datetime(arriving_time).minute
 
     # Prediction for preparation time and travel time
     predicted_preparation_time = model_prep.predict([[arriving_time]])[0]
@@ -191,22 +193,25 @@ def predict_times(arriving_time):
     predicted_travel_time = model_travel.predict([[arriving_time]])[0]
 
     # Calculate wake-up time
-    predicted_wake_up_time = arriving_time - predicted_preparation_time - predicted_travel_time - 10
+    predicted_wake_up_time = arriving_time - \
+        predicted_preparation_time - predicted_travel_time - 10
     if predicted_wake_up_time >= arriving_time:
-        predicted_wake_up_time -= 1440  # Subtract 24 hours in minutes
-    
+        predicted_wake_up_time += 1440  # Subtract 24 hours in minutes
+
     predicted_wake_up_hours = int(predicted_wake_up_time // 60)
     predicted_wake_up_minutes = int(predicted_wake_up_time % 60)
-    formatted_predicted_wake_up_time = '{:02d}:{:02d}'.format(predicted_wake_up_hours, predicted_wake_up_minutes)
+    formatted_predicted_wake_up_time = '{:02d}:{:02d}'.format(
+        predicted_wake_up_hours, predicted_wake_up_minutes)
 
     # Calculate predicted departure time
     predicted_departure_time = arriving_time - predicted_travel_time - 10
     predicted_departure_hours = int(predicted_departure_time // 60)
     predicted_departure_minutes = int(predicted_departure_time % 60)
-    formatted_predicted_departure_time = '{:02d}:{:02d}'.format(predicted_departure_hours, predicted_departure_minutes)
-
+    formatted_predicted_departure_time = '{:02d}:{:02d}'.format(
+        predicted_departure_hours, predicted_departure_minutes)
 
     return formatted_predicted_wake_up_time, formatted_predicted_departure_time
+
 
 if __name__ == "__main__":
     predict_times()
