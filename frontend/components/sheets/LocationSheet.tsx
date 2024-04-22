@@ -69,8 +69,14 @@ export default function LocationSheet() {
   }, []);
 
   const handleCloseModalPress = useCallback(() => {
+    // console.log(name);
     bottomSheetModalRef.current?.close();
   }, []);
+
+  const onSetName = (name: string) => {
+    setLocationName(name);
+    console.log(name);
+  };
 
   return (
     <GestureHandlerRootView style={styles.sheetStyle}>
@@ -126,6 +132,7 @@ export default function LocationSheet() {
                 loc_name={locationName}
                 latitude={lat}
                 longitude={long}
+                setLocationName={onSetName}
               />
               <StartPoint />
               <View style={styles.divLine} />
