@@ -49,8 +49,9 @@ const PopUpCountdownTimer = () => {
   useEffect(() => {
     AsyncStorage.getItem("CalculatedPrepTime").then((value) => {
       if (value !== null) {
-        setMLTime(parseInt(value, 10) * 60); // Parse string to integer
-        setTime(parseInt(value, 10) * 60); // Parse string to integer
+        // setMLTime(parseInt(value, 10) * 60); // Parse string to integer
+        // setTime(parseInt(value, 10) * 60); // Parse string to integer
+        setTime(25 * 60);
         // Now, prepTime is a number
       } else {
         // Handle the case where the value is null (e.g., set a default value)
