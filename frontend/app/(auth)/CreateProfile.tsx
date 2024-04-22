@@ -14,6 +14,7 @@ export default function CreateProfile() {
     const [username, setUsername] = useState<string>('');
     const [name, setName] = useState<string>('');
     const [phoneNumber, setPhoneNumber] = useState<string>('');
+    
 
     const [errors, setErrors] = useState({
         username: '',
@@ -27,6 +28,7 @@ export default function CreateProfile() {
             name: '',
             phoneNumber: '',
         };
+        const cleanedPhoneNumber = phoneNumber.replace(/\D/g, '');
         if (username === '') {
             e.username = 'Username is required';
         }
@@ -35,6 +37,8 @@ export default function CreateProfile() {
         } 
         if (phoneNumber === '') {
             e.phoneNumber = 'Phone number is required';
+        } else if (cleanedPhoneNumber.length !== 10) {
+            e.phoneNumber = 'Please enter a valid phone number';
         }
     
         setErrors(e);
@@ -44,6 +48,8 @@ export default function CreateProfile() {
     const submit = async () => {
         if (validateForm()) {
             isLoading(true);
+            const cleanedPhoneNumber = phoneNumber.replace(/\D/g, '');
+
             const baseUrl = process.env.BASE_URL;
             const response = await fetch(`${baseUrl}/auth/check-userinfo/`, {
                 method: 'POST',
@@ -53,14 +59,14 @@ export default function CreateProfile() {
                 body: JSON.stringify({ 
                     "username": username, 
                     "name": name, 
-                    "phone_number": phoneNumber 
+                    "phone_number": cleanedPhoneNumber 
                 }),
             });
 
             isLoading(false);
             if (response.ok) {
                 router.replace({ 
-                    params: { email, password, username, name, phoneNumber },
+                    params: { email, password, username, name, cleanedPhoneNumber },
                     pathname: '/Terms',
                 });
             } else {
