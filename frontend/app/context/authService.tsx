@@ -73,7 +73,9 @@ const register = async (email: string, password: string, username: string, name:
     // }
 }
 
-const signIn = async (email: string, password: string): Promise<AuthData> => {
+
+// const signIn = async (email: string, password: string): Promise<AuthData> => {
+const signIn = async (email: string, password: string) => {
     const baseUrl = process.env.BASE_URL;
     const response = await fetch(`${baseUrl}/auth/token/`, {
         method: 'POST',
@@ -85,12 +87,12 @@ const signIn = async (email: string, password: string): Promise<AuthData> => {
 
     if (response.ok) {
         const data = await response.json();
-        console.log(data)
-        return data;
+        // return data;
+        return {'ok': true, 'data': data};
     } else {
         const errorData = await response.json();
-        console.log(errorData)
-        throw new Error("Invalid username or password");
+        // throw new Error("Invalid username or password");
+        return {'ok': false, 'data': errorData};
     }
 }
 

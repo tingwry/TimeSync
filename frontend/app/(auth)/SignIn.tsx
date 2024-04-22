@@ -3,6 +3,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import React, { useState } from "react";
 import { useAuth } from "../context/authContext";
@@ -23,7 +24,7 @@ export default function SignInScreen() {
   const [password, setPassword] = useState<string>("");
 
   const [errors, setErrors] = useState({
-      username: "",
+      email: "",
       password: "",
   });
 
@@ -37,12 +38,12 @@ export default function SignInScreen() {
 
   const validateForm = () => {
       let e = {
-          username: "",
+          email: "",
           password: "",
           confirmPassword: "",
       };
       if (email === "") {
-          e.username = "Email is required";
+          e.email = "Email is required";
       }
       if (password === "") {
           e.password = "Password is required";
@@ -55,48 +56,66 @@ export default function SignInScreen() {
     const login = async () => {
         if (validateForm()) {
             isLoading(true);
-            await auth.signIn(email, password);
-            router.replace("/Home");
+            const res = await auth.signIn(email, password);
+            if (res.ok) {
+              router.replace("/Home");
+            } else {
+              const errorData = res.data;
+              setErrors({
+                email: errorData.email ? errorData.email[0] : "",
+                password: errorData.password ? errorData.password[0] : "",
+              });
+              isLoading(false);
+            }
+            
         }
   };
 
   return (
-    <LinearGradient colors={["#182640", "#263D66"]} style={styles.container}>
-      {/* <Questionaires /> */}
-      <Text style={styles.textHeader}>Sign in</Text>
-      <View style={styles.authContainer}>
-        <TextInputPrimary
-          label="Email"
-          placeholder="example@email.com"
-          value={email}
-          onChangeText={setEmail}
-          errorText={errors.username}
-        />
-        <PasswordInput
-          label="Password"
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          errorText={errors.password}
-          password
-        />
-        <TouchableOpacity style={{ height: 48 }}>
-          <Text style={styles.forgetPasswordLink}>Forget password?</Text>
-        </TouchableOpacity>
+    <LinearGradient colors={["#182640", "#263D66"]} style={{paddingHorizontal: 32}}>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.textHeader}>Sign in</Text>
+        <View style={styles.authContainer}>
+          <TextInputPrimary
+            label="Email"
+            placeholder="example@email.com"
+            value={email}
+            onChangeText={setEmail}
+            errorText={errors.email}
+          />
+          <PasswordInput
+            label="Password"
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            errorText={errors.password}
+            password
+          />
+          <TouchableOpacity style={{ height: 48 }}>
+            {/* <Text style={styles.forgetPasswordLink}>Forget password?</Text> */}
+          </TouchableOpacity>
 
-        <ButtonPrimary text="Sign in" press={login} />
-      </View>
+          
+        </View>
 
-      {/* <Text>Incorrect password will be shown here</Text> */}
-      <Text style={styles.signUpLink}>
-        <Link href="/SignUp">Sign up for new account</Link>
-      </Text>
-      <Text style={styles.or}>Or</Text>
-      <ButtonGoogle
-        onPress={() => {
-          console.log("google pressed");
-        }}
-      />
+        <View style={styles.footer}>
+          <ButtonPrimary text="Sign in" press={login} />
+          <Text style={styles.signUpLink}>
+            <Link href="/SignUp">Sign up for new account</Link>
+          </Text>
+        </View>
+
+        {/* <ButtonPrimary text="Sign in" press={login} />
+        <Text style={styles.signUpLink}>
+          <Link href="/SignUp">Sign up for new account</Link>
+        </Text> */}
+        {/* <Text style={styles.or}>Or</Text>
+        <ButtonGoogle
+          onPress={() => {
+            console.log("google pressed");
+          }}
+        /> */}
+      </SafeAreaView>
     </LinearGradient>
   );
 }
@@ -104,16 +123,16 @@ export default function SignInScreen() {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    backgroundColor: theme.colors.bluePrimary,
+    height: "100%",
+    width: "100%",
     flexGrow: 1,
   },
-
   textHeader: {
     color: theme.colors.textPrimary,
     fontFamily: "dm-sans-bold",
     fontSize: 32,
-    marginTop: 120,
-    marginBottom: 48,
+    marginTop: 100,
+    marginBottom: 40,
   },
   forgetPasswordLink: {
     color: theme.colors.textPrimary,
@@ -143,6 +162,13 @@ const styles = StyleSheet.create({
   authContainer: {
     width: "100%",
     flexDirection: "column",
-    paddingHorizontal: 32,
+  },
+
+  // for no google acc only
+  footer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginBottom: 200,
   },
 });

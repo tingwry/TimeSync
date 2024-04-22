@@ -41,7 +41,22 @@ export default function SignUpScreen() {
         }
         if (password === '') {
             e.password = 'Password is required';
-        } 
+        } else if (password.length < 8) {
+            e.password = 'Password must be at least 8 characters. ';
+            if (!/[a-z]/.test(password)) {
+              e.password += `
+Password must contain at least 1 lowercase`;
+          }
+          if (!/[A-Z]/.test(password)) {
+              e.password += `
+Password must contain at least 1 uppercase`;
+          }
+          if (!/\d/.test(password)) {
+            e.password += `
+Password must contain at least 1 digit`;
+          }
+        }
+        
         if (confirmPassword === '') {
             e.confirmPassword = 'Confirm Password is required';
         } else if (password !== confirmPassword && password !== '' && confirmPassword !== '') {
@@ -84,48 +99,59 @@ export default function SignUpScreen() {
     }
 
   return (
-    <LinearGradient colors={["#182640", "#263D66"]} style={styles.container}>
-      <Text style={styles.textHeader}>Sign up</Text>
-      <View style={styles.authContainer}>
-        <TextInputPrimary
-          label="Email"
-          placeholder="example@email.com"
-          value={email}
-          onChangeText={setEmail}
-          errorText={errors.email}
-        />
-        <PasswordInput
-          label="Create a Password"
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          errorText={errors.password}
-          password
-          // helperText="Your password must contain at least 10 characters and at least 1 uppercase letter."
-        />
-        <PasswordInput
-          label="Confirm your password"
-          placeholder="Password"
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          errorText={errors.confirmPassword}
-          password
-          // helperText="Your password must contain at least 10 characters and at least 1 uppercase letter."
-        />
-        <View style={{ marginTop: 16 }}>
+    <LinearGradient colors={["#182640", "#263D66"]} style={{paddingHorizontal: 32}}>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.textHeader}>Sign up</Text>
+        <View style={styles.authContainer}>
+          <TextInputPrimary
+            label="Email"
+            placeholder="example@email.com"
+            value={email}
+            onChangeText={setEmail}
+            errorText={errors.email}
+          />
+          <PasswordInput
+            label="Create a Password"
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            errorText={errors.password}
+            password
+            // helperText="Your password must contain at least 10 characters and at least 1 uppercase letter."
+          />
+          <PasswordInput
+            label="Confirm your password"
+            placeholder="Password"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            errorText={errors.confirmPassword}
+            password
+            // helperText="Your password must contain at least 10 characters and at least 1 uppercase letter."
+          />
+          
+        </View>
+
+        <View style={styles.footer}>
+          <ButtonPrimary text="Continue" press={submit} />
+          <Text style={styles.signInLink}>
+            <Link href="/SignIn">Sign in with existing account</Link>
+          </Text>
+        </View>
+        
+        {/* <View style={{ marginTop: 16 }}>
           <ButtonPrimary text="Continue" press={submit} />
         </View>
-      </View>
-
-      <Text style={styles.signInLink}>
-        <Link href="/SignIn">Sign in with existing account</Link>
-      </Text>
-      <Text style={styles.or}>Or</Text>
-      <ButtonGoogle
-        onPress={() => {
-          console.log("google pressed");
-        }}
-      />
+        <Text style={styles.signInLink}>
+          <Link href="/SignIn">Sign in with existing account</Link>
+        </Text>
+        
+        <Text style={styles.or}>Or</Text>
+        <ButtonGoogle
+          onPress={() => {
+            console.log("google pressed");
+          }}
+        /> */}
+      </SafeAreaView>
     </LinearGradient>
   );
 }
@@ -133,16 +159,16 @@ export default function SignUpScreen() {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    backgroundColor: theme.colors.bluePrimary,
     height: "100%",
     width: "100%",
+    flexGrow: 1,
   },
   textHeader: {
     color: theme.colors.textPrimary,
     fontFamily: "dm-sans-bold",
     fontSize: 32,
-    marginTop: 120,
-    marginBottom: 48,
+    marginTop: 100,
+    marginBottom: 40,
   },
   signInLink: {
     color: theme.colors.textPrimary,
@@ -162,6 +188,12 @@ const styles = StyleSheet.create({
   authContainer: {
     width: "100%",
     flexDirection: "column",
-    paddingHorizontal: 32,
+  },
+  // for no google acc only
+  footer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginBottom: 80,
   },
 });

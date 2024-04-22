@@ -2,23 +2,8 @@ from rest_framework import serializers
 from ...models import UserAuth, UserInfo, Schedule, Location
 from datetime import datetime
 
-# class CustomTimeField(serializers.Field):
-#     def to_internal_value(self, data):
-#         try:
-#             # Parse the time string into a datetime object
-#             time_obj = datetime.strptime(data, '%H:%M')
-#             # Return the time as a string in the format HH:MM
-#             return time_obj.strftime('%H:%M')
-#         except ValueError:
-#             raise serializers.ValidationError('Invalid time format. Use HH:MM.')
-
-#     def to_representation(self, value):
-#         return value.strftime('%H:%M')
-
 class ScheduleSerializer(serializers.ModelSerializer):
     uid = serializers.PrimaryKeyRelatedField(read_only=True)
-    # start_time = CustomTimeField()
-    # end_time = CustomTimeField()
 
     class Meta:
         model = Schedule

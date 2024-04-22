@@ -40,8 +40,10 @@ class MyTokenObtainPairView(TokenObtainPairView):
                 'username': username,
                 'name': name
             }
-            return Response(res, status=status.HTTP_200_OK)  
-        # return Response({ "error": "Email or password is incorrect"}, status=status.HTTP_400_BAD_REQUEST)  
+            print(res)
+            return Response(res, status=status.HTTP_200_OK) 
+        print(serializer.errors) 
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
 
 # ok
 class EmailCheckView(APIView):
@@ -67,7 +69,7 @@ class RegisterView(APIView):
         if serializer.is_valid(raise_exception=True):
             user_data = serializer.save()
             uid = user_data['userinfo'].uid
-            return Response({'uid': uid}, status=status.HTTP_201_CREATED)
+            return Response({'uid': uid }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # ok
@@ -139,7 +141,7 @@ class DeleteAccountView(APIView):
     def delete(self, request):
         serializer = DeleteAccountSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
-            serializer.delete(instance=request.user)
+            serializer.delete()
             return Response(status=status.HTTP_200_OK)
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

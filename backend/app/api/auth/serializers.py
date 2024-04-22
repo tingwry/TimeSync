@@ -1,11 +1,48 @@
 from rest_framework import serializers
 from ...models import UserAuth, UserInfo
 
+from django.contrib.auth import authenticate
+
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken, TokenError
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        email = attrs.get('email').lower()
+        password = attrs.get('password')
+
+        if email and password:
+            if not UserAuth.objects.filter(email=email).exists():
+                raise serializers.ValidationError({'email': ['User does not exist.']})
+            
+            # Authenticate user
+            user = authenticate(email=email, password=password)
+
+            # Validate password
+            if user is None or not user.check_password(password):
+                raise serializers.ValidationError({'password': ['Password is incorrect.']})
+            
+            # token
+            # Custom claims
+            token = super().get_token(user)
+            userinfo = UserInfo.objects.get(uid=user.uid_id)
+            token['uid'] = userinfo.uid
+            token['username'] = userinfo.username
+            token['name'] = userinfo.name
+            
+            # return token
+            return {
+                'access': str(token.access_token),
+                'refresh': str(token),
+            }
+        
+        else:
+            raise serializers.ValidationError({
+                'email': ['This field is required.'],
+                'password': ['This field is required.']
+            })
+        
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
@@ -45,7 +82,6 @@ class UserInfoSerializer(serializers.ModelSerializer):
         if UserInfo.objects.filter(username=value).exists():
             raise serializers.ValidationError('This username is already in use.')
         return value
-
 
 class RegisterSerializer(serializers.Serializer):
     email = serializers.EmailField()
@@ -137,6 +173,7 @@ class SignOutSerializer(serializers.Serializer):
         except TokenError:
             self.fail('Failed to blacklist token.')
 
+# ok
 class DeleteAccountSerializer(serializers.ModelSerializer):
     class Meta: 
         model = UserAuth
@@ -150,7 +187,9 @@ class DeleteAccountSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Current password is incorrect.')
         return value
 
-    def delete(self, instance):
-        instance.delete()
-        # return instance
+    def delete(self):
+        user = self.context['request'].user
+        userinfo = UserInfo.objects.get(uid=user.uid_id)
+        userinfo.delete()  # Delete UserInfo instance and its associated instances
+
     

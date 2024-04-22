@@ -14,6 +14,7 @@ export default function CreateProfile() {
     const [username, setUsername] = useState<string>('');
     const [name, setName] = useState<string>('');
     const [phoneNumber, setPhoneNumber] = useState<string>('');
+    
 
     const [errors, setErrors] = useState({
         username: '',
@@ -27,6 +28,7 @@ export default function CreateProfile() {
             name: '',
             phoneNumber: '',
         };
+        const cleanedPhoneNumber = phoneNumber.replace(/\D/g, '');
         if (username === '') {
             e.username = 'Username is required';
         }
@@ -35,6 +37,8 @@ export default function CreateProfile() {
         } 
         if (phoneNumber === '') {
             e.phoneNumber = 'Phone number is required';
+        } else if (cleanedPhoneNumber.length !== 10) {
+            e.phoneNumber = 'Please enter a valid phone number';
         }
     
         setErrors(e);
@@ -44,6 +48,8 @@ export default function CreateProfile() {
     const submit = async () => {
         if (validateForm()) {
             isLoading(true);
+            const cleanedPhoneNumber = phoneNumber.replace(/\D/g, '');
+
             const baseUrl = process.env.BASE_URL;
             const response = await fetch(`${baseUrl}/auth/check-userinfo/`, {
                 method: 'POST',
@@ -53,14 +59,14 @@ export default function CreateProfile() {
                 body: JSON.stringify({ 
                     "username": username, 
                     "name": name, 
-                    "phone_number": phoneNumber 
+                    "phone_number": cleanedPhoneNumber 
                 }),
             });
 
             isLoading(false);
             if (response.ok) {
                 router.replace({ 
-                    params: { email, password, username, name, phoneNumber },
+                    params: { email, password, username, name, cleanedPhoneNumber },
                     pathname: '/Terms',
                 });
             } else {
@@ -90,37 +96,36 @@ export default function CreateProfile() {
     }
 
   return (
-    <LinearGradient colors={["#182640", "#263D66"]} style={styles.container}>
-      <Text style={styles.textHeader}>Create a Profile</Text>
-      <View style={styles.authContainer}>
-        <TextInputPrimary
-          label="Name"
-          placeholder="Your name or nickname"
-          value={name}
-          onChangeText={setName}
-          errorText={errors.name}
-        />
-        <TextInputPrimary
-          label="Username"
-          placeholder="@yourusername"
-          value={username}
-          onChangeText={setUsername}
-          errorText={errors.username}
-        />
-        <TextInputPrimary
-          label="Phone number"
-          placeholder="Your phone number"
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-          errorText={errors.phoneNumber}
-        />
-        <Text>
-          <Link href="/SignIn">Sign in</Link>
-        </Text>
-      </View>
-      <View style={styles.footer}>
-        <ButtonPrimary text="Continue" press={submit} />
-      </View>
+    <LinearGradient colors={["#182640", "#263D66"]} style={{paddingHorizontal: 32}}>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.textHeader}>Create a Profile</Text>
+        <View style={styles.authContainer}>
+          <TextInputPrimary
+            label="Name"
+            placeholder="Your name or nickname"
+            value={name}
+            onChangeText={setName}
+            errorText={errors.name}
+          />
+          <TextInputPrimary
+            label="Username"
+            placeholder="@yourusername"
+            value={username}
+            onChangeText={setUsername}
+            errorText={errors.username}
+          />
+          <TextInputPrimary
+            label="Phone number"
+            placeholder="Your phone number"
+            value={phoneNumber}
+            onChangeText={setPhoneNumber}
+            errorText={errors.phoneNumber}
+          />
+        </View>
+        <View style={styles.footer}>
+          <ButtonPrimary text="Continue" press={submit} />
+        </View>
+      </SafeAreaView>
     </LinearGradient>
   );
 }
@@ -130,20 +135,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: "100%",
     width: "100%",
-    paddingHorizontal: 32,
     flexGrow: 1,
   },
   textHeader: {
     color: theme.colors.textPrimary,
     fontFamily: "dm-sans-bold",
     fontSize: 32,
-    marginTop: 120,
-    marginBottom: 48,
+    marginTop: 100,
+    marginBottom: 40,
   },
   footer: {
     flex: 1,
-      justifyContent: "flex-end",
-    marginBottom: 44
+    justifyContent: "flex-end",
   },
   authContainer: {
     width: "100%",

@@ -9,10 +9,19 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthData, authService } from "./authService";
 import { Redirect, router } from "expo-router";
 
+type signInResponse = {
+  'ok': boolean;
+  data: {
+    'email'?: string[];
+    'password'?: string[];
+  };
+}
+
 type AuthContextData = {
   authData?: AuthData;
   loading: boolean;
-  signIn(username: string, _password: string): Promise<void>;
+  // signIn(username: string, _password: string): Promise<void>;
+  signIn(username: string, _password: string): Promise<signInResponse>;
   signOut(): void;
 };
 
@@ -55,14 +64,20 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(false);
     }
   }
+  // const signIn = async (email: string, _password: string) => {
+    // const _authData = await authService.signIn(email, _password);
+    // console.log("_authData");
 
-  const signIn = async (email: string, _password: string) => {
-    // call the service passing credential (email and password).
-    // In a real App this data will be provided by the user from some InputText components.
-    const _authData = await authService.signIn(email, _password);
-    // console.log(_authData);
-    setAuthData(_authData);
-    AsyncStorage.setItem("@AuthData", JSON.stringify(_authData));
+    // setAuthData(_authData);
+    // AsyncStorage.setItem("@AuthData", JSON.stringify(_authData));
+    
+  const signIn = async (email: string, _password: string): Promise<signInResponse> => {
+    const res = await authService.signIn(email, _password);
+    if (res.ok) {
+      setAuthData(res.data);
+      AsyncStorage.setItem("@AuthData", JSON.stringify(res.data));
+    }
+    return res;
   };
 
   const signOut = async () => {
