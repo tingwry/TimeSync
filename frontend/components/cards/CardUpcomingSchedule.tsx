@@ -75,7 +75,7 @@ const CardScheduleDetail: React.FC<ScheduleDetailProps> = ({
 
       <View style={styles.detailsContainer}>
         <View style={styles.detailItems}>
-          <Text style={styles.detailsCaption}>Tomorrow's schedule</Text>
+          <Text style={styles.detailsCaption}>{date}'s schedule</Text>
           <View style={{ flexDirection: "column", gap: 0 }}>
             <Text style={styles.detailName}>{event_name}</Text>
             {/* <Text style={styles.detailsCaption}> */}

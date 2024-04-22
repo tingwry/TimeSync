@@ -34,7 +34,7 @@ export default function CardAddress(props: any) {
   const fetchLocation = async () => {
     try {
       const baseUrl = process.env.BASE_URL;
-      const response = await fetch(`${baseUrl}/location/default-home/`, {
+      const response = await fetch(`${baseUrl}/location/view/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
