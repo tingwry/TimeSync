@@ -126,9 +126,12 @@ Password must contain at least 1 digit`;
             onChangeText={setConfirmPassword}
             errorText={errors.confirmPassword}
             password
-            // helperText="Your password must contain at least 10 characters and at least 1 uppercase letter."
           />
-          
+          {password === "" ? 
+            <Text style={styles.helperText}>
+              Your password must contain at least 10 characters and at least 1 uppercase letter.
+            </Text> : null
+          }
         </View>
 
         <View style={styles.footer}>
@@ -170,6 +173,9 @@ const styles = StyleSheet.create({
     marginTop: 100,
     marginBottom: 40,
   },
+  helperText: {
+    color: theme.colors.textCaption,
+  },
   signInLink: {
     color: theme.colors.textPrimary,
     fontFamily: "dm-sans-semibold",
@@ -194,6 +200,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
-    marginBottom: 80,
+    marginBottom: 40,
   },
 });
