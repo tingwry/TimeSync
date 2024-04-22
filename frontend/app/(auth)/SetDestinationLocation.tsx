@@ -80,7 +80,7 @@ export default function SetDestinationLocation() {
       </View>
 
       <View style={styles.footer}>
-        <Link href="/Home">Next</Link>
+        {/* <Link href="/Home">Next</Link> */}
         <View style={styles.indicatorContainer}>
           <Pressable
             style={styles.indicatorFocus}

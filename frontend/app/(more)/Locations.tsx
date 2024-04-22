@@ -6,18 +6,25 @@ import {
   Text,
   Pressable,
   Button,
+  ScrollView,
 } from "react-native";
 import { theme } from "../theme";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, useNavigation } from "expo-router";
 import CardLocations from "@/components/address/CardLocations";
 import { useAuth } from "../context/authContext";
+import { useIsFocused } from "@react-navigation/native";
+
 
 export default function LocationsPage() {
   const navigation = useNavigation();
   const router = useRouter();
+  const isFocused = useIsFocused();
+
   const auth = useAuth();
   const access = auth.authData?.access;
+
+  const [locations, setLocations] = useState<any>();
 
   const fetchLocation = async () => {
     try {
@@ -34,6 +41,7 @@ export default function LocationsPage() {
       if (response.ok) {
         console.log('location data');
         console.log(data);
+        setLocations(data);
       } else {
         console.error(data);
 
@@ -42,6 +50,12 @@ export default function LocationsPage() {
       console.error("Home - Error fetching schedule:", error);
     }
   };
+
+  useEffect(() => {
+    if (isFocused) {
+      fetchLocation();
+    }
+  }, [isFocused]);
 
   return (
     <View style={styles.background}>
@@ -58,6 +72,7 @@ export default function LocationsPage() {
         </TouchableOpacity>
         <Text style={styles.textHeader}>Locations</Text>
       </View>
+
       <View style={styles.container}>
         <Text style={styles.textTitle}>Home Location</Text>
         <CardLocations
@@ -70,7 +85,6 @@ export default function LocationsPage() {
         <Text style={[styles.textTitle, { marginTop: 24 }]}>
           Saved Location
         </Text>
-        <Button onPress={fetchLocation} title="Fetch all Location" />
         <CardLocations
           locationName="Add new Location"
           locationDetail="go to nextttt"
@@ -84,6 +98,18 @@ export default function LocationsPage() {
           style={{ width: 24, height: 24 }}
         />
       </TouchableOpacity>
+      {locations && locations.length > 0 && ( <>
+          {locations.map((location: any) => (
+            <CardLocations
+              key={location.id}
+              locationName={location.loc_name}
+              locationDetail={location.address}
+              labelIcon={require("@/assets/icons/school.png")}
+              navigateTo={() => (console.log("navigate to location"))}
+            />
+          ))}
+      </>)}
+      
       </View>
     </View>
   );

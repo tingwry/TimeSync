@@ -113,8 +113,6 @@ export default function Home() {
 
   useEffect(() => {
     if (isFocused) {
-      // Perform actions you want when the screen is focused.
-      // This could be fetching data, re-rendering components, or any other refresh logic.
       fetchSchedule();
     }
   }, [isFocused]);

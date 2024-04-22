@@ -9,7 +9,7 @@ import { useAuth } from "../context/authContext";
 export default function Terms() {
   const [loading, isLoading] = useState(false);
   const { email, password, username, name, phoneNumber } = useLocalSearchParams<{ email: string, password: string, username: string, name: string, phoneNumber: string }>();
-  const [agree, setAgree] = useState(true);
+  const [agree, setAgree] = useState(false);
   const auth = useAuth();
   
   const submit = async () => {
