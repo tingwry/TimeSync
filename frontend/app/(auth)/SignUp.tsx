@@ -41,7 +41,22 @@ export default function SignUpScreen() {
         }
         if (password === '') {
             e.password = 'Password is required';
-        } 
+        } else if (password.length < 8) {
+            e.password = 'Password must be at least 8 characters. ';
+            if (!/[a-z]/.test(password)) {
+              e.password += `
+Password must contain at least 1 lowercase`;
+          }
+          if (!/[A-Z]/.test(password)) {
+              e.password += `
+Password must contain at least 1 uppercase`;
+          }
+          if (!/\d/.test(password)) {
+            e.password += `
+Password must contain at least 1 digit`;
+          }
+        }
+        
         if (confirmPassword === '') {
             e.confirmPassword = 'Confirm Password is required';
         } else if (password !== confirmPassword && password !== '' && confirmPassword !== '') {
