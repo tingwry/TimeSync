@@ -133,8 +133,6 @@ class Location(models.Model):
             models.Index(fields=['uid', 'default_home', 'default_dest']),
         ]
 
-
-
 class PrepActivityTime(models.Model):
     prep_activity_name = models.CharField(max_length=100, primary_key=True)
     prep_activity_time = models.IntegerField()

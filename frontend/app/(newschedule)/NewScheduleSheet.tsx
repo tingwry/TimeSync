@@ -34,6 +34,41 @@ export default function NewSchedule() {
   const [transportationMode, setTransportationMode] = useState("car");
   const [extraPrepTime, setExtraPrepTime] = useState(0);
   const [note, setNote] = useState("");
+  const [schedStart, setSchedStart] = useState<Number | null>(null);
+  const [schedDestination, setSchedDestination] = useState<Number | null>(null);
+  const [wakeUpAids, setWakeUpAids] = useState<Number | null>(null);
+
+  const [errors, setErrors] = useState({
+    eventName: '',
+    date: '',
+    startTime: '',
+    endTime: '',
+    transportationMode: '',
+    extraPrepTime: '',
+    note: '',
+  });
+
+  const validateForm = () => {
+    let e = {
+      eventName: '',
+      date: '',
+      startTime: '',
+      endTime: '',
+      transportationMode: '',
+      extraPrepTime: '',
+      note: '',
+    };
+
+    if (eventName === '') {
+      e.eventName = 'Please enter an event name';
+    }
+    if (new Date(date) <= currentDate) {
+      e.date = 'Can not schedule for past date';
+    } 
+
+    setErrors(e);
+    return Object.values(e).every(x => x === '')
+}
 
   const handleClickPress = async () => {
     const formattedEndTime = endTime === "" ? null : endTime;
@@ -45,10 +80,11 @@ export default function NewSchedule() {
         transportation_mode: transportationMode,
         extra_prep_time: extraPrepTime,
         note: note,
-        sched_start: 3,
-        sched_destination: 6,
-        wake_up_aids: 1,
+        sched_start: schedStart,
+        sched_destination: schedDestination,
+        wake_up_aids: wakeUpAids,
     }
+    console.log("req")
     console.log(req)
     
     const baseUrl = process.env.BASE_URL;
@@ -58,18 +94,7 @@ export default function NewSchedule() {
         "Content-Type": "application/json",
         Authorization: "Bearer " + access,
       },
-      body: JSON.stringify({
-        event_name: eventName,
-        date: date,
-        start_time: startTime,
-        end_time: formattedEndTime,
-        transportation_mode: transportationMode,
-        extra_prep_time: extraPrepTime,
-        note: note,
-        sched_start: 3,
-        sched_destination: 4,
-        wake_up_aids: 1,
-      }),
+      body: JSON.stringify(req),
     });
     console.log(req);
     let result = await response.json();

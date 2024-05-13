@@ -65,3 +65,13 @@ class DefaultDestinationLocationView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         return Location.objects.filter(uid=user.uid_id, default_dest=True, default_home=False)
+    
+class DefaultLocationView(generics.ListAPIView):
+    serializer_class = LocationSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        user = self.request.user
+        home = Location.objects.filter(uid=user.uid_id, default_home=True)
+        des = Location.objects.filter(uid=user.uid_id, default_dest=True)
+        return {'home': home, 'destination': des}

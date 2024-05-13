@@ -18,6 +18,7 @@ class ScheduleSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Extract foreign key IDs from validated data
         # uid = self.context['request'].user
+        # print("...ser: ", validated_data)
         
         sched_start_id = validated_data.pop('sched_start').loc_id
         sched_destination_id = validated_data.pop('sched_destination').loc_id

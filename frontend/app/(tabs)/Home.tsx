@@ -66,7 +66,7 @@ export default function Home() {
       const data = await response.json();
       if (response.ok) {
         // console.log("schedule data");
-        // console.log(data);
+        console.log(data);
         if (data.date === null) {
           setScheduleRecent(false);
         } else {

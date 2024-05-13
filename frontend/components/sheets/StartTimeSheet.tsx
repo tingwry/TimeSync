@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { Portal } from "@gorhom/portal";
@@ -9,6 +9,7 @@ import { TimerPicker } from "react-native-timer-picker";
 import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "@/app/theme";
 import React from "react";
+import { useIsFocused } from "@react-navigation/native";
 
 export interface StartTimeSheetProps {
   onStartTimeSelect: (startTime: string) => void;
@@ -19,6 +20,7 @@ export default function StartTimeSheet({
 }: StartTimeSheetProps) {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["60%"], []);
+  const isFocused = useIsFocused();
 
   const currentDate = new Date();
   const formattedTime = currentDate.toLocaleTimeString([], {
@@ -58,6 +60,13 @@ export default function StartTimeSheet({
     },
     [onStartTimeSelect]
   );
+
+  useEffect(() => {
+    if (isFocused) {
+      setSelectedHours(currentHour.toString());
+      handleCloseModalPress(formattedSelctedTime);
+    }
+  }, [isFocused]);
 
   return (
     <GestureHandlerRootView style={styles.sheetStyle}>

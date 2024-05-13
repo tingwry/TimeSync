@@ -16,6 +16,7 @@ import CardSchedule from "@/components/cards/CardSchedule";
 import { PortalProvider } from "@gorhom/portal";
 import { router, useNavigation } from "expo-router";
 import { useAuth } from "../context/authContext";
+import { useIsFocused } from "@react-navigation/native";
 // import API_URL from "@env";
 
 interface ScheduleItem {
@@ -39,39 +40,42 @@ export default function Home() {
   // }
 
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const auth = useAuth();
   const access = auth.authData?.access;
 
   const [schedule, setSchedule] = useState<ScheduleItem[]>([]);
   const [scheduleNumber, setScheduleNumber] = useState(0);
+  const fetchSchedule = async () => {
+    try {
+      const baseUrl = process.env.BASE_URL;
+      const response = await fetch(`${baseUrl}/schedule/view/`, {
+        // const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + access,
+        },
+      });
+
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+        setScheduleNumber(data.length);
+        setSchedule(data);
+      } else {
+        console.error(data);
+      }
+    } catch (error) {
+      console.error("View all schedule - Error fetching schedule:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchSchedule = async () => {
-      try {
-        const baseUrl = process.env.BASE_URL;
-        const response = await fetch(`${baseUrl}/schedule/view/`, {
-          // const response = await fetch("http://127.0.0.1:8000/app/schedule/recent/", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + access,
-          },
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-          setScheduleNumber(data.length);
-          setSchedule(data);
-        } else {
-          console.error(data);
-        }
-      } catch (error) {
-        console.error("View all schedule - Error fetching schedule:", error);
-      }
-    };
-
-    fetchSchedule();
-  }, []);
+    if (isFocused) {
+      fetchSchedule();
+    }
+  }, [isFocused]);
 
   return (
     <View style={styles.background}>
