@@ -121,33 +121,30 @@ export default function AlarmClock({
         });
 
         const data = await response.json();
-        console.log(scheduleIds);
+        console.log("schedIds 1st", scheduleIds);
 
         if (response.ok) {
           for (const event of data) {
-            console.log(event);
+            // console.log("event ",event);
+
             if (!scheduleIds.includes(event.event_id)) {
               setScheduleIds((prevScheduleIds) => [
                 ...prevScheduleIds,
                 event.event_id,
               ]);
             }
+            
+            console.log("schedIds 2nd", scheduleIds);
 
-            console.log(scheduleIds);
-            // let date = new Date();
-            // date.setSeconds(date.getSeconds() + 5);
-
-            // let dateFromDB = "2024-04-21";
             let dateFromDB = event.date;
-            // let timeFromML = "09:19:00";
-            // console.log(event.start_time.Type)
+
             const timeFromMLResponse = await predictMLTime(event.start_time);
             const timeFromML = timeFromMLResponse.wake_up_time;
             let dateTimeString = dateFromDB + " " + timeFromML;
 
             let fullDate = new Date(dateTimeString);
             setDate(fullDate);
-            console.log(date);
+            console.log("date", date);
 
             const departTimeML = timeFromMLResponse.departure_time;
             let departDateTimeString = dateFromDB + " " + departTimeML;
@@ -163,7 +160,6 @@ export default function AlarmClock({
 
             scheduleNotificationsHandler();
             playAudio();
-            // }
           }
         } else {
           console.error(data);
@@ -175,17 +171,6 @@ export default function AlarmClock({
 
     fetchSchedule();
   }, []);
-
-  // let date = new Date();
-  // date.setSeconds(date.getSeconds() + 5);
-
-  // let dateFromDB = "2024-04-22";
-  // let timeFromML = "04:04:00";
-
-  // let dateTimeString = dateFromDB + " " + timeFromML;
-
-  // let fullDate = new Date(dateTimeString);
-  // setDate(fullDate);
 
   // Prepare the audio
   useEffect(() => {
@@ -217,7 +202,7 @@ export default function AlarmClock({
       console.log("currentTime.getTime() is ", currentTime);
 
       if (delayInMillis <= 0) {
-        console.error("Scheduled time is in the past.");
+        console.error("Play Audio: Scheduled time is in the past.");
         turnOffAlarm();
         return;
       }
@@ -337,7 +322,7 @@ export default function AlarmClock({
       // const delayInMillis = currentTime.getTime() - date.getTime();
 
       if (delayInMillis <= 0) {
-        console.error("Scheduled time is in the past.");
+        console.error("Noti: Scheduled time is in the past.");
         turnOffAlarm();
         return;
       }
@@ -355,7 +340,6 @@ export default function AlarmClock({
             // sound: "alarm-sound.mp4",
           },
           trigger: {
-            // hour: newHour,
             // minute: parseInt(minutee),
             // repeats: true,
             date: date,
@@ -520,7 +504,6 @@ export default function AlarmClock({
           >
             <Text style={styles.textTitle}>Alarm</Text>
             <Text style={styles.timer}>{formattedTime}</Text>
-            {/* <Text style={styles.timer}>08:10</Text> */}
             <Pressable onPress={handleClickStop}>
               <LinearGradient
                 colors={["#CF7B04", "#EDA33C"]}
