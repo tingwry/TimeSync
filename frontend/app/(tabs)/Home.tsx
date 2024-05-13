@@ -170,7 +170,7 @@ export default function Home() {
           setWakeupTime={setWakeupTime}
           setDepartureTime={setDepartureTime}
         />
-        {startCountdown ? <PopUpCountdownTimer /> : null}
+        {startCountdown ? <PopUpCountdownTimer departureTime={departureTime} /> : null}
       </View>
 
       <View>

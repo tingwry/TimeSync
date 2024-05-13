@@ -18,7 +18,13 @@ import { useNavigation } from "expo-router";
 import { useAuth } from "../context/authContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const PopUpCountdownTimer = () => {
+interface PopUpCountdownTimerProps {
+  departureTime: string;
+}
+
+export default function PopUpCountdownTimer({
+  departureTime,
+}: PopUpCountdownTimerProps) {
   const [fontsLoaded] = useFonts({
     "dm-sans-medium": require("../../assets/fonts/DMSans-Medium.ttf"),
     "dm-sans-extrabold": require("../../assets/fonts/DMSans-ExtraBold.ttf"),
@@ -51,8 +57,23 @@ const PopUpCountdownTimer = () => {
       if (value !== null) {
         // setMLTime(parseInt(value, 10) * 60); // Parse string to integer
         // setTime(parseInt(value, 10) * 60); // Parse string to integer
-        setTime(25 * 60);
-        // Now, prepTime is a number
+        // setTime(25 * 60);
+        console.log("departure Time: ", departureTime);
+        const [hours, minutes] = departureTime.split(":").map(Number);
+        const departureTimeDate = new Date();
+        departureTimeDate.setHours(hours);
+        departureTimeDate.setMinutes(minutes);
+        departureTimeDate.setSeconds(0);
+
+        const currentTime = new Date();
+
+        // Calculate the time until the departure time
+        const timeTillDepart =
+          departureTimeDate.getTime() - currentTime.getTime();
+
+        const durationInSeconds = Math.floor(timeTillDepart / 1000);
+        console.log("time till depart in seconds: ", durationInSeconds);
+        setTime(durationInSeconds);
       } else {
         // Handle the case where the value is null (e.g., set a default value)
         console.error("Value is null");
@@ -246,7 +267,7 @@ const PopUpCountdownTimer = () => {
       </Modal>
     </View>
   );
-};
+}
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -327,5 +348,3 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
   },
 });
-
-export default PopUpCountdownTimer;
