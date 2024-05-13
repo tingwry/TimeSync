@@ -377,11 +377,12 @@ export default function AlarmClock({
       }
 
       await Notifications.cancelScheduledNotificationAsync(notificationId);
+      console.log("Alarm ", notificationId, " turned off");
       const resetValue = "none";
       await setNotificationId(resetValue);
       storeData(resetValue);
     } else {
-      console.log("Alarm already turned off");
+      console.log("All Alarms already turned off");
       console.log(notificationId);
     }
   }
@@ -398,6 +399,7 @@ export default function AlarmClock({
     }
   }
 
+  
   async function getData() {
     try {
       const jasonValue = await AsyncStorage.getItem("currentAlarmId");
