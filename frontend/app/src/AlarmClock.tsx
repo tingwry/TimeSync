@@ -120,20 +120,24 @@ export default function AlarmClock({
           },
         });
 
+        
         const data = await response.json();
+        console.log(data);
         console.log("schedIds 1st", scheduleIds);
 
         if (response.ok) {
           for (const event of data) {
-            // console.log("event ",event);
+            console.log("event ",event);
 
             if (!scheduleIds.includes(event.event_id)) {
+              console.log('entered if not include');
+
               setScheduleIds((prevScheduleIds) => [
                 ...prevScheduleIds,
                 event.event_id,
               ]);
             }
-            
+
             console.log("schedIds 2nd", scheduleIds);
 
             let dateFromDB = event.date;
@@ -144,7 +148,7 @@ export default function AlarmClock({
 
             let fullDate = new Date(dateTimeString);
             setDate(fullDate);
-            console.log("date", date);
+            console.log("date: ", date);
 
             const departTimeML = timeFromMLResponse.departure_time;
             let departDateTimeString = dateFromDB + " " + departTimeML;
@@ -161,6 +165,7 @@ export default function AlarmClock({
             scheduleNotificationsHandler();
             playAudio();
           }
+          console.log("final schedIds", scheduleIds)
         } else {
           console.error(data);
         }
@@ -399,7 +404,6 @@ export default function AlarmClock({
     }
   }
 
-  
   async function getData() {
     try {
       const jasonValue = await AsyncStorage.getItem("currentAlarmId");
