@@ -96,13 +96,14 @@ export default function NewSchedule() {
       },
       body: JSON.stringify(req),
     });
-    console.log(req);
-    let result = await response.json();
+    // console.log(req);
+    // let result = await response.json();
 
     if (response.ok) {
-      console.log("Success");
+      console.log("Added success");
       navigation.goBack();
     } else {
+      let result = await response.json();
       console.error(result);
     }
   };

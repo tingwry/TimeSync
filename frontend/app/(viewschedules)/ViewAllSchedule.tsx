@@ -97,7 +97,7 @@ export default function Home() {
 
       <View style={styles.container}>
         <View style={styles.monthContainer}>
-          <Text style={styles.textMonth}>April 2024</Text>
+          <Text style={styles.textMonth}>May 2024</Text>
           <Image
             source={require("@/assets/icons/chevron-down.png")}
             style={{ width: 24, height: 24 }}
@@ -118,15 +118,17 @@ export default function Home() {
 
               <View style={styles.detailContainer}>
                 <View style={styles.detailView}>
-                  {item.end_time != null ?
-                  (<Text style={styles.textTime}>
-                    {item.start_time.substring(0, 5)} -{" "}
-                    {item.end_time.substring(0, 5)}
-                  </Text>) : (<Text style={styles.textTime}>
-                    {item.start_time.substring(0, 5)}
-                  </Text>)
-                  }
-                  
+                  {item.end_time != null ? (
+                    <Text style={styles.textTime}>
+                      {item.start_time.substring(0, 5)} -{" "}
+                      {item.end_time.substring(0, 5)}
+                    </Text>
+                  ) : (
+                    <Text style={styles.textTime}>
+                      {item.start_time.substring(0, 5)}
+                    </Text>
+                  )}
+
                   <Text style={styles.textTitle}>{item.event_name}</Text>
                   <Text style={styles.textLocation}>at School</Text>
                 </View>

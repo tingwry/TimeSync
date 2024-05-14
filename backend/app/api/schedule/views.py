@@ -90,7 +90,7 @@ class ScheduleCreate(generics.CreateAPIView):
             serializer.save(uid=userinfo)  # Save schedule with associated user
             print('schedule created')
             print(serializer.data)
-            Response(status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_200_OK)
         print("errors")
         print(serializer.errors)
         print(serializer.validated_data)
