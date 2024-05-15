@@ -109,6 +109,85 @@ export default function AlarmClock({
     }
   };
 
+  const fetchSchedule = async () => {
+    try {
+      const baseUrl = process.env.BASE_URL;
+      const response = await fetch(`${baseUrl}/schedule/view/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + access,
+        },
+      });
+
+      const data = await response.json();
+      console.log("schedIds 1st", scheduleIds);
+
+      if (response.ok) {
+        for (const event of data) {
+          // console.log("event ",event);
+
+          if (!scheduleIds.includes(event.event_id)) {
+            setScheduleIds((prevScheduleIds) => [
+              ...prevScheduleIds,
+              event.event_id,
+            ]);
+          }
+
+          console.log("schedIds 2nd", scheduleIds);
+
+          let dateFromDB = event.date;
+
+          const timeFromMLResponse = await predictMLTime(event.start_time);
+          const timeFromML = timeFromMLResponse.wake_up_time;
+          let dateTimeString = dateFromDB + " " + timeFromML;
+
+          let fullDate = new Date(dateTimeString);
+          setDate(fullDate);
+          console.log("date", date);
+
+          const departTimeML = timeFromMLResponse.departure_time;
+          let departDateTimeString = dateFromDB + " " + departTimeML;
+          let fullDepartDate = new Date(departDateTimeString);
+
+          const durationInMillis =
+            fullDepartDate.getTime() - fullDate.getTime();
+          const durationInMinutes = Math.floor(durationInMillis / (1000 * 60));
+
+          setCalculatedPrepTime(durationInMinutes);
+
+          scheduleNotificationsHandler();
+          playAudio();
+        }
+      } else {
+        console.error(data);
+      }
+    } catch (error) {
+      console.error("AlarmClock - Error fetching schedule:", error);
+    }
+  };
+
+  // useEffect(() => {
+  //   fetchSchedule();
+  // }, []);
+
+  // Prepare the audio
+  useEffect(() => {
+    Audio.setAudioModeAsync({
+      staysActiveInBackground: true,
+      playsInSilentModeIOS: true,
+      interruptionModeIOS: InterruptionModeIOS.DuckOthers,
+      interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
+      shouldDuckAndroid: true,
+      playThroughEarpieceAndroid: true,
+    });
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
   // Trigger the audio
   const playAudio = async () => {
     // Get the current time
@@ -164,7 +243,6 @@ export default function AlarmClock({
       console.error("Play Audio: date is null");
     }
 
-  
     // const soundObject = new Audio.Sound();
     // try {
     //   await soundObject.loadAsync(require("../../assets/sounds/Sound2.mp3"));
@@ -194,70 +272,67 @@ export default function AlarmClock({
     }
   };
 
-  const fetchSchedule = async () => {
-    try {
-      const baseUrl = process.env.BASE_URL;
-      const response = await fetch(`${baseUrl}/schedule/view/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + access,
-        },
-      });
+  // const fetchSchedule = async () => {
+  //   try {
+  //     const baseUrl = process.env.BASE_URL;
+  //     const response = await fetch(`${baseUrl}/schedule/view/`, {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + access,
+  //       },
+  //     });
 
-      
-      const data = await response.json();
-      console.log(data);
-      console.log("schedIds 1st", scheduleIds);
+  //     const data = await response.json();
+  //     console.log(data);
+  //     console.log("schedIds 1st", scheduleIds);
 
-      if (response.ok) {
-        for (const event of data) {
-          console.log("event ",event);
+  //     if (response.ok) {
+  //       for (const event of data) {
+  //         console.log("event ", event);
 
-          if (!scheduleIds.includes(event.event_id)) {
-            console.log('entered if not include');
+  //         if (!scheduleIds.includes(event.event_id)) {
+  //           console.log("entered if not include");
 
-            setScheduleIds((prevScheduleIds) => [
-              ...prevScheduleIds,
-              event.event_id,
-            ]);
-          }
+  //           setScheduleIds((prevScheduleIds) => [
+  //             ...prevScheduleIds,
+  //             event.event_id,
+  //           ]);
+  //         }
 
-          console.log("schedIds 2nd", scheduleIds);
+  //         console.log("schedIds 2nd", scheduleIds);
 
-          let dateFromDB = event.date;
+  //         let dateFromDB = event.date;
 
-          const timeFromMLResponse = await predictMLTime(event.start_time);
-          const timeFromML = timeFromMLResponse.wake_up_time;
-          let dateTimeString = dateFromDB + " " + timeFromML;
+  //         const timeFromMLResponse = await predictMLTime(event.start_time);
+  //         const timeFromML = timeFromMLResponse.wake_up_time;
+  //         let dateTimeString = dateFromDB + " " + timeFromML;
 
-          let fullDate = new Date(dateTimeString);
-          setDate(fullDate);
-          console.log("date: ", date);
+  //         let fullDate = new Date(dateTimeString);
+  //         setDate(fullDate);
+  //         console.log("date: ", date);
 
-          const departTimeML = timeFromMLResponse.departure_time;
-          let departDateTimeString = dateFromDB + " " + departTimeML;
-          let fullDepartDate = new Date(departDateTimeString);
+  //         const departTimeML = timeFromMLResponse.departure_time;
+  //         let departDateTimeString = dateFromDB + " " + departTimeML;
+  //         let fullDepartDate = new Date(departDateTimeString);
 
-          const durationInMillis =
-            fullDepartDate.getTime() - fullDate.getTime();
-          const durationInMinutes = Math.floor(
-            durationInMillis / (1000 * 60)
-          );
+  //         const durationInMillis =
+  //           fullDepartDate.getTime() - fullDate.getTime();
+  //         const durationInMinutes = Math.floor(durationInMillis / (1000 * 60));
 
-          setCalculatedPrepTime(durationInMinutes);
+  //         setCalculatedPrepTime(durationInMinutes);
 
-          scheduleNotificationsHandler();
-          playAudio();
-        }
-        console.log("final schedIds", scheduleIds)
-      } else {
-        console.error(data);
-      }
-    } catch (error) {
-      console.error("AlarmClock - Error fetching schedule:", error);
-    }
-  };
+  //         scheduleNotificationsHandler();
+  //         playAudio();
+  //       }
+  //       console.log("final schedIds", scheduleIds);
+  //     } else {
+  //       console.error(data);
+  //     }
+  //   } catch (error) {
+  //     console.error("AlarmClock - Error fetching schedule:", error);
+  //   }
+  // };
 
   const fetchScheduleRecent = async () => {
     try {
@@ -270,7 +345,6 @@ export default function AlarmClock({
         },
       });
 
-      
       const data = await response.json();
       console.log(data);
       console.log("schedIds 1st", scheduleIds);
@@ -316,12 +390,10 @@ export default function AlarmClock({
             scheduleNotificationsHandler();
             playAudio();
           }
-          
-
         } catch (e) {
-          console.error(e)
+          console.error(e);
         }
-      }   
+      }
     } catch (error) {
       console.error("AlarmClock - Error fetching schedule:", error);
     }
@@ -344,12 +416,10 @@ export default function AlarmClock({
       : undefined;
   }, [sound]);
 
-  
-
   useEffect(() => {
     if (isFocused) {
       // fetchSchedule();
-      fetchScheduleRecent();
+      fetchSchedule();
     }
   }, [isFocused]);
 
@@ -373,7 +443,7 @@ export default function AlarmClock({
   }, []);
 
   async function scheduleNotificationsHandler() {
-    console.log("noti created for", notificationId)
+    console.log("noti created for", notificationId);
     // Get the current time
     const currentTime = new Date();
 
@@ -414,7 +484,6 @@ export default function AlarmClock({
         console.log(identifier);
         setNotificationId(identifier);
         storeData(identifier);
-
       }
       // } else {
       //   alert("Turn off alarm before starting a new one");
@@ -537,7 +606,6 @@ export default function AlarmClock({
 
     AsyncStorage.setItem("CalculatedPrepTime", calculatedPrepTime.toString());
   };
-
 
   // Format the current time
   const formattedTime = currentTime.toLocaleTimeString([], {

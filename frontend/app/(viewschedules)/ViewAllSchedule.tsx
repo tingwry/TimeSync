@@ -94,7 +94,6 @@ export default function Home() {
         </TouchableOpacity>
         <Text style={styles.textHeader}>Schedules</Text>
       </View>
-
       <View style={styles.container}>
         <View style={styles.monthContainer}>
           <Text style={styles.textMonth}>May 2024</Text>
